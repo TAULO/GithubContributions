@@ -34,6 +34,7 @@
         <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; flex-direction: row-reverse; margin-top: 1rem;">
             {#each contributionCollection.contributionYears as year}
                 <button
+                        disabled={!user.trim()}
                         onclick={() => { currentYear = year; user = user; handleFetch(); }}
                 >{year}</button>
             {/each}
