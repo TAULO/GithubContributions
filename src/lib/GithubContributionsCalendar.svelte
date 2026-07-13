@@ -1,5 +1,7 @@
 <script lang="ts">
-   const { contributions } = $props();
+    import type { IContributionCollection } from "$lib/github";
+
+   const { contributionCollection }: { contributionCollection: IContributionCollection } = $props();
 
    const months = [
        'Jan',
@@ -19,13 +21,13 @@
    function getWeekDateFromIndex(index: number): string | null {
        if (index === 0) return null; // skip the first month
 
-       const monthStr = contributions.weeks[index]?.[0]?.date;
+       const monthStr = contributionCollection.contributions[index]?.[0]?.date;
        if (!monthStr) return null;
 
        const currentMonthIndex = new Date(monthStr).getMonth();
        if (index === 0) return months[currentMonthIndex] ?? null;
 
-       const prevMonthStr = contributions.weeks[index - 1]?.[0]?.date;
+       const prevMonthStr = contributionCollection.contributions[index - 1]?.[0]?.date;
        if (!prevMonthStr) return months[currentMonthIndex] ?? null;
 
        const prevMonthIndex = new Date(prevMonthStr).getMonth();
@@ -36,13 +38,14 @@
 </script>
 
 <div class="container">
-    {#each contributions.weeks as week, index}
+    {#each contributionCollection.contributions as contribution, index}
         <div class="block">
             <p class="date">{getWeekDateFromIndex(index)}</p>
-            {#each week as contribution}
-                <div class={['cell', `level-${contribution.level}`]}>
-
-                </div>
+            {#each contribution as contributionDay}
+                <div
+                    class={['cell', `level-${contributionDay.level}`]}
+                    onclick={() => console.log(contributionDay)}
+                ></div>
             {/each}
         </div>
     {/each}

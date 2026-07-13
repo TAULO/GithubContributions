@@ -3,7 +3,7 @@ import { json, error } from '@sveltejs/kit';
 import { GITHUB_ACCESS_TOKEN } from '$env/static/private';
 import type { RequestHandler } from './$types';
 
-import { QUERY, LEVELS } from '$lib/github';
+import {QUERY, LEVELS, type IContributionCollection } from '$lib/github';
 
 function getFromTo(yearParam: string | null) {
     let from: string, to: string;
@@ -43,10 +43,13 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 
     if (payload.errors) throw error(502, payload.errors[0]?.message ?? 'GraphQL error');
 
-    const cal = payload.data?.user?.contributionsCollection?.contributionCalendar;
-    if (!cal) throw error(404, `User "${user}" not found`);
+    const contributionsCollection = payload.data?.user?.contributionsCollection;
+    if (!contributionsCollection) throw error(502, 'GitHub API returned no contributions');
 
-    const weeks = cal.weeks.map((w: any) =>
+    const contributionCalendar = contributionsCollection.contributionCalendar;
+    if (!contributionCalendar) throw error(502, 'GitHub API returned no contribution calendar');
+
+    const contributions = contributionCalendar.weeks.map((w: any) =>
         w.contributionDays.map((d: any) => ({
             date: d.date,
             count: d.contributionCount,
@@ -54,8 +57,12 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
         }))
     );
 
+    const contributionYears = contributionsCollection.contributionYears;
+
+    const data: IContributionCollection = { total: contributionCalendar.totalContributions, contributions, contributionYears };
+
     return json(
-        { total: cal.totalContributions, weeks },
+        data,
         {
             headers: {
                 'Access-Control-Allow-Origin': '*',
