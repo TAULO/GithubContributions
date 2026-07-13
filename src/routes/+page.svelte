@@ -6,7 +6,6 @@
     let { data }: { data: PageData } = $props();
 
     let contributionCollection = $state(data.contribution);
-
     let user = $state(data.user);
     let currentYear = $state<number>();
 
