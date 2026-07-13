@@ -18,6 +18,15 @@ export const LEVELS = {
     THIRD_QUARTILE: 3, FOURTH_QUARTILE: 4,
 } as const;
 
+export type Effects = 'wave' | 'ripple' | 'starlight';
+export type EffectsOptions = {
+    speed: number;
+    opacity: number;
+    color: string;
+};
+
+export type Theme = 'light' | 'dark';
+
 export type ContributionLevel = keyof typeof LEVELS;
 export type ContributionDay = { date: string; count: number; level: ContributionLevel };
 export interface IContributionCollection {

@@ -1,101 +1,135 @@
 <script lang="ts">
-    import type { IContributionCollection } from "$lib/github";
+	import type { ContributionDay, IContributionCollection } from '$lib/github';
+	import { SvelteSet } from 'svelte/reactivity';
 
-   const { contributionCollection }: { contributionCollection: IContributionCollection } = $props();
+	const { contributionCollection }: { contributionCollection: IContributionCollection } = $props();
+	const contributions = $derived(contributionCollection.contributions);
 
-   const months = [
-       'Jan',
-       'Feb',
-       'Mar',
-       'Apr',
-       'May',
-       'Jun',
-       'Jul',
-       'Aug',
-       'Sep',
-       'Oct',
-       'Nov',
-       'Dec',
-   ];
+	const selectedContributions = new SvelteSet<string>();
 
-   function getWeekDateFromIndex(index: number): string | null {
-       if (index === 0) return null; // skip the first month
+	const months = [
+		'Jan',
+		'Feb',
+		'Mar',
+		'Apr',
+		'May',
+		'Jun',
+		'Jul',
+		'Aug',
+		'Sep',
+		'Oct',
+		'Nov',
+		'Dec',
+	];
 
-       const monthStr = contributionCollection.contributions[index]?.[0]?.date;
-       if (!monthStr) return null;
+	function getWeekDateFromIndex(index: number): string | null {
+		if (index === 0) return null; // skip the first month
 
-       const currentMonthIndex = new Date(monthStr).getMonth();
-       if (index === 0) return months[currentMonthIndex] ?? null;
+		const monthStr = contributions[index]?.[0]?.date;
+		if (!monthStr) return null;
 
-       const prevMonthStr = contributionCollection.contributions[index - 1]?.[0]?.date;
-       if (!prevMonthStr) return months[currentMonthIndex] ?? null;
+		const currentMonthIndex = new Date(monthStr).getMonth();
+		if (index === 0) return months[currentMonthIndex] ?? null;
 
-       const prevMonthIndex = new Date(prevMonthStr).getMonth();
-       if (currentMonthIndex === prevMonthIndex) return null;
+		const prevMonthStr = contributions[index - 1]?.[0]?.date;
+		if (!prevMonthStr) return months[currentMonthIndex] ?? null;
 
-       return months[currentMonthIndex] ?? null;
-   }
+		const prevMonthIndex = new Date(prevMonthStr).getMonth();
+		if (currentMonthIndex === prevMonthIndex) return null;
+
+		return months[currentMonthIndex] ?? null;
+	}
+
+	function toggleSelected(contributionDate: string) {
+		if (selectedContributions.has(contributionDate)) selectedContributions.delete(contributionDate);
+		else selectedContributions.add(contributionDate);
+	}
 </script>
 
 <div class="container">
-    {#each contributionCollection.contributions as contribution, index}
-        <div class="block">
-            <p class="date">{getWeekDateFromIndex(index)}</p>
-            {#each contribution as contributionDay}
-                <div
-                    class={['cell', `level-${contributionDay.level}`]}
-                    onclick={() => console.log(contributionDay)}
-                ></div>
-            {/each}
-        </div>
-    {/each}
+	{#each contributions as contribution, index}
+		<div class="block">
+			<p class="date">{getWeekDateFromIndex(index)}</p>
+			{#each contribution as contributionDay}
+				<button
+					class={[
+						'cell',
+						`level-${contributionDay.level}`,
+						selectedContributions.has(contributionDay.date) && 'selected',
+						selectedContributions.size > 0 &&
+							!selectedContributions.has(contributionDay.date) &&
+							'not-selected',
+					]}
+					style="--cell-color: var(--gh-level-{contributionDay.level}})"
+					title={contributionDay.date}
+					onclick={() => toggleSelected(contributionDay.date)}
+				></button>
+			{/each}
+		</div>
+	{/each}
 </div>
 
 <style>
-    .container {
-        display: flex;
-        gap: 2px;
+	.container {
+		display: flex;
+		gap: 2px;
 
-        padding-top: 24px;
-        overflow-x: auto;
-    }
+		padding-top: 24px;
+		overflow-x: auto;
+	}
 
-    .block {
-        position: relative;
+	.block {
+		position: relative;
 
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-    }
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
 
-    .date {
-        position: absolute;
-        top: -24px;
+	.date {
+		position: absolute;
+		top: -24px;
 
-        padding: 0;
-        margin: 0;
-    }
+		padding: 0;
+		margin: 0;
+	}
 
-    .cell {
-        width: 12px;
-        height: 12px;
-        border: 1px solid black;
-        border-radius: 2px;
-    }
+	.cell {
+		width: 12px;
+		height: 12px;
+		padding: 0;
+		border: none;
+		border-radius: 2px;
+		cursor: pointer;
+		background: transparent;
+	}
 
-    .level-1 {
-        background-color: #007bff;
-    }
+	.cell.selected {
+		border: 1px solid greenyellow;
+	}
 
-    .level-2 {
-        background-color: #28a745;
-    }
+	.cell.not-selected {
+		opacity: 0.3;
+	}
 
-    .level-3 {
-        background-color: #ffc107;
-    }
+	.cell:hover {
+		cursor: pointer;
+		border: 1px solid greenyellow;
+	}
 
-    .level-4 {
-        background-color: #dc3545;
-    }
+	.cell.level-0 {
+		background-color: var(--gh-level-0, #ebedf0);
+	}
+	.cell.level-1 {
+		background-color: var(--gh-level-1, #9be9a8);
+	}
+	.cell.level-2 {
+		background-color: var(--gh-level-2, #40c463);
+	}
+	.cell.level-3 {
+		background-color: var(--gh-level-3, #30a14e);
+	}
+	.cell.level-4 {
+		background-color: var(--gh-level-4, #216e39);
+	}
 </style>
