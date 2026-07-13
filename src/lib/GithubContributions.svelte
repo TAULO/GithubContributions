@@ -1,8 +1,6 @@
 <script lang="ts">
    const { contributions } = $props();
 
-   console.log(contributions);
-
    const months = [
        'Jan',
        'Feb',

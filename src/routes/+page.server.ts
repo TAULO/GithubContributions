@@ -5,8 +5,11 @@ import type { ContributionData } from '$lib/github';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
     const user = url.searchParams.get('user') ?? 'TAULO';
+    const year = url.searchParams.get('year');
 
-    const res = await fetch(`/api/contributions?user=${encodeURIComponent(user)}`);
+    const endpoint = `/api/contributions?user=${encodeURIComponent(user)}`;
+    const res = await fetch(endpoint);
+
     if (!res.ok) {
         const { message } = await res.json().catch(() => ({ message: 'Failed to load' }));
         throw error(res.status, message);

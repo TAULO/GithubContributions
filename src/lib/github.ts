@@ -1,7 +1,7 @@
 export const QUERY = `
-  query($user: String!) {
+  query($user: String!, $from: DateTime!, $to: DateTime!) {
     user(login: $user) {
-      contributionsCollection {
+      contributionsCollection(from: $from, to: $to) {
         contributionCalendar {
           totalContributions
           weeks {
@@ -10,8 +10,7 @@ export const QUERY = `
         }
       }
     }
-  }
-  `;
+  }`;
 
 export const LEVELS = {
     NONE: 0, FIRST_QUARTILE: 1, SECOND_QUARTILE: 2,
