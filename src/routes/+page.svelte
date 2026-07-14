@@ -37,6 +37,11 @@
 			loading = false;
 		}
 	}
+
+	function changeYear(year: number) {
+		currentYear = year;
+		handleFetch();
+	}
 </script>
 
 <div class="container">
@@ -44,7 +49,10 @@
 		<h1>Contributions for {user} ({currentYear})</h1>
 		<div class="contributions-calendar">
 			<ContributionsCalendar {contributionCollection} onSelectionChange={handleSelectionChange} />
-			<ContributionsYear contributionYears={contributionCollection.contributionYears} />
+			<ContributionsYear
+				contributionYears={contributionCollection.contributionYears}
+				onClicked={changeYear}
+			/>
 			<Contributions {selectedContributionsByRepository} {user} />
 		</div>
 	</div>
