@@ -17,10 +17,10 @@
 	let loading = $state(false);
 	let errorMsg = $state<string | null>(null);
 
-	let contributionsByRepository = $state<IDayContributions[]>([]);
+	let selectedContributionsByRepository = $state<IDayContributions[]>([]);
 
 	async function handleSelectionChange(dates: string[]) {
-		contributionsByRepository = await getContributionsByRepository(user.trim(), dates);
+		selectedContributionsByRepository = await getContributionsByRepository(user.trim(), dates);
 	}
 
 	async function handleFetch() {
@@ -57,7 +57,7 @@
 					>
 				{/each}
 			</div>
-			<Contributions {contributionsByRepository} />
+			<Contributions {selectedContributionsByRepository} {user} />
 		</div>
 	</div>
 
