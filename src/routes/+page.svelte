@@ -19,6 +19,7 @@
 	let errorMsg = $state<string | null>(null);
 
 	let selectedContributionsByRepository = $state<IDayContributions[]>([]);
+	let hasSelectedContributionsByRepository = $derived(selectedContributionsByRepository.length > 0);
 
 	async function handleSelectionChange(dates: string[]) {
 		selectedContributionsByRepository = await getContributionsByRepository(user.trim(), dates);
@@ -47,14 +48,18 @@
 <div class="container">
 	<div>
 		<h1>Contributions for {user} ({currentYear})</h1>
-		<div class="contributions-calendar">
+		<div class="contributions-calendar" class:standalone={!hasSelectedContributionsByRepository}>
 			<ContributionsCalendar {contributionCollection} onSelectionChange={handleSelectionChange} />
 			<ContributionsYear
 				contributionYears={contributionCollection.contributionYears}
 				onClicked={changeYear}
 			/>
-			<Contributions {selectedContributionsByRepository} {user} />
 		</div>
+		{#if hasSelectedContributionsByRepository}
+			<div class="contributions-container">
+				<Contributions {selectedContributionsByRepository} {user} />
+			</div>
+		{/if}
 	</div>
 
 	<form
@@ -86,7 +91,17 @@
 	.contributions-calendar {
 		border: 1px solid #ccc;
 		padding: 1rem;
+		border-radius: 8px 8px 0 0;
+	}
+
+	.contributions-calendar.standalone {
 		border-radius: 8px;
-		width: fit-content;
+	}
+
+	.contributions-container {
+		border: 1px solid #ccc;
+		border-top: none;
+		padding: 1rem;
+		border-radius: 0 0 8px 8px;
 	}
 </style>
