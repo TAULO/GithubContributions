@@ -37,6 +37,7 @@
 <div class="container">
 	<p>{totalCommits}</p>
 	{#each selectedContributionsByRepository as contributionByRepository}
+		{@const total = sumCommits(nodesOf(contributionByRepository.commitContributionsByRepository))}
 		<div class="contribution-container">
 			<div class="date-container">
 				<p>{prettyDate(contributionByRepository.date)}</p>
@@ -45,16 +46,18 @@
 			<div class="repositories-container">
 				<div class="timeline"></div>
 				<div class="repositories">
-					<h3>
-						Created {pluralize(
-							sumCommits(nodesOf(contributionByRepository.commitContributionsByRepository)),
-							'commit',
-						)} in {pluralize(
-							contributionByRepository.commitContributionsByRepository.length,
-							'repository',
-							'repositories',
-						)}
-					</h3>
+					{#if total > 0}
+						<h3>
+							Created {pluralize(total, 'commit')}
+							in {pluralize(
+								contributionByRepository.commitContributionsByRepository.length,
+								'repository',
+								'repositories',
+							)}
+						</h3>
+					{:else}
+						<h4 class="no-activity">{user} has no activity yet for this period</h4>
+					{/if}
 					{#each contributionByRepository.commitContributionsByRepository as commitContribution}
 						<div class="repository-container">
 							<a class="repository-name" href={commitContribution.repository.url} target="_blank">
@@ -113,6 +116,7 @@
 	.repository-container {
 		display: flex;
 		gap: 8px;
+		justify-content: space-between;
 
 		a {
 			text-decoration: none;
@@ -133,13 +137,18 @@
 
 	.repositories-container {
 		display: flex;
-		height: 100%;
 		gap: 8px;
 
 		.repositories {
 			display: flex;
 			flex-direction: column;
 			gap: 4px;
+			flex: 1;
+
+			.no-activity {
+				align-self: center;
+				justify-self: center;
+			}
 		}
 
 		.timeline {
