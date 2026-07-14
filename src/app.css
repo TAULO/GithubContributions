@@ -1,13 +1,13 @@
 /* TODO: Add more colors */
 :root {
-    /* Contribution Colors */
-    --gh-primary: #6f42c1;
-    --gh-secondary: #24292e;
+	/* Contribution Colors */
+	--gh-primary: #6f42c1;
+	--gh-secondary: #24292e;
 
-    /* Contribution Day Levels Colors */
-    --gh-level-0: #ebedf0;
-    --gh-level-1: #ebedf0;
-    --gh-level-2: #ebedf0;
-    --gh-level-3: #ebedf0;
-    --gh-level-4: #ebedf0;
+	/* Contribution Day Levels Colors */
+	--gh-level-0: #ebedf0;
+	--gh-level-1: #ebedf0;
+	--gh-level-2: #ebedf0;
+	--gh-level-3: #ebedf0;
+	--gh-level-4: #ebedf0;
 }

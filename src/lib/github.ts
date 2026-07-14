@@ -106,3 +106,21 @@ export async function getContributions(
 
 	return { user, contribution };
 }
+
+export async function getContributionsByRepository(
+	user: string,
+	dates: string[],
+	fetchFn: typeof fetch = fetch,
+): Promise<IDayContributions[]> {
+	const data: IDayContributions[] = [];
+	for (const date of dates) {
+		const res = await fetchFn(`/api/contributions?user=${encodeURIComponent(user)}&from=${date}`);
+		if (!res.ok) continue; // or collect the error
+		data.push({
+			...(await res.json()),
+			date,
+		});
+	}
+
+	return data;
+}

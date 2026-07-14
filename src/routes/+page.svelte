@@ -1,7 +1,12 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { getContributions } from '$lib/github';
+	import {
+		getContributions,
+		getContributionsByRepository,
+		type IDayContributions,
+	} from '$lib/github';
 	import ContributionsCalendar from '$lib/components/contribution-calendar/ContributionsCalendar.svelte';
+	import Contributions from '$lib/components/contributions-by-repository/Contributions.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -11,6 +16,12 @@
 
 	let loading = $state(false);
 	let errorMsg = $state<string | null>(null);
+
+	let contributionsByRepository = $state<IDayContributions[]>([]);
+
+	async function handleSelectionChange(dates: string[]) {
+		contributionsByRepository = await getContributionsByRepository(user.trim(), dates);
+	}
 
 	async function handleFetch() {
 		loading = true;
@@ -31,7 +42,7 @@
 	<div>
 		<h1>Contributions for {user} ({currentYear})</h1>
 		<div class="contributions-calendar">
-			<ContributionsCalendar {contributionCollection} />
+			<ContributionsCalendar {contributionCollection} onSelectionChange={handleSelectionChange} />
 			<div
 				style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; flex-direction: row-reverse; margin-top: 1rem;"
 			>
@@ -46,6 +57,7 @@
 					>
 				{/each}
 			</div>
+			<Contributions {contributionsByRepository} />
 		</div>
 	</div>
 
