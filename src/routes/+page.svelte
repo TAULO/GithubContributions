@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { getContributions } from '$lib/github';
-	import GithubContributionsCalendar from '$lib/GithubContributionsCalendar.svelte';
+	import GithubContributionsCalendar from '$lib/components/contributions/ContributionsCalendar.svelte';
 
 	let { data }: { data: PageData } = $props();
 
