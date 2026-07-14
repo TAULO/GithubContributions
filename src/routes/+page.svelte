@@ -11,8 +11,8 @@
 
 	let { data }: { data: PageData } = $props();
 
-	let contributionCollection = $state(data.contribution);
-	let user = $state(data.user);
+	let contributionCollection = $derived(data.contribution);
+	let user = $derived(data.user);
 	let currentYear = $state<number>();
 
 	let loading = $state(false);
