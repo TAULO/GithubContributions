@@ -3,12 +3,12 @@
 
 	interface IProps {
 		contributionDay: ContributionDay;
-		selected: boolean;
-		dimmed: boolean;
-		onToggleSelected: () => void;
+		selected?: boolean;
+		dimmed?: boolean;
+		onToggleSelected?: () => void;
 	}
 
-	let { contributionDay, selected, dimmed, onToggleSelected }: IProps = $props();
+	let { contributionDay, selected = false, dimmed = false, onToggleSelected }: IProps = $props();
 </script>
 
 <button

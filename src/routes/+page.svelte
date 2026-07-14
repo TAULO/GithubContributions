@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { getContributions } from '$lib/github';
-	import GithubContributionsCalendar from '$lib/components/contributions/ContributionsCalendar.svelte';
+	import ContributionsCalendar from '$lib/components/contribution-calendar/ContributionsCalendar.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -31,7 +31,7 @@
 	<div>
 		<h1>Contributions for {user} ({currentYear})</h1>
 		<div class="contributions-calendar">
-			<GithubContributionsCalendar {contributionCollection} />
+			<ContributionsCalendar {contributionCollection} />
 			<div
 				style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; flex-direction: row-reverse; margin-top: 1rem;"
 			>
