@@ -5,9 +5,27 @@ import {
 	CONTRIBUTION_QUERY,
 	type ICommit,
 	type IContributionByRepository,
-	type IIssue,
-	type IPullRequest,
+	type IDayContributions,
 } from '$lib/github';
+
+// lift GitHub's { issue }/{ pullRequest } wrapper off each node so app types stay flat
+// what GitHub sends: repo wrapper whose commits carry the { issue }/{ pullRequest } envelope
+interface IRawRepo<TRawNode> {
+	repository: { nameWithOwner: string; url: string };
+	contributions: { nodes: TRawNode[] };
+}
+
+interface IRawIssue {
+	labels: { nodes: { name: string; color: string }[] };
+}
+
+interface IRawCommit {
+	nodes: { commitCount: number; occurredAt: string };
+}
+
+interface IRawPullRequest {
+	nodes: { pullRequest: { title: string; url: string; createdAt: string } };
+}
 
 export const GET: RequestHandler = async ({ url, fetch }) => {
 	const user = url.searchParams.get('user');
@@ -51,26 +69,11 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 		commitContributionsByRepository,
 		pullRequestContributionsByRepository,
 		issueContributionsByRepository,
+		totalCommitContributions,
+		totalPullRequestContributions,
+		totalIssueContributions,
+		restrictedContributionsCount,
 	} = payload.data.user.contributionsCollection;
-
-	// lift GitHub's { issue }/{ pullRequest } wrapper off each node so app types stay flat
-	// what GitHub sends: repo wrapper whose commits carry the { issue }/{ pullRequest } envelope
-	interface IRawRepo<TRawNode> {
-		repository: { nameWithOwner: string; url: string };
-		contributions: { nodes: TRawNode[] };
-	}
-
-	interface IRawIssue {
-		labels: { nodes: { name: string; color: string }[] };
-	}
-
-	interface IRawCommit {
-		nodes: { commitCount: number; occurredAt: string };
-	}
-
-	interface IRawPullRequest {
-		nodes: { pullRequest: { title: string; url: string; createdAt: string } };
-	}
 
 	const unwrapNodes = <T>(conn: { nodes: T[] }): T[] => conn.nodes;
 	const flatten = <TRaw, TItem>(
@@ -92,6 +95,10 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 			pullRequestContributionsByRepository,
 			(n: { pullRequest: IRawPullRequest }) => n.pullRequest,
 		),
+		totalCommitContributions,
+		totalPullRequestContributions,
+		totalIssueContributions,
+		restrictedContributionsCount,
 	};
 
 	return json(data, {

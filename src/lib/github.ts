@@ -20,6 +20,7 @@ export const CONTRIBUTION_QUERY = `
       	totalCommitContributions
       	totalPullRequestContributions
       	totalIssueContributions
+      	restrictedContributionsCount
       	commitContributionsByRepository {
         	repository { nameWithOwner url }
         	contributions(first: 10) {
@@ -108,6 +109,10 @@ export interface IContributionByRepository<TContribution> {
 
 export interface IDayContributions {
 	date: string;
+	totalCommitContributions: number;
+	totalPullRequestContributions: number;
+	totalIssueContributions: number;
+	restrictedContributionsCount: number;
 	commitContributionsByRepository: IContributionByRepository<ICommit>[];
 	pullRequestContributionsByRepository: IContributionByRepository<IPullRequest>[];
 	issueContributionsByRepository: IContributionByRepository<IIssue>[];

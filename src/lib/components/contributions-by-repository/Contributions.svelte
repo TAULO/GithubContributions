@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { IDayContributions } from '$lib/github';
-	import { sumCommits } from '$lib/util/contributions';
 	import IssueContributions from '$lib/components/contributions-by-repository/IssueContributions.svelte';
 	import PullReqContributions from '$lib/components/contributions-by-repository/PullReqContributions.svelte';
 	import { prettyDate } from '$lib/util/string';
 	import CommitContributions from '$lib/components/contributions-by-repository/CommitContributions.svelte';
+	import RestrictedContributions from '$lib/components/contributions-by-repository/RestrictedContributions.svelte';
 
 	let {
 		selectedContributionsByRepository,
@@ -12,17 +12,18 @@
 	}: { selectedContributionsByRepository: IDayContributions[]; user: string } = $props();
 
 	const totalCommits = $derived(
-		sumCommits(
-			selectedContributionsByRepository.flatMap((day) =>
-				day.commitContributionsByRepository.flatMap((repo) => repo.contributions),
-			),
-		),
+		selectedContributionsByRepository.reduce((acc, r) => acc + r.totalCommitContributions, 0),
+	);
+
+	const totalRestrictedContributions = $derived(
+		selectedContributionsByRepository.reduce((acc, r) => acc + r.restrictedContributionsCount, 0),
 	);
 
 	const dayHasActivity = (day: IDayContributions) =>
 		day.commitContributionsByRepository.length > 0 ||
 		day.pullRequestContributionsByRepository.length > 0 ||
-		day.issueContributionsByRepository.length > 0;
+		day.issueContributionsByRepository.length > 0 ||
+		day.restrictedContributionsCount > 0;
 
 	const hasContributions = $derived(selectedContributionsByRepository.some(dayHasActivity));
 </script>
@@ -62,6 +63,9 @@
 							<PullReqContributions
 								dayContributions={contributionByRepository.pullRequestContributionsByRepository}
 							/>
+						{/if}
+						{#if totalRestrictedContributions > 0}
+							<RestrictedContributions count={totalRestrictedContributions} />
 						{/if}
 					</div>
 				{/if}
