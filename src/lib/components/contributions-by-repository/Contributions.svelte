@@ -47,30 +47,21 @@
 				{:else}
 					<div class="timeline">
 						{#if contributionByRepository.commitContributionsByRepository.length > 0}
-							<div class="contribution-item">
-								<div class="badge"></div>
-								<CommitContributions
-									dayContributions={contributionByRepository.commitContributionsByRepository}
-									{user}
-									date={contributionByRepository.date}
-								/>
-							</div>
+							<CommitContributions
+								dayContributions={contributionByRepository.commitContributionsByRepository}
+								{user}
+								date={contributionByRepository.date}
+							/>
 						{/if}
 						{#if contributionByRepository.issueContributionsByRepository.length > 0}
-							<div class="contribution-item">
-								<div class="badge"></div>
-								<IssueContributions
-									dayContributions={contributionByRepository.issueContributionsByRepository}
-								/>
-							</div>
+							<IssueContributions
+								dayContributions={contributionByRepository.issueContributionsByRepository}
+							/>
 						{/if}
 						{#if contributionByRepository.pullRequestContributionsByRepository.length > 0}
-							<div class="contribution-item">
-								<div class="badge"></div>
-								<PullReqContributions
-									dayContributions={contributionByRepository.pullRequestContributionsByRepository}
-								/>
-							</div>
+							<PullReqContributions
+								dayContributions={contributionByRepository.pullRequestContributionsByRepository}
+							/>
 						{/if}
 					</div>
 				{/if}
@@ -115,7 +106,7 @@
 		flex-direction: column;
 		gap: 1rem;
 
-		padding: 1rem 0;
+		padding: 1.5rem 0;
 		margin-left: 0.7rem;
 	}
 
@@ -128,22 +119,6 @@
 		top: 0;
 		bottom: 0;
 		left: 0;
-	}
-
-	.contribution-item {
-		display: flex;
-
-		.badge {
-			width: 1.5rem;
-			height: 1.5rem;
-			border-radius: 50%;
-			background-color: #212830;
-			position: relative;
-			margin: -2px 8px 0 -13px;
-			z-index: 1;
-			/* Note: This is a hack to make the badge appear above the timeline, therefor the color must match the background color of the timeline */
-			border: 0.125rem solid white;
-		}
 	}
 
 	.no-activity {
