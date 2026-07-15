@@ -94,6 +94,7 @@ export interface IIssue {
 	url: string;
 	createdAt: string;
 	closed: boolean;
+	labels: { name: string; color: string }[];
 }
 
 export interface IContributionByRepository<TContribution> {

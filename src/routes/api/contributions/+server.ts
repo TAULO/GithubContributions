@@ -60,24 +60,37 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 		contributions: { nodes: TRawNode[] };
 	}
 
+	interface IRawIssue {
+		labels: { nodes: { name: string; color: string }[] };
+	}
+
+	interface IRawCommit {
+		nodes: { commitCount: number; occurredAt: string };
+	}
+
+	interface IRawPullRequest {
+		nodes: { pullRequest: { title: string; url: string; createdAt: string } };
+	}
+
+	const unwrapNodes = <T>(conn: { nodes: T[] }): T[] => conn.nodes;
 	const flatten = <TRaw, TItem>(
 		repos: IRawRepo<TRaw>[],
 		pick: (node: TRaw) => TItem,
 	): IContributionByRepository<TItem>[] =>
 		repos.map((repo) => ({
 			repository: repo.repository,
-			contributions: repo.contributions.nodes.map(pick), // commits → flat array, envelope stripped
+			contributions: repo.contributions.nodes.map(pick),
 		}));
 
 	const data = {
-		commitContributionsByRepository: flatten(commitContributionsByRepository, (n) => n),
+		commitContributionsByRepository: flatten(commitContributionsByRepository, (n: IRawCommit) => n),
 		issueContributionsByRepository: flatten(
 			issueContributionsByRepository,
-			(n: { issue: IIssue }) => n.issue,
+			(n: { issue: IRawIssue }) => ({ ...n.issue, labels: unwrapNodes(n.issue.labels) }),
 		),
 		pullRequestContributionsByRepository: flatten(
 			pullRequestContributionsByRepository,
-			(n: { pullRequest: IPullRequest }) => n.pullRequest,
+			(n: { pullRequest: IRawPullRequest }) => n.pullRequest,
 		),
 	};
 
