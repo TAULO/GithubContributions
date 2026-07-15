@@ -47,10 +47,20 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 		issueContributionsByRepository,
 	} = payload.data.user.contributionsCollection;
 
+	// lift GitHub's { issue }/{ pullRequest } wrapper off each node so app types stay flat
+	const flattenNodes = <T>(repos: any[], pick: (node: any) => T) =>
+		repos.map((repo) => ({
+			...repo,
+			contributions: { ...repo.contributions, nodes: repo.contributions.nodes.map(pick) },
+		}));
+
 	const data = {
-		commitContributionsByRepository,
-		pullRequestContributionsByRepository,
-		issueContributionsByRepository,
+		commitContributionsByRepository, // already flat from GitHub
+		issueContributionsByRepository: flattenNodes(issueContributionsByRepository, (n) => n.issue),
+		pullRequestContributionsByRepository: flattenNodes(
+			pullRequestContributionsByRepository,
+			(n) => n.pullRequest,
+		),
 	};
 
 	return json(data, {
