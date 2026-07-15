@@ -107,7 +107,7 @@
 		gap: 1rem;
 
 		padding: 1.5rem 0;
-		margin-left: 0.7rem;
+		margin-left: 1rem;
 	}
 
 	.timeline:before {

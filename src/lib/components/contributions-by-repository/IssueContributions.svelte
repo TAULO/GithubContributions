@@ -29,7 +29,7 @@
 				></path>
 			</svg>
 		</Badge>
-		<div>
+		<div class="item">
 			<h3>
 				{contributionTitle({
 					action: 'Opened',
@@ -46,9 +46,16 @@
 					{#each issueContribution.contributions as issue}
 						<div class="issue">
 							<div class={['issue-status', issue.closed ? 'issue-closed' : 'issue-open']}></div>
-							<a href={issue.url} target="_blank">
-								{issue.title}
-							</a>
+							<div class="issue-info">
+								<a href={issue.url} target="_blank">
+									{issue.title}
+								</a>
+								{#each issue.labels as label}
+									<div class="label" style="background-color: {`#${label.color}`}">
+										{label.name}
+									</div>
+								{/each}
+							</div>
 						</div>
 					{/each}
 				</div>
@@ -72,6 +79,10 @@
 		display: flex;
 		gap: 8px;
 
+		.item {
+			flex: 1;
+		}
+
 		.issues {
 			display: flex;
 			flex-direction: column;
@@ -81,6 +92,20 @@
 				display: flex;
 				align-items: center;
 				gap: 4px;
+
+				.issue-info {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					gap: 8px;
+					flex: 1;
+				}
+
+				.label {
+					color: white;
+					padding: 2px 4px;
+					border-radius: 4px;
+				}
 
 				.issue-status {
 					width: 8px;
