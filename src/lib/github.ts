@@ -83,6 +83,7 @@ export interface IIssueNode {
 	title: string;
 	url: string;
 	createdAt: string;
+	closed: boolean;
 }
 
 export interface IContributionByRepository<TNode> {

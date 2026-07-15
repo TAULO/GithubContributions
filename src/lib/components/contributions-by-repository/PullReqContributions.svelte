@@ -30,6 +30,13 @@
 					<a class="repository-name" href={pullRequestContributions.repository.url} target="_blank">
 						{pullRequestContributions.repository.nameWithOwner}
 					</a>
+					{#each pullRequestContributions.contributions.nodes as pullRequest}
+						<div>
+							<a href={pullRequest.url} target="_blank">
+								{pullRequest.title}
+							</a>
+						</div>
+					{/each}
 				</div>
 			{/each}
 		</div>

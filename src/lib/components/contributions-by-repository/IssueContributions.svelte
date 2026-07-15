@@ -30,6 +30,14 @@
 					<a class="repository-name" href={issueContribution.repository.url} target="_blank">
 						{issueContribution.repository.nameWithOwner}
 					</a>
+					{#each issueContribution.contributions.nodes as issue}
+						<div>
+							<a href={issue.url} target="_blank">
+								{issue.title}
+							</a>
+							<p>{issue.closed}</p>
+						</div>
+					{/each}
 				</div>
 			{/each}
 		</div>
