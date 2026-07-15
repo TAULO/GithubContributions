@@ -1,20 +1,20 @@
 <script lang="ts">
 	import type { IContributionByRepository, ICommit } from '$lib/github';
 	import { contributionTitle, pluralize } from '$lib/util/string';
-	import { sumCommits } from '$lib/util/contributions';
+	import { countCommits } from '$lib/util/contributions';
 	import Badge from '$lib/components/UI/Badge.svelte';
 
 	let {
-		dayContributions,
+		repositories,
 		user,
 		date,
 	}: {
-		dayContributions: IContributionByRepository<ICommit>[];
+		repositories: IContributionByRepository<ICommit>[];
 		user: string;
 		date: string;
 	} = $props();
 
-	const commits = $derived(sumCommits(dayContributions.flatMap((d) => d.contributions)));
+	const commits = $derived(countCommits(repositories.flatMap((d) => d.contributions)));
 </script>
 
 {#if commits > 0}
@@ -32,19 +32,19 @@
 					action: 'Contributed',
 					count: commits,
 					noun: 'commit',
-					repositoryCount: dayContributions.length,
+					repositoryCount: repositories.length,
 				})}
 			</h3>
-			{#each dayContributions as commitContribution}
-				{@const commits = sumCommits(commitContribution.contributions)}
+			{#each repositories as repo}
+				{@const commits = countCommits(repo.contributions)}
 				<div class="repository-container">
-					<a class="repository-name" href={commitContribution.repository.url} target="_blank">
-						{commitContribution.repository.nameWithOwner}
+					<a class="repository-name" href={repo.repository.url} target="_blank">
+						{repo.repository.nameWithOwner}
 					</a>
 					<p>
 						<a
 							class="repository-commits"
-							href={`${commitContribution.repository.url}/commits?author=${user}&since=${date}&until=${date}`}
+							href={`${repo.repository.url}/commits?author=${user}&since=${date}&until=${date}`}
 							target="_blank">{commits} {pluralize(commits, 'commit')}</a
 						>
 					</p>

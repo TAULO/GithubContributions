@@ -36,7 +36,6 @@
 	{#if !hasContributions}
 		{@render noContribution()}
 	{:else}
-		<p>{totalCommits}</p>
 		{#each selectedContributionsByRepository as contributionByRepository}
 			<div class="contribution-container">
 				<div class="date-container">
@@ -49,19 +48,19 @@
 					<div class="timeline">
 						{#if contributionByRepository.commitContributionsByRepository.length > 0}
 							<CommitContributions
-								dayContributions={contributionByRepository.commitContributionsByRepository}
+								repositories={contributionByRepository.commitContributionsByRepository}
 								{user}
 								date={contributionByRepository.date}
 							/>
 						{/if}
 						{#if contributionByRepository.issueContributionsByRepository.length > 0}
 							<IssueContributions
-								dayContributions={contributionByRepository.issueContributionsByRepository}
+								repositories={contributionByRepository.issueContributionsByRepository}
 							/>
 						{/if}
 						{#if contributionByRepository.pullRequestContributionsByRepository.length > 0}
 							<PullReqContributions
-								dayContributions={contributionByRepository.pullRequestContributionsByRepository}
+								repositories={contributionByRepository.pullRequestContributionsByRepository}
 							/>
 						{/if}
 						{#if totalRestrictedContributions > 0}
