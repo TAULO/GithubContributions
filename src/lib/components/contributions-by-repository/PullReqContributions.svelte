@@ -1,15 +1,14 @@
 <script lang="ts">
-	import type { IContributionByRepository, IPullRequestNode } from '$lib/github';
+	import type { IContributionByRepository, IPullRequest } from '$lib/github';
 	import { contributionTitle } from '$lib/util/string';
-	import { nodesOf } from '$lib/util/contributions';
 
 	let {
 		dayContributions,
 	}: {
-		dayContributions: IContributionByRepository<IPullRequestNode>[];
+		dayContributions: IContributionByRepository<IPullRequest>[];
 	} = $props();
 
-	const nodes = $derived(nodesOf(dayContributions));
+	const nodes = $derived(dayContributions);
 	const nodesLen = $derived(nodes.length);
 </script>
 
@@ -29,7 +28,7 @@
 					<a class="repository-name" href={pullRequestContributions.repository.url} target="_blank">
 						{pullRequestContributions.repository.nameWithOwner}
 					</a>
-					{#each pullRequestContributions.contributions.nodes as pullRequest}
+					{#each pullRequestContributions.contributions as pullRequest}
 						<div>
 							<a href={pullRequest.url} target="_blank">
 								{pullRequest.title}

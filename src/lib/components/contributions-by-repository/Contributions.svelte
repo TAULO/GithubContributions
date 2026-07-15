@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { IDayContributions } from '$lib/github';
-	import { nodesOf, sumCommits } from '$lib/util/contributions';
+	import { sumCommits } from '$lib/util/contributions';
 	import IssueContributions from '$lib/components/contributions-by-repository/IssueContributions.svelte';
 	import PullReqContributions from '$lib/components/contributions-by-repository/PullReqContributions.svelte';
 	import { prettyDate } from '$lib/util/string';
@@ -11,9 +11,11 @@
 		user,
 	}: { selectedContributionsByRepository: IDayContributions[]; user: string } = $props();
 
-	let totalCommits = $derived(
+	const totalCommits = $derived(
 		sumCommits(
-			nodesOf(selectedContributionsByRepository.flatMap((d) => d.commitContributionsByRepository)),
+			selectedContributionsByRepository.flatMap((day) =>
+				day.commitContributionsByRepository.flatMap((repo) => repo.contributions),
+			),
 		),
 	);
 

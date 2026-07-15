@@ -1,15 +1,14 @@
 <script lang="ts">
-	import type { IContributionByRepository, IIssueNode } from '$lib/github';
+	import type { IContributionByRepository, IIssue } from '$lib/github';
 	import { contributionTitle } from '$lib/util/string';
-	import { nodesOf } from '$lib/util/contributions';
 
 	let {
 		dayContributions,
 	}: {
-		dayContributions: IContributionByRepository<IIssueNode>[];
+		dayContributions: IContributionByRepository<IIssue>[];
 	} = $props();
 
-	const nodes = $derived(nodesOf(dayContributions));
+	const nodes = $derived(dayContributions);
 	const nodesLen = $derived(nodes.length);
 </script>
 
@@ -28,7 +27,7 @@
 				<a href={issueContribution.repository.url} target="_blank">
 					{issueContribution.repository.nameWithOwner}
 				</a>
-				{#each issueContribution.contributions.nodes as issue}
+				{#each issueContribution.contributions as issue}
 					<div class="issue">
 						<div class={['issue-status', issue.closed ? 'issue-closed' : 'issue-open']}></div>
 						<a href={issue.url} target="_blank">

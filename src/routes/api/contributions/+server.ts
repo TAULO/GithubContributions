@@ -1,7 +1,13 @@
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from '../../../../.svelte-kit/types/src/routes/api/contributions-calendar/$types';
 import { GITHUB_ACCESS_TOKEN } from '$env/static/private';
-import { CONTRIBUTION_QUERY } from '$lib/github';
+import {
+	CONTRIBUTION_QUERY,
+	type ICommit,
+	type IContributionByRepository,
+	type IIssue,
+	type IPullRequest,
+} from '$lib/github';
 
 export const GET: RequestHandler = async ({ url, fetch }) => {
 	const user = url.searchParams.get('user');
@@ -48,18 +54,30 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 	} = payload.data.user.contributionsCollection;
 
 	// lift GitHub's { issue }/{ pullRequest } wrapper off each node so app types stay flat
-	const flattenNodes = <T>(repos: any[], pick: (node: any) => T) =>
+	// what GitHub sends: repo wrapper whose commits carry the { issue }/{ pullRequest } envelope
+	interface IRawRepo<TRawNode> {
+		repository: { nameWithOwner: string; url: string };
+		contributions: { nodes: TRawNode[] };
+	}
+
+	const flatten = <TRaw, TItem>(
+		repos: IRawRepo<TRaw>[],
+		pick: (node: TRaw) => TItem,
+	): IContributionByRepository<TItem>[] =>
 		repos.map((repo) => ({
-			...repo,
-			contributions: { ...repo.contributions, nodes: repo.contributions.nodes.map(pick) },
+			repository: repo.repository,
+			contributions: repo.contributions.nodes.map(pick), // commits → flat array, envelope stripped
 		}));
 
 	const data = {
-		commitContributionsByRepository, // already flat from GitHub
-		issueContributionsByRepository: flattenNodes(issueContributionsByRepository, (n) => n.issue),
-		pullRequestContributionsByRepository: flattenNodes(
+		commitContributionsByRepository: flatten(commitContributionsByRepository, (n) => n),
+		issueContributionsByRepository: flatten(
+			issueContributionsByRepository,
+			(n: { issue: IIssue }) => n.issue,
+		),
+		pullRequestContributionsByRepository: flatten(
 			pullRequestContributionsByRepository,
-			(n) => n.pullRequest,
+			(n: { pullRequest: IPullRequest }) => n.pullRequest,
 		),
 	};
 

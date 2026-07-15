@@ -1,35 +1,35 @@
 <script lang="ts">
-	import type { IContributionByRepository, ICommitNode } from '$lib/github';
+	import type { IContributionByRepository, ICommit } from '$lib/github';
 	import { contributionTitle, pluralize } from '$lib/util/string';
-	import { nodesOf, sumCommits } from '$lib/util/contributions';
+	import { sumCommits } from '$lib/util/contributions';
 
 	let {
 		dayContributions,
 		user,
 		date,
 	}: {
-		dayContributions: IContributionByRepository<ICommitNode>[];
+		dayContributions: IContributionByRepository<ICommit>[];
 		user: string;
 		date: string;
 	} = $props();
 
-	const nodes = $derived(sumCommits(nodesOf(dayContributions)));
+	const commits = $derived(sumCommits(dayContributions.flatMap((d) => d.contributions)));
 </script>
 
-{#if nodes > 0}
+{#if commits > 0}
 	<div class="repositories-container">
 		<div class="repositories">
 			<h3>
 				{contributionTitle({
 					action: 'Contributed',
-					count: nodes,
+					count: commits,
 					noun: 'commit',
 					repositoryCount: dayContributions.length,
 				})}
 			</h3>
 
 			{#each dayContributions as commitContribution}
-				{@const commits = sumCommits(commitContribution.contributions.nodes)}
+				{@const commits = sumCommits(commitContribution.contributions)}
 				<div class="repository-container">
 					<a class="repository-name" href={commitContribution.repository.url} target="_blank">
 						{commitContribution.repository.nameWithOwner}

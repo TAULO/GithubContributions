@@ -32,12 +32,22 @@ export const CONTRIBUTION_QUERY = `
           	nodes { pullRequest { title url createdAt } }
         	}
       	}
-      	issueContributionsByRepository(maxRepositories: 10) {
-        	repository { nameWithOwner url }
-        	contributions(first: 10) {
-          	nodes { issue { title url createdAt closed } }
-        }
-      }
+			issueContributionsByRepository(maxRepositories: 10) {
+				repository { nameWithOwner url }
+				contributions(first: 10) {
+					nodes {
+						issue {
+							title
+							url
+							createdAt
+							closed
+							labels(first: 10) {
+								nodes { name color }
+							}
+						}
+					}
+				}
+			}
     }
   }
 }
@@ -68,39 +78,38 @@ export interface IContributionCollection {
 	contributionYears: number[];
 }
 
-export interface ICommitNode {
+export interface ICommit {
 	commitCount: number;
 	occurredAt: string;
 }
 
-export interface IPullRequestNode {
+export interface IPullRequest {
 	title: string;
 	url: string;
 	createdAt: string;
 }
 
-export interface IIssueNode {
+export interface IIssue {
 	title: string;
 	url: string;
 	createdAt: string;
 	closed: boolean;
 }
 
-export interface IContributionByRepository<TNode> {
+export interface IContributionByRepository<TContribution> {
 	repository: {
 		nameWithOwner: string;
 		url: string;
 	};
-	contributions: {
-		nodes: TNode[];
-	};
+
+	contributions: TContribution[];
 }
 
 export interface IDayContributions {
 	date: string;
-	commitContributionsByRepository: IContributionByRepository<ICommitNode>[];
-	pullRequestContributionsByRepository: IContributionByRepository<IPullRequestNode>[];
-	issueContributionsByRepository: IContributionByRepository<IIssueNode>[];
+	commitContributionsByRepository: IContributionByRepository<ICommit>[];
+	pullRequestContributionsByRepository: IContributionByRepository<IPullRequest>[];
+	issueContributionsByRepository: IContributionByRepository<IIssue>[];
 }
 
 export async function getContributionsCalendar(
