@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { IDayContributions } from '$lib/github';
 	import { nodesOf, sumCommits } from '$lib/util/contributions';
-	import CommitNode from '$lib/components/contributions-by-repository/CommitContributions.svelte';
 	import IssueContributions from '$lib/components/contributions-by-repository/IssueContributions.svelte';
 	import PullReqContributions from '$lib/components/contributions-by-repository/PullReqContributions.svelte';
 	import { prettyDate } from '$lib/util/string';
+	import CommitContributions from '$lib/components/contributions-by-repository/CommitContributions.svelte';
 
 	let {
 		selectedContributionsByRepository,
@@ -43,17 +43,34 @@
 				{#if !dayHasActivity(contributionByRepository)}
 					{@render noContribution()}
 				{:else}
-					<CommitNode
-						dayContributions={contributionByRepository.commitContributionsByRepository}
-						{user}
-						date={contributionByRepository.date}
-					/>
-					<IssueContributions
-						dayContributions={contributionByRepository.issueContributionsByRepository}
-					></IssueContributions>
-					<PullReqContributions
-						dayContributions={contributionByRepository.pullRequestContributionsByRepository}
-					></PullReqContributions>
+					<div class="timeline">
+						{#if contributionByRepository.commitContributionsByRepository.length > 0}
+							<div class="contribution-item">
+								<div class="badge"></div>
+								<CommitContributions
+									dayContributions={contributionByRepository.commitContributionsByRepository}
+									{user}
+									date={contributionByRepository.date}
+								/>
+							</div>
+						{/if}
+						{#if contributionByRepository.issueContributionsByRepository.length > 0}
+							<div class="contribution-item">
+								<div class="badge"></div>
+								<IssueContributions
+									dayContributions={contributionByRepository.issueContributionsByRepository}
+								/>
+							</div>
+						{/if}
+						{#if contributionByRepository.pullRequestContributionsByRepository.length > 0}
+							<div class="contribution-item">
+								<div class="badge"></div>
+								<PullReqContributions
+									dayContributions={contributionByRepository.pullRequestContributionsByRepository}
+								/>
+							</div>
+						{/if}
+					</div>
 				{/if}
 			</div>
 		{/each}
@@ -88,6 +105,43 @@
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
+	}
+
+	.timeline {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+
+		padding: 1rem 0;
+		margin-left: 0.7rem;
+	}
+
+	.timeline:before {
+		width: 2px;
+		content: '';
+		background-color: #3d444db3;
+		display: block;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+	}
+
+	.contribution-item {
+		display: flex;
+
+		.badge {
+			width: 1.5rem;
+			height: 1.5rem;
+			border-radius: 50%;
+			background-color: #212830;
+			position: relative;
+			margin: -2px 8px 0 -13px;
+			z-index: 1;
+			/* Note: This is a hack to make the badge appear above the timeline, therefor the color must match the background color of the timeline */
+			border: 0.125rem solid white;
+		}
 	}
 
 	.no-activity {

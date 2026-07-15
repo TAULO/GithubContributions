@@ -14,79 +14,72 @@
 </script>
 
 {#if nodesLen > 0}
-	<div class="repositories-container">
-		<div class="timeline"></div>
-		<div class="repositories">
-			<h3>
-				{contributionTitle({
-					action: 'Opened',
-					count: nodesLen,
-					noun: 'issue',
-					repositoryCount: dayContributions.length,
-				})}
-			</h3>
-			{#each dayContributions as issueContribution}
-				<div class="repository-container">
-					<a class="repository-name" href={issueContribution.repository.url} target="_blank">
-						{issueContribution.repository.nameWithOwner}
-					</a>
-					{#each issueContribution.contributions.nodes as issue}
-						<div>
-							<a href={issue.url} target="_blank">
-								{issue.title}
-							</a>
-							<p>{issue.closed}</p>
-						</div>
-					{/each}
-				</div>
-			{/each}
-		</div>
+	<div class="issue-container">
+		<h3>
+			{contributionTitle({
+				action: 'Opened',
+				count: nodesLen,
+				noun: 'issue',
+				repositoryCount: dayContributions.length,
+			})}
+		</h3>
+		{#each dayContributions as issueContribution}
+			<div class="issues">
+				<a href={issueContribution.repository.url} target="_blank">
+					{issueContribution.repository.nameWithOwner}
+				</a>
+				{#each issueContribution.contributions.nodes as issue}
+					<div class="issue">
+						<div class={['issue-status', issue.closed ? 'issue-closed' : 'issue-open']}></div>
+						<a href={issue.url} target="_blank">
+							{issue.title}
+						</a>
+					</div>
+				{/each}
+			</div>
+		{/each}
 	</div>
 {/if}
 
 <style>
+	h3 {
+		margin: 0;
+		padding: 0;
+	}
+
 	p {
 		margin: 0;
 		padding: 0;
 	}
 
-	.repository-container {
+	.issue-container {
 		display: flex;
-		gap: 8px;
-		justify-content: space-between;
+		flex-direction: column;
 
-		a {
-			text-decoration: none;
-		}
-
-		a:hover {
-			text-decoration: underline;
-		}
-
-		.repository-name {
-			font-size: 16px;
-		}
-	}
-
-	.repositories-container {
-		display: flex;
-		gap: 8px;
-
-		.repositories {
+		.issues {
 			display: flex;
 			flex-direction: column;
-			gap: 4px;
-			flex: 1;
+			gap: 8px;
 
-			h3 {
-				margin: 0;
+			.issue {
+				display: flex;
+				align-items: center;
+				gap: 4px;
+
+				.issue-status {
+					width: 8px;
+					height: 8px;
+					border-radius: 50%;
+				}
+
+				.issue-closed {
+					background-color: red;
+				}
+
+				.issue-open {
+					background-color: green;
+				}
 			}
-		}
-
-		.timeline {
-			width: 2px;
-			background-color: gray;
-			margin: 0 8px;
 		}
 	}
 </style>

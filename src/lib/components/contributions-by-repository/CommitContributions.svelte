@@ -18,7 +18,6 @@
 
 {#if nodes > 0}
 	<div class="repositories-container">
-		<div class="timeline"></div>
 		<div class="repositories">
 			<h3>
 				{contributionTitle({
@@ -79,6 +78,7 @@
 	.repositories-container {
 		display: flex;
 		gap: 8px;
+		flex: 1;
 
 		.repositories {
 			display: flex;
@@ -89,17 +89,6 @@
 			h3 {
 				margin: 0;
 			}
-
-			.no-activity {
-				align-self: center;
-				justify-self: center;
-			}
-		}
-
-		.timeline {
-			width: 2px;
-			background-color: gray;
-			margin: 0 8px;
 		}
 	}
 </style>

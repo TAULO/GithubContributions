@@ -15,7 +15,6 @@
 
 {#if nodes.length > 0}
 	<div class="repositories-container">
-		<div class="timeline"></div>
 		<div class="repositories">
 			<h3>
 				{contributionTitle({
@@ -80,12 +79,6 @@
 			h3 {
 				margin: 0;
 			}
-		}
-
-		.timeline {
-			width: 2px;
-			background-color: gray;
-			margin: 0 8px;
 		}
 	}
 </style>
