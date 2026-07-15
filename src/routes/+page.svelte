@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import {
-		getContributions,
+		getContributionsCalendar,
 		getContributionsByRepository,
 		type IDayContributions,
 	} from '$lib/github';
@@ -23,13 +23,15 @@
 
 	async function handleSelectionChange(dates: string[]) {
 		selectedContributionsByRepository = await getContributionsByRepository(user.trim(), dates);
+		// April 3, 2026
+		console.log(selectedContributionsByRepository);
 	}
 
 	async function handleFetch() {
 		loading = true;
 		errorMsg = null;
 		try {
-			const result = await getContributions(user.trim(), currentYear);
+			const result = await getContributionsCalendar(user.trim(), currentYear);
 			contributionCollection = result.contribution;
 			user = result.user;
 		} catch (e) {

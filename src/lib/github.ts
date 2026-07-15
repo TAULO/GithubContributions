@@ -27,15 +27,15 @@ export const CONTRIBUTION_QUERY = `
         	}
       	}
       	pullRequestContributionsByRepository(maxRepositories: 10) {
-        	repository { nameWithOwner }
+        	repository { nameWithOwner url }
         	contributions(first: 10) {
           	nodes { pullRequest { title url createdAt } }
         	}
       	}
       	issueContributionsByRepository(maxRepositories: 10) {
-        	repository { nameWithOwner }
+        	repository { nameWithOwner url }
         	contributions(first: 10) {
-          	nodes { issue { title url createdAt } }
+          	nodes { issue { title url createdAt closed } }
         }
       }
     }
@@ -68,27 +68,41 @@ export interface IContributionCollection {
 	contributionYears: number[];
 }
 
-export interface IContributionNode {
+export interface ICommitNode {
 	commitCount: number;
 	occurredAt: string;
 }
 
-export interface IContributionByRepository {
+export interface IPullRequestNode {
+	title: string;
+	url: string;
+	createdAt: string;
+}
+
+export interface IIssueNode {
+	title: string;
+	url: string;
+	createdAt: string;
+}
+
+export interface IContributionByRepository<TNode> {
 	repository: {
 		nameWithOwner: string;
 		url: string;
 	};
 	contributions: {
-		nodes: IContributionNode[];
+		nodes: TNode[];
 	};
 }
 
 export interface IDayContributions {
 	date: string;
-	commitContributionsByRepository: IContributionByRepository[];
+	commitContributionsByRepository: IContributionByRepository<ICommitNode>[];
+	pullRequestContributionsByRepository: IContributionByRepository<IPullRequestNode>[];
+	issueContributionsByRepository: IContributionByRepository<IIssueNode>[];
 }
 
-export async function getContributions(
+export async function getContributionsCalendar(
 	user: string,
 	year?: number | string | null,
 	fetchFn: typeof fetch = fetch,
@@ -116,6 +130,7 @@ export async function getContributionsByRepository(
 	for (const date of dates) {
 		const res = await fetchFn(`/api/contributions?user=${encodeURIComponent(user)}&from=${date}`);
 		if (!res.ok) continue; // or collect the error
+
 		data.push({
 			...(await res.json()),
 			date,

@@ -41,10 +41,16 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 
 	if (payload.errors) throw error(502, payload.errors[0]?.message ?? 'GraphQL error');
 
-	const { commitContributionsByRepository } = payload.data.user.contributionsCollection;
+	const {
+		commitContributionsByRepository,
+		pullRequestContributionsByRepository,
+		issueContributionsByRepository,
+	} = payload.data.user.contributionsCollection;
 
 	const data = {
 		commitContributionsByRepository,
+		pullRequestContributionsByRepository,
+		issueContributionsByRepository,
 	};
 
 	return json(data, {

@@ -1,20 +1,15 @@
 <script lang="ts">
-	import type {
-		IContributionByRepository,
-		IContributionNode,
-		IDayContributions,
-	} from '$lib/github';
+	import type { IDayContributions } from '$lib/github';
+	import { nodesOf, sumCommits } from '$lib/util/contributions';
+	import CommitNode from '$lib/components/contributions-by-repository/CommitContributions.svelte';
+	import IssueContributions from '$lib/components/contributions-by-repository/IssueContributions.svelte';
+	import PullReqContributions from '$lib/components/contributions-by-repository/PullReqContributions.svelte';
+	import { prettyDate } from '$lib/util/string';
 
 	let {
 		selectedContributionsByRepository,
 		user,
 	}: { selectedContributionsByRepository: IDayContributions[]; user: string } = $props();
-
-	const sumCommits = (nodes: IContributionNode[]) =>
-		nodes.reduce((acc, n) => acc + n.commitCount, 0);
-
-	const nodesOf = (repos: IContributionByRepository[]) =>
-		repos.flatMap((r) => r.contributions.nodes);
 
 	let totalCommits = $derived(
 		sumCommits(
@@ -22,61 +17,47 @@
 		),
 	);
 
-	const prettyDate = (date: string) => {
-		return new Date(date).toLocaleDateString('en-US', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-		});
-	};
+	const dayHasActivity = (day: IDayContributions) =>
+		day.commitContributionsByRepository.length > 0 ||
+		day.pullRequestContributionsByRepository.length > 0 ||
+		day.issueContributionsByRepository.length > 0;
 
-	const pluralize = (count: number, noun: string, plural = `${noun}s`) =>
-		`${count} ${count === 1 ? noun : plural}`;
+	const hasContributions = $derived(selectedContributionsByRepository.some(dayHasActivity));
 </script>
 
+{#snippet noContribution()}
+	<p class="no-activity">{user} had no contributions during this period.</p>
+{/snippet}
+
 <div class="container">
-	<p>{totalCommits}</p>
-	{#each selectedContributionsByRepository as contributionByRepository}
-		{@const total = sumCommits(nodesOf(contributionByRepository.commitContributionsByRepository))}
-		<div class="contribution-container">
-			<div class="date-container">
-				<p>{prettyDate(contributionByRepository.date)}</p>
-				<div class="line"></div>
-			</div>
-			<div class="repositories-container">
-				<div class="timeline"></div>
-				<div class="repositories">
-					{#if total > 0}
-						<h3>
-							Created {pluralize(total, 'commit')}
-							in {pluralize(
-								contributionByRepository.commitContributionsByRepository.length,
-								'repository',
-								'repositories',
-							)}
-						</h3>
-					{:else}
-						<h4 class="no-activity">{user} has no activity yet for this period</h4>
-					{/if}
-					{#each contributionByRepository.commitContributionsByRepository as commitContribution}
-						<div class="repository-container">
-							<a class="repository-name" href={commitContribution.repository.url} target="_blank">
-								{commitContribution.repository.nameWithOwner}
-							</a>
-							<p>
-								<a
-									class="repository-commits"
-									href={`${commitContribution.repository.url}/commits?author=${user}&since=${contributionByRepository.date}&until=${contributionByRepository.date}`}
-									target="_blank"
-									>{pluralize(sumCommits(commitContribution.contributions.nodes), 'commit')}</a
-								>
-							</p>
-						</div>
-					{/each}
+	{#if !hasContributions}
+		{@render noContribution()}
+	{:else}
+		<p>{totalCommits}</p>
+		{#each selectedContributionsByRepository as contributionByRepository}
+			<div class="contribution-container">
+				<div class="date-container">
+					<p>{prettyDate(contributionByRepository.date)}</p>
+					<div class="line"></div>
 				</div>
+				{#if !dayHasActivity(contributionByRepository)}
+					{@render noContribution()}
+				{:else}
+					<CommitNode
+						dayContributions={contributionByRepository.commitContributionsByRepository}
+						{user}
+						date={contributionByRepository.date}
+					/>
+					<IssueContributions
+						dayContributions={contributionByRepository.issueContributionsByRepository}
+					></IssueContributions>
+					<PullReqContributions
+						dayContributions={contributionByRepository.pullRequestContributionsByRepository}
+					></PullReqContributions>
+				{/if}
 			</div>
-		</div>
-	{/each}
+		{/each}
+	{/if}
 </div>
 
 <style>
@@ -107,54 +88,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
-
-		h3 {
-			margin: 0;
-		}
 	}
 
-	.repository-container {
-		display: flex;
-		gap: 8px;
-		justify-content: space-between;
-
-		a {
-			text-decoration: none;
-		}
-
-		a:hover {
-			text-decoration: underline;
-		}
-
-		.repository-name {
-			font-size: 16px;
-		}
-
-		.repository-commits {
-			font-size: 14px;
-		}
-	}
-
-	.repositories-container {
-		display: flex;
-		gap: 8px;
-
-		.repositories {
-			display: flex;
-			flex-direction: column;
-			gap: 4px;
-			flex: 1;
-
-			.no-activity {
-				align-self: center;
-				justify-self: center;
-			}
-		}
-
-		.timeline {
-			width: 2px;
-			background-color: gray;
-			margin: 0 8px;
-		}
+	.no-activity {
+		align-self: center;
+		justify-self: center;
 	}
 </style>
