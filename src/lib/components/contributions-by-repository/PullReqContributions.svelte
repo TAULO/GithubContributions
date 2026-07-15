@@ -19,7 +19,7 @@
 		<div class="repositories">
 			<h3>
 				{contributionTitle({
-					action: 'Merged',
+					action: 'Opened',
 					count: nodesLen,
 					noun: 'pull request',
 					repositoryCount: dayContributions.length,

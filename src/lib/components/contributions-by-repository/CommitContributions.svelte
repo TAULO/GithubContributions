@@ -30,6 +30,7 @@
 			</h3>
 
 			{#each dayContributions as commitContribution}
+				{@const commits = sumCommits(commitContribution.contributions.nodes)}
 				<div class="repository-container">
 					<a class="repository-name" href={commitContribution.repository.url} target="_blank">
 						{commitContribution.repository.nameWithOwner}
@@ -38,8 +39,7 @@
 						<a
 							class="repository-commits"
 							href={`${commitContribution.repository.url}/commits?author=${user}&since=${date}&until=${date}`}
-							target="_blank"
-							>{pluralize(sumCommits(commitContribution.contributions.nodes), 'commit')}</a
+							target="_blank">{commits} {pluralize(commits, 'commit')}</a
 						>
 					</p>
 				</div>

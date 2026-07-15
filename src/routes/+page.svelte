@@ -24,7 +24,6 @@
 	async function handleSelectionChange(dates: string[]) {
 		selectedContributionsByRepository = await getContributionsByRepository(user.trim(), dates);
 		// April 3, 2026
-		console.log(selectedContributionsByRepository);
 	}
 
 	async function handleFetch() {
