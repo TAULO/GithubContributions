@@ -49,11 +49,13 @@
 							<a href={issue.url} target="_blank">
 								{issue.title}
 							</a>
-							{#each issue.labels as label}
-								<div class="label" style="background-color: {`#${label.color}`}">
-									{label.name}
-								</div>
-							{/each}
+							<div class="labels-container">
+								{#each issue.labels as label}
+									<div class="label" style="background-color: {`#${label.color}`}">
+										{label.name}
+									</div>
+								{/each}
+							</div>
 						</div>
 					</div>
 				{/each}
@@ -99,11 +101,17 @@
 					flex: 1;
 				}
 
-				.label {
-					color: white;
-					padding: 2px 4px;
-					border-radius: 4px;
+				.labels-container {
+					display: flex;
+					gap: 4px;
+
+					.label {
+						color: white;
+						padding: 2px 4px;
+						border-radius: 4px;
+					}
 				}
+
 
 				.issue-status {
 					width: 8px;

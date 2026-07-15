@@ -42,13 +42,15 @@
 				<a class="repository-name" href={repo.repository.url} target="_blank">
 					{repo.repository.nameWithOwner}
 				</a>
-				{#each repo.contributions as pullRequest}
-					<div>
-						<a href={pullRequest.url} target="_blank">
-							{pullRequest.title}
-						</a>
-					</div>
-				{/each}
+				<div class="pull-requests-container">
+					{#each repo.contributions as pullRequest}
+						<div class="pull-request">
+							<a href={pullRequest.url} target="_blank">
+								{pullRequest.title}
+							</a>
+						</div>
+					{/each}
+				</div>
 			</div>
 		{/each}
 	</div>
@@ -58,6 +60,11 @@
 	p {
 		margin: 0;
 		padding: 0;
+	}
+
+	.pull-requests-container {
+		display: flex;
+		flex-direction: column;
 	}
 
 	.repository-container {

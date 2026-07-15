@@ -19,7 +19,13 @@ export const contributionTitle = ({
 	)}`;
 
 export const prettyDate = (date: string) => {
-	return new Date(date).toLocaleDateString('en-US', {
+	const parsed = new Date(date);
+
+	if (isNaN(parsed.getTime())) {
+		return date;
+	}
+
+	return parsed.toLocaleDateString('en-US', {
 		year: 'numeric',
 		month: 'long',
 		day: 'numeric',

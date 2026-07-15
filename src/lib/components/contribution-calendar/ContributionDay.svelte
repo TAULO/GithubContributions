@@ -6,13 +6,26 @@
 		selected?: boolean;
 		dimmed?: boolean;
 		onToggleSelected?: () => void;
+		highlighted?: boolean;
 	}
 
-	let { contributionDay, selected = false, dimmed = false, onToggleSelected }: IProps = $props();
+	let {
+		contributionDay,
+		selected = false,
+		dimmed = false,
+		onToggleSelected,
+		highlighted = false,
+	}: IProps = $props();
 </script>
 
 <button
-	class={['cell', `level-${contributionDay.level}`, selected && 'selected', dimmed && 'dimmed']}
+	class={[
+		'cell',
+		`level-${contributionDay.level}`,
+		selected && 'selected',
+		dimmed && 'dimmed',
+		highlighted && 'highlighted',
+	]}
 	title={contributionDay.date}
 	onclick={onToggleSelected}
 ></button>
@@ -34,6 +47,10 @@
 
 	.cell.dimmed {
 		opacity: 0.3;
+	}
+
+	.cell.highlighted {
+		border: 1px solid greenyellow;
 	}
 
 	.cell:hover {

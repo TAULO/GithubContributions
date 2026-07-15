@@ -155,3 +155,22 @@ export async function getContributionsByRepository(
 
 	return data;
 }
+
+export async function getContributionsByRepositoryWithDateFromTo(
+	user: string,
+	from: string,
+	to: string,
+	fetchFn: typeof fetch = fetch,
+): Promise<IDayContributions[]> {
+	const data: IDayContributions[] = [];
+	const res = await fetchFn(
+		`/api/contributions?user=${encodeURIComponent(user)}&from=${from}&to=${to}`,
+	);
+
+	data.push({
+		...(await res.json()),
+		date: `${from} - ${to}`,
+	});
+
+	return data;
+}

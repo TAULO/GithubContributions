@@ -4,6 +4,7 @@
 		getContributionsCalendar,
 		getContributionsByRepository,
 		type IDayContributions,
+		getContributionsByRepositoryWithDateFromTo,
 	} from '$lib/github';
 	import ContributionsCalendar from '$lib/components/contribution-calendar/ContributionsCalendar.svelte';
 	import Contributions from '$lib/components/contributions-by-repository/Contributions.svelte';
@@ -22,8 +23,21 @@
 	let hasSelectedContributionsByRepository = $derived(selectedContributionsByRepository.length > 0);
 
 	async function handleSelectionChange(dates: string[]) {
-		selectedContributionsByRepository = await getContributionsByRepository(user.trim(), dates);
-		// April 3, 2026
+		// April 3, 2026 (nice test)
+		const sortedDates = dates.sort((a, b) => b.localeCompare(a));
+
+		if (sortedDates.length > 10) {
+			selectedContributionsByRepository = await getContributionsByRepositoryWithDateFromTo(
+				user.trim(),
+				sortedDates[dates.length - 1],
+				sortedDates[0],
+			);
+		} else {
+			selectedContributionsByRepository = await getContributionsByRepository(
+				user.trim(),
+				sortedDates,
+			);
+		}
 	}
 
 	async function handleFetch() {

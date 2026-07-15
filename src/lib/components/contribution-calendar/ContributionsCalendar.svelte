@@ -1,7 +1,15 @@
 <script lang="ts">
 	import { type IContributionCollection } from '$lib/github';
-	import ContributionDay from './ContributionDay.svelte';
 	import { SvelteSet } from 'svelte/reactivity';
+	import ContributionDay from '$lib/components/contribution-calendar/ContributionDay.svelte';
+
+	let {
+		contributionCollection,
+		onSelectionChange,
+	}: {
+		contributionCollection: IContributionCollection;
+		onSelectionChange?: (dates: string[]) => void;
+	} = $props();
 
 	const selectedContributionsDate = new SvelteSet<string>();
 
@@ -22,21 +30,8 @@
 
 	const levelColors = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
 
-	let {
-		contributionCollection,
-		onSelectionChange,
-	}: {
-		contributionCollection: IContributionCollection;
-		onSelectionChange?: (dates: string[]) => void;
-	} = $props();
 	let contributions = $derived(contributionCollection.contributions);
-	let hasSelection = $derived(selectedContributionsDate.size > 0);
-
-	let sortedSelectedContributionsDate = $derived(
-		Array.from(selectedContributionsDate).sort(
-			(dateA, dateB) => new Date(dateB).getTime() - new Date(dateA).getTime(),
-		),
-	);
+	let hoveredMonth = $state<number | null>(null);
 
 	function getWeekDateFromIndex(index: number): string | null {
 		if (index === 0) return null; // skip the first month
@@ -45,7 +40,6 @@
 		if (!monthStr) return null;
 
 		const currentMonthIndex = new Date(monthStr).getMonth();
-		if (index === 0) return months[currentMonthIndex] ?? null;
 
 		const prevMonthStr = contributions[index - 1]?.[0]?.date;
 		if (!prevMonthStr) return months[currentMonthIndex] ?? null;
@@ -61,20 +55,55 @@
 			selectedContributionsDate.delete(contributionDate);
 		else selectedContributionsDate.add(contributionDate);
 
-		onSelectionChange?.(sortedSelectedContributionsDate);
+		// onSelectionChange?.(Array.from(selectedContributionsDate));
+	}
+
+	function labelEnter(monthIndex: number | null) {
+		hoveredMonth = monthIndex;
+	}
+	function labelLeave() {
+		hoveredMonth = null;
+	}
+
+	function labelClick(monthIndex: number) {
+		const datesInMonth = contributions
+			.flat() // weeks → all days
+			.filter((day) => new Date(day.date).getUTCMonth() === monthIndex)
+			.map((day) => day.date);
+
+		const first = datesInMonth.shift();
+		const last = datesInMonth.pop();
+
+		for (const date of datesInMonth) toggleSelected(date);
+
+		// onSelectionChange?.(Array.from(selectedContributionsDate));
 	}
 </script>
 
 <div class="container">
 	{#each contributions as contribution, index}
+		{@const label = getWeekDateFromIndex(index)}
 		<div class="block">
-			<p class="date">{getWeekDateFromIndex(index)}</p>
+			{#if label}
+				<button
+					class="date"
+					onmouseenter={() => labelEnter(months.indexOf(label))}
+					onmouseleave={labelLeave}
+					onclick={() => labelClick(months.indexOf(label))}
+				>
+					{label}
+				</button>
+			{/if}
 			{#each contribution as contributionDay}
+				{@const isSelected = selectedContributionsDate.has(contributionDay.date)}
+				{@const highlight =
+					hoveredMonth !== null && hoveredMonth === new Date(contributionDay.date).getUTCMonth()}
 				<ContributionDay
 					{contributionDay}
-					selected={selectedContributionsDate.has(contributionDay.date)}
+					selected={isSelected}
 					onToggleSelected={() => toggleSelected(contributionDay.date)}
-					dimmed={hasSelection && !selectedContributionsDate.has(contributionDay.date)}
+					dimmed={selectedContributionsDate.size > 0 && !isSelected}
+					highlighted={highlight}
 				/>
 			{/each}
 		</div>
