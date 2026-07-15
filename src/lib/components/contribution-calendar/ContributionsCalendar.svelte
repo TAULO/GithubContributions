@@ -20,6 +20,8 @@
 		'Dec',
 	];
 
+	const levelColors = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
+
 	let {
 		contributionCollection,
 		onSelectionChange,
@@ -78,6 +80,11 @@
 		</div>
 	{/each}
 </div>
+<div class="display-cell-container">
+	{#each levelColors as color}
+		<div class="display-cell" style="background-color: {color}"></div>
+	{/each}
+</div>
 
 <style>
 	.container {
@@ -106,5 +113,21 @@
 
 		padding: 0;
 		margin: 0;
+	}
+
+	.display-cell-container {
+		display: flex;
+		gap: 2px;
+		margin-top: 16px;
+		justify-content: end;
+
+		.display-cell {
+			width: 12px;
+			height: 12px;
+			padding: 0;
+			border: none;
+			border-radius: 2px;
+			background: transparent;
+		}
 	}
 </style>
