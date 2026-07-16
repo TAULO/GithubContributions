@@ -50,13 +50,11 @@
 		return months[currentMonthIndex] ?? null;
 	}
 
-	function toggleSelected(contribution: ContributionDay) {
-		if (contribution.count === 0) return;
-
-		if (selectedContributionsDate.has(contribution.date)) {
-			selectedContributionsDate.delete(contribution.date);
+	function toggleSelected(date: string) {
+		if (selectedContributionsDate.has(date)) {
+			selectedContributionsDate.delete(date);
 		} else {
-			selectedContributionsDate.add(contribution.date);
+			selectedContributionsDate.add(date);
 		}
 	}
 
@@ -70,9 +68,24 @@
 	function labelClick(monthIndex: number) {
 		const datesInMonth = contributions
 			.flat() // weeks → all days
-			.filter((day) => new Date(day.date).getUTCMonth() === monthIndex);
+			.filter(
+				(day) =>
+					new Date(day.date).getUTCMonth() === monthIndex &&
+					day.count > 0 &&
+					!isTodaysUtcMonthLastYear(day.date),
+			)
+			.map((day) => day.date);
 
-		for (const contributions of datesInMonth) toggleSelected(contributions);
+		for (const date of datesInMonth) toggleSelected(date);
+	}
+
+	function isTodaysUtcMonthLastYear(date: string) {
+		const today = new Date();
+
+		return (
+			new Date(date).getUTCFullYear() === today.getUTCFullYear() - 1 &&
+			new Date(date).getUTCMonth() === today.getUTCMonth()
+		);
 	}
 
 	$effect(() => {
@@ -101,11 +114,12 @@
 				{@const highlight =
 					hoveredMonth !== null &&
 					hoveredMonth === new Date(contributionDay.date).getUTCMonth() &&
-					hasContributions}
+					hasContributions &&
+					!isTodaysUtcMonthLastYear(contributionDay.date)}
 				<ContributionDayCell
 					{contributionDay}
 					selected={isSelected}
-					onToggleSelected={() => toggleSelected(contributionDay)}
+					onToggleSelected={() => toggleSelected(contributionDay.date)}
 					dimmed={selectedContributionsDate.size > 0 && !isSelected}
 					highlighted={highlight}
 					interactive={hasContributions}
