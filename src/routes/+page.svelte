@@ -104,23 +104,23 @@
 	}
 
 	.contributions-calendar {
-		border: 1px solid #ccc;
+		border: 1px solid var(--secondary-color);
 		padding: 1rem;
 		border-radius: 8px 8px 0 0;
+
+		background-color: var(--primary-color);
 	}
 
 	.contributions-calendar.standalone {
 		border-radius: 8px;
 	}
 
-	.loading {
-		opacity: 0.5;
-	}
-
 	.contributions-container {
-		border: 1px solid #ccc;
+		border: 1px solid var(--secondary-color);
 		border-top: none;
 		padding: 1rem;
 		border-radius: 0 0 8px 8px;
+
+		background-color: var(--primary-color);
 	}
 </style>

@@ -1,19 +1,36 @@
-:global {
-	/* Contribution Colors */
-	--gh-primary: #6f42c1;
-	--gh-secondary: #24292e;
-
-	/* Contribution Day Levels Colors */
-	--gh-level-0: #ebedf0;
-	--gh-level-1: #ebedf0;
-	--gh-level-2: #ebedf0;
-	--gh-level-3: #ebedf0;
-	--gh-level-4: #ebedf0;
-
-	--deep-space-blue: #172a3a;
-	--dark-teal: #004346;
-	--mint-leaf: #09bc8a;
+:root {
+	/* Primary Colors */
+	--primary-color: #172a3a;
+	--secondary-color: #004346;
+	--tertiary-color: #09bc8a;
 
 	--pacifitc-cyan: #508991;
-	--sky-reflection: #74b3ce;
+	--hover-color: #74b3ce;
+
+	/* Contribution Day Levels Colors */
+	--gh-level-0: #1e3040;
+	--gh-level-1: #0d5a45;
+	--gh-level-2: #0a8865;
+	--gh-level-3: #09bc8a;
+	--gh-level-4: #52e0b6;
+
+    h3 {
+        color: white;
+    }
+
+    h1 {
+        color: white;
+    }
+
+    button {
+        color: white;
+    }
+
+    p {
+        color: white;
+    }
+
+    body {
+        background-color: var(--primary-color);
+    }
 }

@@ -47,7 +47,7 @@
 	}
 
 	.cell.selected {
-		border: 1px solid greenyellow;
+		border: 1px solid var(--hover-color);
 	}
 
 	.cell.dimmed {
@@ -55,7 +55,7 @@
 	}
 
 	.cell.highlighted {
-		border: 1px solid greenyellow;
+		border: 1px solid var(--hover-color);
 		cursor: pointer;
 		opacity: 1;
 	}
@@ -64,7 +64,7 @@
 		cursor: pointer;
 	}
 	.cell.interactive:hover {
-		border: 1px solid greenyellow;
+		border: 1px solid var(--hover-color);
 	}
 
 	.cell:disabled {

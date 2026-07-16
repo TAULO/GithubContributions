@@ -95,8 +95,8 @@
 
 		.line {
 			flex: 1;
-			background-color: gray;
-			height: 1px;
+			background-color: var(--secondary-color);
+			height: 2px;
 		}
 	}
 
@@ -119,7 +119,7 @@
 	.timeline:before {
 		width: 2px;
 		content: '';
-		background-color: #3d444db3;
+		background-color: var(--secondary-color);
 		display: block;
 		position: absolute;
 		top: 0;

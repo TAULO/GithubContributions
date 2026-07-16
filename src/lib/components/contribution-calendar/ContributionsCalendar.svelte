@@ -28,7 +28,13 @@
 		'Dec',
 	];
 
-	const levelColors = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'];
+	const levelColors = [
+		'--gh-level-0',
+		'--gh-level-1',
+		'--gh-level-2',
+		'--gh-level-3',
+		'--gh-level-4',
+	];
 
 	let contributions = $derived(contributionCollection.contributions);
 	let hoveredMonth = $state<number | null>(null);
@@ -131,7 +137,7 @@
 </div>
 <div class="display-cell-container">
 	{#each levelColors as color}
-		<div class="display-cell" style="background-color: {color}"></div>
+		<div class="display-cell" style="background-color: {`var(${color})`}"></div>
 	{/each}
 </div>
 
@@ -184,7 +190,6 @@
 			padding: 0;
 			border: none;
 			border-radius: 2px;
-			background: transparent;
 		}
 	}
 </style>
