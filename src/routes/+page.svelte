@@ -4,7 +4,6 @@
 		getContributionsCalendar,
 		getDayContributions,
 		type IDayContributions,
-		getDayContributionsInRange,
 	} from '$lib/github';
 	import ContributionsCalendar from '$lib/components/contribution-calendar/ContributionsCalendar.svelte';
 	import Contributions from '$lib/components/contributions-by-repository/Contributions.svelte';

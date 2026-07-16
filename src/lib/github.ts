@@ -154,22 +154,6 @@ export async function getDayContributions(
 	return results.flat();
 }
 
-export async function getDayContributionsInRange(
-	user: string,
-	from: string,
-	to: string,
-	fetchFn: typeof fetch = fetch,
-): Promise<IDayContributions[]> {
-	const res = await fetchFn(
-		`/api/contributions?user=${encodeURIComponent(user)}&from=${from}&to=${to}`,
-	);
-	if (!res.ok) {
-		const { message } = await res.json().catch(() => ({ message: 'Failed to load' }));
-		throw new Error(message);
-	}
-	return regroupByDay(await res.json(), from);
-}
-
 function groupReposByDay<T>(
 	repos: IContributionByRepository<T>[],
 	dateOf: (node: T) => string,
@@ -223,11 +207,10 @@ function regroupByDay(
 		restrictedContributionsCount: payload.restrictedContributionsCount,
 	};
 
-	// no activity in the window → still return one entry carrying the stats
 	if (dayKeys.size === 0) {
 		return [
 			{
-				date: from, // the real queried date, not a magic string
+				date: from,
 				commitContributionsByRepository: [],
 				issueContributionsByRepository: [],
 				pullRequestContributionsByRepository: [],
