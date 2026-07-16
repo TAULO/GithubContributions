@@ -85,14 +85,15 @@
 		{@const label = getWeekDateFromIndex(index)}
 		<div class="block">
 			{#if label}
-				<button
-					class="date"
-					onmouseenter={() => labelEnter(months.indexOf(label))}
-					onmouseleave={labelLeave}
-					onclick={() => labelClick(months.indexOf(label))}
-				>
-					{label}
-				</button>
+				<div class="date-container">
+					<button
+						onmouseenter={() => labelEnter(months.indexOf(label))}
+						onmouseleave={labelLeave}
+						onclick={() => labelClick(months.indexOf(label))}
+					>
+						{label}
+					</button>
+				</div>
 			{/if}
 			{#each contribution as contributionDay}
 				{@const isSelected = selectedContributionsDate.has(contributionDay.date)}
@@ -141,12 +142,20 @@
 		align-self: flex-end;
 	}
 
-	.date {
+	.date-container {
 		position: absolute;
 		top: -24px;
 
-		padding: 0;
-		margin: 0;
+		button {
+			margin: 0;
+			padding: 0;
+			background: none;
+			border: none;
+		}
+
+		button:hover {
+			cursor: pointer;
+		}
 	}
 
 	.display-cell-container {
