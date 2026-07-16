@@ -20,21 +20,20 @@
 		interactive = false,
 		disabled = false,
 	}: IProps = $props();
-
 </script>
 
 <button
 	class={[
-    'cell',
-    `level-${contributionDay.level}`,
-    selected && 'selected',
-    dimmed && 'dimmed',
-    highlighted &&  'highlighted',
-    interactive && 'interactive',
-  ]}
+		'cell',
+		`level-${contributionDay.level}`,
+		selected && 'selected',
+		dimmed && 'dimmed',
+		highlighted && 'highlighted',
+		interactive && 'interactive',
+	]}
 	title={contributionDay.date}
 	onclick={onToggleSelected}
-	disabled={disabled}
+	{disabled}
 ></button>
 
 <style>
@@ -52,18 +51,25 @@
 	}
 
 	.cell.dimmed {
-		opacity: 0.3;
+		opacity: 0.5;
 	}
 
 	.cell.highlighted {
 		border: 1px solid greenyellow;
 		cursor: pointer;
+		opacity: 1;
 	}
 
-	.cell.interactive { cursor: pointer; }
-	.cell.interactive:hover { border: 1px solid greenyellow; }
+	.cell.interactive {
+		cursor: pointer;
+	}
+	.cell.interactive:hover {
+		border: 1px solid greenyellow;
+	}
 
-	.cell:disabled { cursor: default; }
+	.cell:disabled {
+		cursor: default;
+	}
 
 	.cell.level-0 {
 		background-color: var(--gh-level-0, #ebedf0);
