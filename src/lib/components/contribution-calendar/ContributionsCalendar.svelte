@@ -51,9 +51,11 @@
 	}
 
 	function toggleSelected(contributionDate: string) {
-		if (selectedContributionsDate.has(contributionDate))
+		if (selectedContributionsDate.has(contributionDate)) {
 			selectedContributionsDate.delete(contributionDate);
-		else selectedContributionsDate.add(contributionDate);
+		} else {
+			selectedContributionsDate.add(contributionDate);
+		}
 
 		// onSelectionChange?.(Array.from(selectedContributionsDate));
 	}
@@ -70,9 +72,6 @@
 			.flat() // weeks → all days
 			.filter((day) => new Date(day.date).getUTCMonth() === monthIndex)
 			.map((day) => day.date);
-
-		const first = datesInMonth.shift();
-		const last = datesInMonth.pop();
 
 		for (const date of datesInMonth) toggleSelected(date);
 
