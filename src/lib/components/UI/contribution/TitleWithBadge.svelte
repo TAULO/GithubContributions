@@ -15,7 +15,8 @@
 
 <style>
 	h3 {
-		margin: 0;
+		justify-self: center;
+		align-self: center;
 	}
 
 	.container {
