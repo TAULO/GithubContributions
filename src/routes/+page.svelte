@@ -24,12 +24,10 @@
 
 	async function handleSelectionChange(dates: string[]) {
 		const sorted = [...dates].sort((a, b) => a.localeCompare(b)).reverse();
-		if (sorted.length === 0) return;
-
-		const from = sorted[0]; // earliest
-		const to = sorted.at(-1)!; // latest
 
 		if (sorted.length > 10) {
+			const from = sorted[0];
+			const to = sorted.at(-1)!;
 			selectedContributionsByRepository = await getDayContributionsInRange(user.trim(), to, from);
 		} else {
 			selectedContributionsByRepository = await getDayContributions(user.trim(), sorted);
