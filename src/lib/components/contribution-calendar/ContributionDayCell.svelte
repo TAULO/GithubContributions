@@ -7,6 +7,8 @@
 		dimmed?: boolean;
 		onToggleSelected?: () => void;
 		highlighted?: boolean;
+		interactive?: boolean;
+		disabled?: boolean;
 	}
 
 	let {
@@ -15,19 +17,24 @@
 		dimmed = false,
 		onToggleSelected,
 		highlighted = false,
+		interactive = false,
+		disabled = false,
 	}: IProps = $props();
+
 </script>
 
 <button
 	class={[
-		'cell',
-		`level-${contributionDay.level}`,
-		selected && 'selected',
-		dimmed && 'dimmed',
-		highlighted && 'highlighted',
-	]}
+    'cell',
+    `level-${contributionDay.level}`,
+    selected && 'selected',
+    dimmed && 'dimmed',
+    highlighted &&  'highlighted',
+    interactive && 'interactive',
+  ]}
 	title={contributionDay.date}
 	onclick={onToggleSelected}
+	disabled={disabled}
 ></button>
 
 <style>
@@ -37,7 +44,6 @@
 		padding: 0;
 		border: none;
 		border-radius: 2px;
-		cursor: pointer;
 		background: transparent;
 	}
 
@@ -51,12 +57,13 @@
 
 	.cell.highlighted {
 		border: 1px solid greenyellow;
+		cursor: pointer;
 	}
 
-	.cell:hover {
-		cursor: pointer;
-		border: 1px solid greenyellow;
-	}
+	.cell.interactive { cursor: pointer; }
+	.cell.interactive:hover { border: 1px solid greenyellow; }
+
+	.cell:disabled { cursor: default; }
 
 	.cell.level-0 {
 		background-color: var(--gh-level-0, #ebedf0);

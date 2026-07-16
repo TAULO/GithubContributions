@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { type IContributionCollection } from '$lib/github';
+	import { type ContributionDay, type IContributionCollection } from '$lib/github';
 	import { SvelteSet } from 'svelte/reactivity';
-	import ContributionDay from '$lib/components/contribution-calendar/ContributionDay.svelte';
+	import ContributionDayCell from '$lib/components/contribution-calendar/ContributionDayCell.svelte';
 
 	let {
 		contributionCollection,
@@ -39,25 +39,25 @@
 		const monthStr = contributions[index]?.[0]?.date;
 		if (!monthStr) return null;
 
-		const currentMonthIndex = new Date(monthStr).getMonth();
+		const currentMonthIndex = new Date(monthStr).getUTCMonth();
 
 		const prevMonthStr = contributions[index - 1]?.[0]?.date;
 		if (!prevMonthStr) return months[currentMonthIndex] ?? null;
 
-		const prevMonthIndex = new Date(prevMonthStr).getMonth();
+		const prevMonthIndex = new Date(prevMonthStr).getUTCMonth();
 		if (currentMonthIndex === prevMonthIndex) return null;
 
 		return months[currentMonthIndex] ?? null;
 	}
 
-	function toggleSelected(contributionDate: string) {
-		if (selectedContributionsDate.has(contributionDate)) {
-			selectedContributionsDate.delete(contributionDate);
-		} else {
-			selectedContributionsDate.add(contributionDate);
-		}
+	function toggleSelected(contribution: ContributionDay) {
+		if (contribution.count === 0) return;
 
-		// onSelectionChange?.(Array.from(selectedContributionsDate));
+		if (selectedContributionsDate.has(contribution.date)) {
+			selectedContributionsDate.delete(contribution.date);
+		} else {
+			selectedContributionsDate.add(contribution.date);
+		}
 	}
 
 	function labelEnter(monthIndex: number | null) {
@@ -70,13 +70,14 @@
 	function labelClick(monthIndex: number) {
 		const datesInMonth = contributions
 			.flat() // weeks → all days
-			.filter((day) => new Date(day.date).getUTCMonth() === monthIndex)
-			.map((day) => day.date);
+			.filter((day) => new Date(day.date).getUTCMonth() === monthIndex);
 
-		for (const date of datesInMonth) toggleSelected(date);
-
-		// onSelectionChange?.(Array.from(selectedContributionsDate));
+		for (const contributions of datesInMonth) toggleSelected(contributions);
 	}
+
+	$effect(() => {
+		onSelectionChange?.(Array.from(selectedContributionsDate));
+	});
 </script>
 
 <div class="container">
@@ -95,14 +96,19 @@
 			{/if}
 			{#each contribution as contributionDay}
 				{@const isSelected = selectedContributionsDate.has(contributionDay.date)}
+				{@const hasContributions = contributionDay.count > 0}
 				{@const highlight =
-					hoveredMonth !== null && hoveredMonth === new Date(contributionDay.date).getUTCMonth()}
-				<ContributionDay
+					hoveredMonth !== null &&
+					hoveredMonth === new Date(contributionDay.date).getUTCMonth() &&
+					hasContributions}
+				<ContributionDayCell
 					{contributionDay}
 					selected={isSelected}
-					onToggleSelected={() => toggleSelected(contributionDay.date)}
+					onToggleSelected={() => toggleSelected(contributionDay)}
 					dimmed={selectedContributionsDate.size > 0 && !isSelected}
 					highlighted={highlight}
+					interactive={hasContributions}
+					disabled={!hasContributions}
 				/>
 			{/each}
 		</div>

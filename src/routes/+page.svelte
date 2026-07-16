@@ -2,9 +2,9 @@
 	import type { PageData } from './$types';
 	import {
 		getContributionsCalendar,
-		getContributionsByRepository,
+		getDayContributions,
 		type IDayContributions,
-		getContributionsByRepositoryWithDateFromTo,
+		getDayContributionsInRange,
 	} from '$lib/github';
 	import ContributionsCalendar from '$lib/components/contribution-calendar/ContributionsCalendar.svelte';
 	import Contributions from '$lib/components/contributions-by-repository/Contributions.svelte';
@@ -23,20 +23,16 @@
 	let hasSelectedContributionsByRepository = $derived(selectedContributionsByRepository.length > 0);
 
 	async function handleSelectionChange(dates: string[]) {
-		// April 3, 2026 (nice test)
-		const sortedDates = dates.sort((a, b) => b.localeCompare(a));
+		const sorted = [...dates].sort((a, b) => a.localeCompare(b)).reverse();
+		if (sorted.length === 0) return;
 
-		if (sortedDates.length > 10) {
-			selectedContributionsByRepository = await getContributionsByRepositoryWithDateFromTo(
-				user.trim(),
-				sortedDates[dates.length - 1],
-				sortedDates[0],
-			);
+		const from = sorted[0]; // earliest
+		const to = sorted.at(-1)!; // latest
+
+		if (sorted.length > 10) {
+			selectedContributionsByRepository = await getDayContributionsInRange(user.trim(), to, from);
 		} else {
-			selectedContributionsByRepository = await getContributionsByRepository(
-				user.trim(),
-				sortedDates,
-			);
+			selectedContributionsByRepository = await getDayContributions(user.trim(), sorted);
 		}
 	}
 

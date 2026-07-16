@@ -137,40 +137,93 @@ export async function getContributionsCalendar(
 	return { user, contribution };
 }
 
-export async function getContributionsByRepository(
+export async function getDayContributions(
 	user: string,
 	dates: string[],
-	fetchFn: typeof fetch = fetch,
+	fetchFn: typeof fetch = fetch
 ): Promise<IDayContributions[]> {
-	const data: IDayContributions[] = [];
-	for (const date of dates) {
-		const res = await fetchFn(`/api/contributions?user=${encodeURIComponent(user)}&from=${date}`);
-		if (!res.ok) continue; // or collect the error
+	const results = await Promise.all(
+		dates.map(async (date) => {
+			const res = await fetchFn(
+				`/api/contributions?user=${encodeURIComponent(user)}&from=${date}`
+			);
+			if (!res.ok) return [];              // skip failed days
+			return regroupByDay(await res.json()); // same shape as the range path
+		})
+	);
 
-		data.push({
-			...(await res.json()),
-			date,
-		});
-	}
-
-	return data;
+	return results.flat();
 }
 
-export async function getContributionsByRepositoryWithDateFromTo(
+export async function getDayContributionsInRange(
 	user: string,
 	from: string,
 	to: string,
 	fetchFn: typeof fetch = fetch,
 ): Promise<IDayContributions[]> {
-	const data: IDayContributions[] = [];
 	const res = await fetchFn(
 		`/api/contributions?user=${encodeURIComponent(user)}&from=${from}&to=${to}`,
 	);
+	if (!res.ok) {
+		const { message } = await res.json().catch(() => ({ message: 'Failed to load' }));
+		throw new Error(message);
+	}
+	return regroupByDay(await res.json());
+}
 
-	data.push({
-		...(await res.json()),
-		date: `${from} - ${to}`,
-	});
+function groupReposByDay<T>(
+	repos: IContributionByRepository<T>[],
+	dateOf: (node: T) => string,
+): Map<string, IContributionByRepository<T>[]> {
+	// day -> (repoKey -> repo entry with that day's nodes)
+	const byDay = new Map<string, Map<string, IContributionByRepository<T>>>();
 
-	return data;
+	for (const repo of repos) {
+		for (const node of repo.contributions) {
+			const day = dateOf(node).slice(0, 10); // "2026-04-13T07:00:00Z" -> "2026-04-13"
+
+			let repoMap = byDay.get(day);
+			if (!repoMap) byDay.set(day, (repoMap = new Map()));
+
+			const key = repo.repository.nameWithOwner;
+			let entry = repoMap.get(key);
+			if (!entry) repoMap.set(key, (entry = { repository: repo.repository, contributions: [] }));
+
+			entry.contributions.push(node);
+		}
+	}
+
+	// collapse the inner repo-maps into arrays
+	const out = new Map<string, IContributionByRepository<T>[]>();
+	for (const [day, repoMap] of byDay) out.set(day, [...repoMap.values()]);
+	return out;
+}
+
+function regroupByDay(payload: {
+	commitContributionsByRepository: IContributionByRepository<ICommit>[];
+	issueContributionsByRepository: IContributionByRepository<IIssue>[];
+	pullRequestContributionsByRepository: IContributionByRepository<IPullRequest>[];
+	totalCommitContributions: number;
+	totalPullRequestContributions: number;
+	totalIssueContributions: number;
+	restrictedContributionsCount: number;
+}): IDayContributions[] {
+	const commits = groupReposByDay(payload.commitContributionsByRepository, (n) => n.occurredAt);
+	const issues = groupReposByDay(payload.issueContributionsByRepository, (n) => n.createdAt);
+	const prs = groupReposByDay(payload.pullRequestContributionsByRepository, (n) => n.createdAt);
+
+	const days = new Set([...commits.keys(), ...issues.keys(), ...prs.keys()]);
+
+	return [...days]
+		.sort((a, b) => b.localeCompare(a))
+		.map((date) => ({
+			date,
+			commitContributionsByRepository: commits.get(date) ?? [],
+			issueContributionsByRepository: issues.get(date) ?? [],
+			pullRequestContributionsByRepository: prs.get(date) ?? [],
+			totalCommitContributions: payload.totalCommitContributions,
+			totalPullRequestContributions: payload.totalPullRequestContributions,
+			totalIssueContributions: payload.totalIssueContributions,
+			restrictedContributionsCount: payload.restrictedContributionsCount,
+		}));
 }

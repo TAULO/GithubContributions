@@ -3,9 +3,7 @@ import type { RequestHandler } from '../../../../.svelte-kit/types/src/routes/ap
 import { GITHUB_ACCESS_TOKEN } from '$env/static/private';
 import {
 	CONTRIBUTION_QUERY,
-	type ICommit,
 	type IContributionByRepository,
-	type IDayContributions,
 } from '$lib/github';
 
 // lift GitHub's { issue }/{ pullRequest } wrapper off each node so app types stay flat
@@ -47,6 +45,8 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 
 	const from = fromDate.toISOString();
 	const to = toParam ? new Date(`${toParam}T00:00:00Z`).toISOString() : from;
+
+	console.log(from, to);
 
 	const res = await fetch('https://api.github.com/graphql', {
 		method: 'POST',
