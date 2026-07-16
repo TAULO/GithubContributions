@@ -34,19 +34,37 @@
 			></path>
 		</svg>
 	</TitleWithBadge>
-	{#each repositories as repo}
-		{@const commits = countCommits(repo.contributions)}
-		<div>
-			<RepoName repo={repo.repository}></RepoName>
-			<p>
-				<a
-					href={`${repo.repository.url}/commits?author=${user}&since=${date}&until=${date}`}
-					target="_blank">{commits} {pluralize(commits, 'commit')}</a
-				>
-			</p>
-		</div>
-	{/each}
+	<div class="container">
+		{#each repositories as repo}
+			{@const commits = countCommits(repo.contributions)}
+			<div class="item-container">
+				<RepoName repo={repo.repository}></RepoName>
+				<p>
+					<a
+						href={`${repo.repository.url}/commits?author=${user}&since=${date}&until=${date}`}
+						target="_blank">{commits} {pluralize(commits, 'commit')}</a
+					>
+				</p>
+			</div>
+		{/each}
+	</div>
 </ContributionContainer>
 
 <style>
+	p {
+		margin: 0;
+		padding: 0;
+	}
+
+	.container {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.item-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
 </style>
