@@ -9,6 +9,7 @@
 	import ContributionsCalendar from '$lib/components/contribution-calendar/ContributionsCalendar.svelte';
 	import Contributions from '$lib/components/contributions-by-repository/Contributions.svelte';
 	import ContributionsYear from '$lib/components/contribution-years/ContributionYears.svelte';
+	import Loading from '$lib/components/UI/contribution/Loading.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -19,18 +20,20 @@
 	let loading = $state(false);
 	let errorMsg = $state<string | null>(null);
 
+	let contributionsLoading = $state(false);
+
 	let selectedContributionsByRepository = $state<IDayContributions[]>([]);
 	let hasSelectedContributionsByRepository = $derived(selectedContributionsByRepository.length > 0);
 
 	async function handleSelectionChange(dates: string[]) {
-		const sorted = [...dates].sort((a, b) => a.localeCompare(b)).reverse();
-
-		if (sorted.length > 10) {
-			const from = sorted[0];
-			const to = sorted.at(-1)!;
-			selectedContributionsByRepository = await getDayContributionsInRange(user.trim(), to, from);
-		} else {
+		try {
+			contributionsLoading = true;
+			const sorted = [...dates].sort((a, b) => a.localeCompare(b)).reverse();
 			selectedContributionsByRepository = await getDayContributions(user.trim(), sorted);
+		} catch (e) {
+			console.error(e);
+		} finally {
+			contributionsLoading = false;
 		}
 	}
 
@@ -66,7 +69,11 @@
 		</div>
 		{#if hasSelectedContributionsByRepository}
 			<div class="contributions-container">
-				<Contributions {selectedContributionsByRepository} {user} />
+				{#if contributionsLoading}
+					<Loading />
+				{:else}
+					<Contributions {selectedContributionsByRepository} {user} />
+				{/if}
 			</div>
 		{/if}
 	</div>
@@ -105,6 +112,10 @@
 
 	.contributions-calendar.standalone {
 		border-radius: 8px;
+	}
+
+	.loading {
+		opacity: 0.5;
 	}
 
 	.contributions-container {

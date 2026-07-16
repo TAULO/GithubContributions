@@ -9,7 +9,10 @@
 	let {
 		selectedContributionsByRepository,
 		user,
-	}: { selectedContributionsByRepository: IDayContributions[]; user: string } = $props();
+	}: {
+		selectedContributionsByRepository: IDayContributions[];
+		user: string;
+	} = $props();
 
 	const totalCommits = $derived(
 		selectedContributionsByRepository.reduce((acc, r) => acc + r.totalCommitContributions, 0),
