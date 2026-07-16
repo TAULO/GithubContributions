@@ -1,5 +1,4 @@
-/* TODO: Add more colors */
-:root {
+:global {
 	/* Contribution Colors */
 	--gh-primary: #6f42c1;
 	--gh-secondary: #24292e;
@@ -10,4 +9,11 @@
 	--gh-level-2: #ebedf0;
 	--gh-level-3: #ebedf0;
 	--gh-level-4: #ebedf0;
+
+	--deep-space-blue: #172a3a;
+	--dark-teal: #004346;
+	--mint-leaf: #09bc8a;
+
+	--pacifitc-cyan: #508991;
+	--sky-reflection: #74b3ce;
 }

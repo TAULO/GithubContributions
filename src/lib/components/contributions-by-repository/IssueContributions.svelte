@@ -38,12 +38,12 @@
 		</svg>
 	</TitleWithBadge>
 	{#each repositories as repo}
-		<div class="issues">
+		<div class="container">
 			<RepoName repo={repo.repository}></RepoName>
 			{#each repo.contributions as issue}
-				<div class="issue">
+				<div class="issues">
 					<div class={['issue-status', issue.closed ? 'issue-closed' : 'issue-open']}></div>
-					<div class="issue-info">
+					<div class="issue">
 						<a href={issue.url} target="_blank">
 							{issue.title}
 						</a>
@@ -62,26 +62,26 @@
 </ContributionContainer>
 
 <style>
-	.item {
-		flex: 1;
-	}
-
-	.issues {
+	.container {
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
 
-		.issue {
+		.issues {
 			display: flex;
 			align-items: center;
 			gap: 4px;
 
-			.issue-info {
+			.issue {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				gap: 8px;
 				flex: 1;
+
+				a {
+					text-decoration: none;
+				}
 			}
 
 			.labels-container {
