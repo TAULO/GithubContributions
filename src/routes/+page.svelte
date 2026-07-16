@@ -58,7 +58,6 @@
 
 <div class="container">
 	<div>
-		<h1>Contributions for {user} ({currentYear})</h1>
 		<div class="contributions-calendar" class:standalone={!hasSelectedContributionsByRepository}>
 			<ContributionsCalendar {contributionCollection} onSelectionChange={handleSelectionChange} />
 			<ContributionsYear
@@ -104,7 +103,6 @@
 	}
 
 	.contributions-calendar {
-		border: 1px solid var(--secondary-color);
 		padding: 1rem;
 		border-radius: 8px 8px 0 0;
 
@@ -116,7 +114,6 @@
 	}
 
 	.contributions-container {
-		border: 1px solid var(--secondary-color);
 		border-top: none;
 		padding: 1rem;
 		border-radius: 0 0 8px 8px;

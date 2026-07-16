@@ -40,23 +40,25 @@
 	{#each repositories as repo}
 		<div class="container">
 			<RepoName repo={repo.repository}></RepoName>
-			{#each repo.contributions as issue}
-				<div class="issues">
-					<div class={['issue-status', issue.closed ? 'issue-closed' : 'issue-open']}></div>
-					<div class="issue">
-						<a href={issue.url} target="_blank">
-							{issue.title}
-						</a>
-						<div class="labels-container">
-							{#each issue.labels as label}
-								<div class="label" style="background-color: {`#${label.color}`}">
-									{label.name}
-								</div>
-							{/each}
+			<div class="issues-container">
+				{#each repo.contributions as issue}
+					<div class="issues">
+						<div class={['issue-status', issue.closed ? 'issue-closed' : 'issue-open']}></div>
+						<div class="issue">
+							<a href={issue.url} target="_blank">
+								{issue.title}
+							</a>
+							<div class="labels-container">
+								{#each issue.labels as label}
+									<div class="label" style="background-color: {`#${label.color}`}">
+										{label.name}
+									</div>
+								{/each}
+							</div>
 						</div>
 					</div>
-				</div>
-			{/each}
+				{/each}
+			</div>
 		</div>
 	{/each}
 </ContributionContainer>
@@ -65,7 +67,13 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
+		gap: 16px;
+
+		.issues-container {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+		}
 
 		.issues {
 			display: flex;
@@ -78,10 +86,6 @@
 				align-items: center;
 				gap: 8px;
 				flex: 1;
-
-				a {
-					text-decoration: none;
-				}
 			}
 
 			.labels-container {
@@ -89,9 +93,12 @@
 				gap: 4px;
 
 				.label {
-					color: white;
+					color: var(--primary-color);
 					padding: 2px 4px;
-					border-radius: 4px;
+					border-radius: 8px;
+					font-size: 12px;
+					text-overflow: ellipsis;
+					font-weight: 500;
 				}
 			}
 

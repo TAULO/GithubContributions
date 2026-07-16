@@ -17,3 +17,18 @@
 		<button {disabled} onclick={() => onClicked(year)}>{year}</button>
 	{/each}
 </div>
+
+<style>
+	button {
+		background-color: var(--tertiary-color);
+		border: none;
+		border-radius: 0.2rem;
+		box-shadow: var(--shadow);
+		padding: 0.5rem 1rem;
+	}
+
+	button:hover {
+		background-color: var(--hover-color);
+		cursor: pointer;
+	}
+</style>

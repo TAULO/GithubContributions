@@ -4,7 +4,7 @@
 	--secondary-color: #004346;
 	--tertiary-color: #09bc8a;
 
-	--pacifitc-cyan: #508991;
+	--sub-title-color: #508991;
 	--hover-color: #74b3ce;
 
 	/* Contribution Day Levels Colors */
@@ -14,23 +14,46 @@
 	--gh-level-3: #09bc8a;
 	--gh-level-4: #52e0b6;
 
-    h3 {
-        color: white;
-    }
+	/* Utility */
 
-    h1 {
-        color: white;
-    }
+	--shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	font-family:
+		system-ui,
+		-apple-system,
+		'Segoe UI',
+		Roboto,
+		Helvetica,
+		Arial,
+		sans-serif;
 
-    button {
-        color: white;
-    }
+	h3 {
+		color: white;
+	}
 
-    p {
-        color: white;
-    }
+	h1 {
+		color: white;
+	}
 
-    body {
-        background-color: var(--primary-color);
-    }
+	button {
+		color: white;
+	}
+
+	p {
+		color: white;
+	}
+
+	body {
+		background-color: var(--primary-color);
+	}
+
+	a {
+		color: var(--sub-title-color);
+		text-decoration: none;
+		font-style: italic;
+	}
+
+	a:hover {
+		color: var(--hover-color);
+		cursor: pointer;
+	}
 }

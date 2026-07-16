@@ -148,6 +148,9 @@
 
 		padding-top: 24px;
 		overflow-x: auto;
+
+		align-items: center;
+		justify-content: center;
 	}
 
 	.block {
@@ -171,10 +174,12 @@
 			padding: 0;
 			background: none;
 			border: none;
+			font-weight: 500;
 		}
 
 		button:hover {
 			cursor: pointer;
+			color: var(--hover-color);
 		}
 	}
 

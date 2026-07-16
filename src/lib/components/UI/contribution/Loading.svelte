@@ -10,8 +10,8 @@
 	}
 
 	.loader {
-		--color-1: green;
-		--size: 0.5px;
+		--color-1: var(--tertiary-color);
+		--size: .5px;
 		width: calc(48 * var(--size));
 		height: calc(48 * var(--size));
 		border: calc(5 * var(--size)) solid var(--color-1);

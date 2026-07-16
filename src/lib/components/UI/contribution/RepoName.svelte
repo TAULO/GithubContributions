@@ -10,19 +10,12 @@
 
 <style>
 	a {
-		color: var(--link, #3b82f6);
-		text-decoration: none;
+		color: var(--sub-title-color);
 		font-weight: 500;
 		width: fit-content;
 	}
 
 	a:hover {
-		color: var(--link-hover, #2563eb);
-	}
-
-	a:focus-visible {
-		outline: 2px solid var(--link, #3b82f6);
-		outline-offset: 2px;
-		border-radius: 2px;
+		color: var(--hover-color);
 	}
 </style>

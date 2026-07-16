@@ -98,6 +98,12 @@
 			background-color: var(--secondary-color);
 			height: 2px;
 		}
+
+		p {
+			font-size: 14px;
+			font-weight: 500;
+			color: var(--sub-title-color);
+		}
 	}
 
 	.contribution-container {
