@@ -1,11 +1,10 @@
 <script lang="ts">
 	import type { IContributionByRepository, IIssue } from '$lib/github';
 	import { contributionTitle } from '$lib/util/string';
-	import Badge from '$lib/components/UI/contribution/Badge.svelte';
 	import { countContributions } from '$lib/util/contributions';
 	import ContributionContainer from '$lib/components/contributions-by-repository/ContributionContainer.svelte';
-	import Title from '$lib/components/UI/contribution/Title.svelte';
 	import RepoName from '$lib/components/UI/contribution/RepoName.svelte';
+	import TitleWithBadge from '$lib/components/UI/contribution/TitleWithBadge.svelte';
 
 	let {
 		repositories,
@@ -17,7 +16,14 @@
 </script>
 
 <ContributionContainer>
-	<Badge>
+	<TitleWithBadge
+		text={contributionTitle({
+			action: 'Opened',
+			count: issuesCount,
+			noun: 'issue',
+			repositoryCount: repositories.length,
+		})}
+	>
 		<svg
 			fill="currentColor"
 			aria-hidden="true"
@@ -30,39 +36,29 @@
 				d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"
 			></path>
 		</svg>
-	</Badge>
-	<div class="item">
-		<Title
-			text={contributionTitle({
-				action: 'Opened',
-				count: issuesCount,
-				noun: 'issue',
-				repositoryCount: repositories.length,
-			})}
-		></Title>
-		{#each repositories as repo}
-			<div class="issues">
-				<RepoName repo={repo.repository}></RepoName>
-				{#each repo.contributions as issue}
-					<div class="issue">
-						<div class={['issue-status', issue.closed ? 'issue-closed' : 'issue-open']}></div>
-						<div class="issue-info">
-							<a href={issue.url} target="_blank">
-								{issue.title}
-							</a>
-							<div class="labels-container">
-								{#each issue.labels as label}
-									<div class="label" style="background-color: {`#${label.color}`}">
-										{label.name}
-									</div>
-								{/each}
-							</div>
+	</TitleWithBadge>
+	{#each repositories as repo}
+		<div class="issues">
+			<RepoName repo={repo.repository}></RepoName>
+			{#each repo.contributions as issue}
+				<div class="issue">
+					<div class={['issue-status', issue.closed ? 'issue-closed' : 'issue-open']}></div>
+					<div class="issue-info">
+						<a href={issue.url} target="_blank">
+							{issue.title}
+						</a>
+						<div class="labels-container">
+							{#each issue.labels as label}
+								<div class="label" style="background-color: {`#${label.color}`}">
+									{label.name}
+								</div>
+							{/each}
 						</div>
 					</div>
-				{/each}
-			</div>
-		{/each}
-	</div>
+				</div>
+			{/each}
+		</div>
+	{/each}
 </ContributionContainer>
 
 <style>

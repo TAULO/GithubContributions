@@ -3,12 +3,19 @@
 </script>
 
 <div class="contribution-container">
-	{@render children()}
+	<div class="contribution-container-inner">
+		{@render children()}
+	</div>
 </div>
 
 <style>
 	.contribution-container {
 		display: flex;
-		gap: 8px;
+		flex-direction: column;
+		margin-left: 2rem;
+	}
+
+	.contribution-container-inner {
+		flex: 1;
 	}
 </style>
