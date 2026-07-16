@@ -19,7 +19,7 @@
 		border-radius: 50%;
 		background-color: #212830;
 		position: relative;
-		margin: -5px 8px 0 -16.5px;
+		margin: 0 8px 0 -16.5px;
 		z-index: 1;
 		/* Note: This is a hack to make the badge appear above the timeline, therefor the color must match the background color of the timeline */
 		border: 0.225rem solid white;

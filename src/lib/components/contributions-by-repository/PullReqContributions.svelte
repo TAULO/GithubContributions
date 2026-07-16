@@ -1,8 +1,11 @@
 <script lang="ts">
 	import type { IContributionByRepository, IPullRequest } from '$lib/github';
 	import { contributionTitle } from '$lib/util/string';
-	import Badge from '$lib/components/UI/Badge.svelte';
+	import Badge from '$lib/components/UI/contribution/Badge.svelte';
 	import { countContributions } from '$lib/util/contributions';
+	import ContributionContainer from '$lib/components/contributions-by-repository/ContributionContainer.svelte';
+	import Title from '$lib/components/UI/contribution/Title.svelte';
+	import RepoName from '$lib/components/UI/contribution/RepoName.svelte';
 
 	let {
 		repositories,
@@ -13,7 +16,7 @@
 	const prCount = $derived(countContributions(repositories));
 </script>
 
-<div class="repositories-container">
+<ContributionContainer>
 	<Badge>
 		<svg
 			fill="currentColor"
@@ -29,19 +32,17 @@
 		</svg>
 	</Badge>
 	<div class="repositories">
-		<h3>
-			{contributionTitle({
+		<Title
+			text={contributionTitle({
 				action: 'Opened',
 				count: prCount,
 				noun: 'pull request',
 				repositoryCount: repositories.length,
 			})}
-		</h3>
+		></Title>
 		{#each repositories as repo}
 			<div class="repository-container">
-				<a class="repository-name" href={repo.repository.url} target="_blank">
-					{repo.repository.nameWithOwner}
-				</a>
+				<RepoName repo={repo.repository}></RepoName>
 				<div class="pull-requests-container">
 					{#each repo.contributions as pullRequest}
 						<div class="pull-request">
@@ -54,14 +55,9 @@
 			</div>
 		{/each}
 	</div>
-</div>
+</ContributionContainer>
 
 <style>
-	p {
-		margin: 0;
-		padding: 0;
-	}
-
 	.pull-requests-container {
 		display: flex;
 		flex-direction: column;
@@ -82,22 +78,6 @@
 
 		.repository-name {
 			font-size: 16px;
-		}
-	}
-
-	.repositories-container {
-		display: flex;
-		gap: 8px;
-
-		.repositories {
-			display: flex;
-			flex-direction: column;
-			gap: 4px;
-			flex: 1;
-
-			h3 {
-				margin: 0;
-			}
 		}
 	}
 </style>

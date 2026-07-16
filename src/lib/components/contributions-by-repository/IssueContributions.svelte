@@ -1,8 +1,11 @@
 <script lang="ts">
 	import type { IContributionByRepository, IIssue } from '$lib/github';
 	import { contributionTitle } from '$lib/util/string';
-	import Badge from '$lib/components/UI/Badge.svelte';
+	import Badge from '$lib/components/UI/contribution/Badge.svelte';
 	import { countContributions } from '$lib/util/contributions';
+	import ContributionContainer from '$lib/components/contributions-by-repository/ContributionContainer.svelte';
+	import Title from '$lib/components/UI/contribution/Title.svelte';
+	import RepoName from '$lib/components/UI/contribution/RepoName.svelte';
 
 	let {
 		repositories,
@@ -13,7 +16,7 @@
 	const issuesCount = $derived(countContributions(repositories));
 </script>
 
-<div class="issue-container">
+<ContributionContainer>
 	<Badge>
 		<svg
 			fill="currentColor"
@@ -29,19 +32,17 @@
 		</svg>
 	</Badge>
 	<div class="item">
-		<h3>
-			{contributionTitle({
+		<Title
+			text={contributionTitle({
 				action: 'Opened',
 				count: issuesCount,
 				noun: 'issue',
 				repositoryCount: repositories.length,
 			})}
-		</h3>
+		></Title>
 		{#each repositories as repo}
 			<div class="issues">
-				<a href={repo.repository.url} target="_blank">
-					{repo.repository.nameWithOwner}
-				</a>
+				<RepoName repo={repo.repository}></RepoName>
 				{#each repo.contributions as issue}
 					<div class="issue">
 						<div class={['issue-status', issue.closed ? 'issue-closed' : 'issue-open']}></div>
@@ -62,70 +63,54 @@
 			</div>
 		{/each}
 	</div>
-</div>
+</ContributionContainer>
 
 <style>
-	h3 {
-		margin: 0;
-		padding: 0;
+	.item {
+		flex: 1;
 	}
 
-	p {
-		margin: 0;
-		padding: 0;
-	}
-
-	.issue-container {
+	.issues {
 		display: flex;
+		flex-direction: column;
 		gap: 8px;
 
-		.item {
-			flex: 1;
-		}
-
-		.issues {
+		.issue {
 			display: flex;
-			flex-direction: column;
-			gap: 8px;
+			align-items: center;
+			gap: 4px;
 
-			.issue {
+			.issue-info {
 				display: flex;
+				justify-content: space-between;
 				align-items: center;
+				gap: 8px;
+				flex: 1;
+			}
+
+			.labels-container {
+				display: flex;
 				gap: 4px;
 
-				.issue-info {
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-					gap: 8px;
-					flex: 1;
+				.label {
+					color: white;
+					padding: 2px 4px;
+					border-radius: 4px;
 				}
+			}
 
-				.labels-container {
-					display: flex;
-					gap: 4px;
+			.issue-status {
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+			}
 
-					.label {
-						color: white;
-						padding: 2px 4px;
-						border-radius: 4px;
-					}
-				}
+			.issue-closed {
+				background-color: red;
+			}
 
-
-				.issue-status {
-					width: 8px;
-					height: 8px;
-					border-radius: 50%;
-				}
-
-				.issue-closed {
-					background-color: red;
-				}
-
-				.issue-open {
-					background-color: green;
-				}
+			.issue-open {
+				background-color: green;
 			}
 		}
 	}

@@ -1,10 +1,12 @@
 <script lang="ts">
-	import Badge from '$lib/components/UI/Badge.svelte';
+	import Badge from '$lib/components/UI/contribution/Badge.svelte';
+	import ContributionContainer from '$lib/components/contributions-by-repository/ContributionContainer.svelte';
+	import Title from '$lib/components/UI/contribution/Title.svelte';
 
 	let { count }: { count: number } = $props();
 </script>
 
-<div class="restricted-contributions">
+<ContributionContainer>
 	<Badge>
 		<svg
 			fill="currentColor"
@@ -19,13 +21,5 @@
 			></path>
 		</svg>
 	</Badge>
-	<h3>{count} contributions in private repositories</h3>
-</div>
-
-<style>
-	.restricted-contributions {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-</style>
+	<Title text={`${count} contributions in private repositories`}></Title>
+</ContributionContainer>

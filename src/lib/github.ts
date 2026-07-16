@@ -98,12 +98,13 @@ export interface IIssue {
 	labels: { name: string; color: string }[];
 }
 
-export interface IContributionByRepository<TContribution> {
-	repository: {
-		nameWithOwner: string;
-		url: string;
-	};
+export interface IRepository {
+	nameWithOwner: string;
+	url: string;
+}
 
+export interface IContributionByRepository<TContribution> {
+	repository: IRepository;
 	contributions: TContribution[];
 }
 
@@ -140,16 +141,14 @@ export async function getContributionsCalendar(
 export async function getDayContributions(
 	user: string,
 	dates: string[],
-	fetchFn: typeof fetch = fetch
+	fetchFn: typeof fetch = fetch,
 ): Promise<IDayContributions[]> {
 	const results = await Promise.all(
 		dates.map(async (date) => {
-			const res = await fetchFn(
-				`/api/contributions?user=${encodeURIComponent(user)}&from=${date}`
-			);
-			if (!res.ok) return [];              // skip failed days
-			return regroupByDay(await res.json()); // same shape as the range path
-		})
+			const res = await fetchFn(`/api/contributions?user=${encodeURIComponent(user)}&from=${date}`);
+			if (!res.ok) return []; // skip failed days
+			return regroupByDay(await res.json(), date); // same shape as the range path
+		}),
 	);
 
 	return results.flat();
@@ -168,7 +167,7 @@ export async function getDayContributionsInRange(
 		const { message } = await res.json().catch(() => ({ message: 'Failed to load' }));
 		throw new Error(message);
 	}
-	return regroupByDay(await res.json());
+	return regroupByDay(await res.json(), from);
 }
 
 function groupReposByDay<T>(
@@ -199,31 +198,51 @@ function groupReposByDay<T>(
 	return out;
 }
 
-function regroupByDay(payload: {
-	commitContributionsByRepository: IContributionByRepository<ICommit>[];
-	issueContributionsByRepository: IContributionByRepository<IIssue>[];
-	pullRequestContributionsByRepository: IContributionByRepository<IPullRequest>[];
-	totalCommitContributions: number;
-	totalPullRequestContributions: number;
-	totalIssueContributions: number;
-	restrictedContributionsCount: number;
-}): IDayContributions[] {
+function regroupByDay(
+	payload: {
+		commitContributionsByRepository: IContributionByRepository<ICommit>[];
+		issueContributionsByRepository: IContributionByRepository<IIssue>[];
+		pullRequestContributionsByRepository: IContributionByRepository<IPullRequest>[];
+		totalCommitContributions: number;
+		totalPullRequestContributions: number;
+		totalIssueContributions: number;
+		restrictedContributionsCount: number;
+	},
+	from: string,
+): IDayContributions[] {
 	const commits = groupReposByDay(payload.commitContributionsByRepository, (n) => n.occurredAt);
 	const issues = groupReposByDay(payload.issueContributionsByRepository, (n) => n.createdAt);
 	const prs = groupReposByDay(payload.pullRequestContributionsByRepository, (n) => n.createdAt);
 
-	const days = new Set([...commits.keys(), ...issues.keys(), ...prs.keys()]);
+	const dayKeys = new Set([...commits.keys(), ...issues.keys(), ...prs.keys()]);
 
-	return [...days]
+	const summary = {
+		totalCommitContributions: payload.totalCommitContributions,
+		totalPullRequestContributions: payload.totalPullRequestContributions,
+		totalIssueContributions: payload.totalIssueContributions,
+		restrictedContributionsCount: payload.restrictedContributionsCount,
+	};
+
+	// no activity in the window → still return one entry carrying the stats
+	if (dayKeys.size === 0) {
+		return [
+			{
+				date: from, // the real queried date, not a magic string
+				commitContributionsByRepository: [],
+				issueContributionsByRepository: [],
+				pullRequestContributionsByRepository: [],
+				...summary,
+			},
+		];
+	}
+
+	return [...dayKeys]
 		.sort((a, b) => b.localeCompare(a))
 		.map((date) => ({
 			date,
 			commitContributionsByRepository: commits.get(date) ?? [],
 			issueContributionsByRepository: issues.get(date) ?? [],
 			pullRequestContributionsByRepository: prs.get(date) ?? [],
-			totalCommitContributions: payload.totalCommitContributions,
-			totalPullRequestContributions: payload.totalPullRequestContributions,
-			totalIssueContributions: payload.totalIssueContributions,
-			restrictedContributionsCount: payload.restrictedContributionsCount,
+			...summary,
 		}));
 }
