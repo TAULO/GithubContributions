@@ -104,6 +104,7 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 	return json(data, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
+			'Cache-Control': 'public, max-age=3600',
 		},
 	});
 };
