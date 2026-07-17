@@ -1,15 +1,16 @@
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from '../../../../.svelte-kit/types/src/routes/api/contributions-calendar/$types';
 import { GITHUB_ACCESS_TOKEN } from '$env/static/private';
-import {
-	CONTRIBUTION_QUERY,
-	type IContributionByRepository,
-} from '$lib/github';
+import { CONTRIBUTION_QUERY, type IContributionByRepository } from '$lib/github';
 
 // lift GitHub's { issue }/{ pullRequest } wrapper off each node so app types stay flat
 // what GitHub sends: repo wrapper whose commits carry the { issue }/{ pullRequest } envelope
 interface IRawRepo<TRawNode> {
-	repository: { nameWithOwner: string; url: string };
+	repository: {
+		nameWithOwner: string;
+		url: string;
+		primaryLanguage: { name: string; color: string } | null;
+	};
 	contributions: { nodes: TRawNode[] };
 }
 

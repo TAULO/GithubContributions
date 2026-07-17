@@ -22,19 +22,19 @@ export const CONTRIBUTION_QUERY = `
       	totalIssueContributions
       	restrictedContributionsCount
       	commitContributionsByRepository {
-        	repository { nameWithOwner url }
+        	repository { nameWithOwner url primaryLanguage { name color } }
         	contributions(first: 10) {
           	nodes { commitCount occurredAt }
         	}
       	}
       	pullRequestContributionsByRepository(maxRepositories: 10) {
-        	repository { nameWithOwner url }
+        	repository { nameWithOwner url primaryLanguage { name color } }
         	contributions(first: 10) {
           	nodes { pullRequest { title url createdAt } }
         	}
       	}
 			issueContributionsByRepository(maxRepositories: 10) {
-				repository { nameWithOwner url }
+				repository { nameWithOwner url primaryLanguage { name color } }
 				contributions(first: 10) {
 					nodes {
 						issue {
@@ -98,7 +98,13 @@ export interface IIssue {
 	labels: { name: string; color: string }[];
 }
 
+export interface IPrimaryLanguage {
+	name: string;
+	color: string;
+}
+
 export interface IRepository {
+	primaryLanguage: IPrimaryLanguage | null;
 	nameWithOwner: string;
 	url: string;
 }
