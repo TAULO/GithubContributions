@@ -10,6 +10,7 @@ interface IRawRepo<TRawNode> {
 		nameWithOwner: string;
 		url: string;
 		primaryLanguage: { name: string; color: string } | null;
+		languages: { totalCount: number, totalSize: number, nodes: { name: string, color: string }[] }
 	};
 	contributions: { nodes: TRawNode[] };
 }
@@ -82,7 +83,14 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 		pick: (node: TRaw) => TItem,
 	): IContributionByRepository<TItem>[] =>
 		repos.map((repo) => ({
-			repository: repo.repository,
+			repository: {
+				...repo.repository,
+				languages: {
+					totalCount: repo.repository.languages.totalCount,
+					totalSize: repo.repository.languages.totalSize,
+					items: unwrapNodes(repo.repository.languages),
+				}
+			},
 			contributions: repo.contributions.nodes.map(pick),
 		}));
 
