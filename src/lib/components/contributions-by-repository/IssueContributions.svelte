@@ -101,6 +101,7 @@
 					font-size: 12px;
 					text-overflow: ellipsis;
 					box-shadow: var(--shadow);
+					font-weight: 500;
 				}
 			}
 

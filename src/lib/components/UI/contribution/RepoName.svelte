@@ -11,6 +11,7 @@
 	<div class="langauge-bar">
 		{#each repo.languages.items as language}
 			<div
+				class="language-bar-item"
 				style:background-color={language.color}
 				style:width={`${language.percentage * 100}%`}
 				style:height="'100%'"
@@ -42,6 +43,13 @@
 			height: 8px;
 			overflow: hidden;
 			border-radius: 4px;
+		}
+
+		.language-bar-item:not(:last-child) {
+			border-right: 2px solid var(--primary-color);
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 	}
 </style>
