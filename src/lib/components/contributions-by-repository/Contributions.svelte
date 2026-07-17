@@ -14,14 +14,6 @@
 		user: string;
 	} = $props();
 
-	const totalCommits = $derived(
-		selectedContributionsByRepository.reduce((acc, r) => acc + r.totalCommitContributions, 0),
-	);
-
-	const totalRestrictedContributions = $derived(
-		selectedContributionsByRepository.reduce((acc, r) => acc + r.restrictedContributionsCount, 0),
-	);
-
 	const dayHasActivity = (day: IDayContributions) =>
 		day.commitContributionsByRepository.length > 0 ||
 		day.pullRequestContributionsByRepository.length > 0 ||
@@ -66,8 +58,10 @@
 								repositories={contributionByRepository.pullRequestContributionsByRepository}
 							/>
 						{/if}
-						{#if totalRestrictedContributions > 0}
-							<RestrictedContributions count={totalRestrictedContributions} />
+						{#if contributionByRepository.restrictedContributionsCount > 0}
+							<RestrictedContributions
+								count={contributionByRepository.restrictedContributionsCount}
+							/>
 						{/if}
 					</div>
 				{/if}
