@@ -9,8 +9,11 @@
 	import Contributions from '$lib/components/contributions-by-repository/Contributions.svelte';
 	import ContributionsYear from '$lib/components/contribution-years/ContributionYears.svelte';
 	import Loading from '$lib/components/UI/contribution/Loading.svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 
 	let { data }: { data: PageData } = $props();
+
+	const selectedContributionsDate = new SvelteSet<string>();
 
 	let contributionCollection = $derived(data.contribution);
 	let user = $derived(data.user);
@@ -54,12 +57,23 @@
 		currentYear = year;
 		handleFetch();
 	}
+
+	function deleteByDate(date: string) {
+		selectedContributionsDate.delete(date);
+		selectedContributionsByRepository = selectedContributionsByRepository.filter(
+			(c) => c.date !== date,
+		);
+	}
 </script>
 
 <div class="container">
 	<div>
-		<div class="contributions-calendar" class:standalone={!hasSelectedContributionsByRepository}>
-			<ContributionsCalendar {contributionCollection} onSelectionChange={handleSelectionChange} />
+		<div class="contributions-calendar">
+			<ContributionsCalendar
+				{contributionCollection}
+				{selectedContributionsDate}
+				onSelectionChange={handleSelectionChange}
+			/>
 			<ContributionsYear
 				contributionYears={contributionCollection.contributionYears}
 				onClicked={changeYear}
@@ -70,7 +84,11 @@
 				{#if contributionsLoading}
 					<Loading />
 				{:else}
-					<Contributions {selectedContributionsByRepository} {user} />
+					<Contributions
+						{selectedContributionsByRepository}
+						{user}
+						onDeleteByDate={deleteByDate}
+					/>
 				{/if}
 			</div>
 		{/if}
@@ -107,10 +125,6 @@
 		border-radius: 8px 8px 0 0;
 
 		background-color: var(--primary-color);
-	}
-
-	.contributions-calendar.standalone {
-		border-radius: 8px;
 	}
 
 	.contributions-container {

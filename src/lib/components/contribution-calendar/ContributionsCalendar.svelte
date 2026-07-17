@@ -5,13 +5,13 @@
 
 	let {
 		contributionCollection,
+		selectedContributionsDate,
 		onSelectionChange,
 	}: {
 		contributionCollection: IContributionCollection;
+		selectedContributionsDate: SvelteSet<string>;
 		onSelectionChange?: (dates: string[]) => void;
 	} = $props();
-
-	const selectedContributionsDate = new SvelteSet<string>();
 
 	const months = [
 		'Jan',

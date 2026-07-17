@@ -9,9 +9,11 @@
 	let {
 		selectedContributionsByRepository,
 		user,
+		onDeleteByDate = (date: string) => {},
 	}: {
 		selectedContributionsByRepository: IDayContributions[];
 		user: string;
+		onDeleteByDate?: (date: string) => void;
 	} = $props();
 
 	const dayHasActivity = (day: IDayContributions) =>
@@ -33,6 +35,18 @@
 	{:else}
 		{#each selectedContributionsByRepository as contributionByRepository}
 			<div class="contribution-container">
+				<button
+					class="delete-button"
+					type="button"
+					onclick={() => onDeleteByDate?.(contributionByRepository.date)}
+					aria-label="Delete"
+				>
+					<svg fill="currentColor" aria-hidden="true" height="16" width="16" viewBox="0 0 16 16">
+						<path
+							d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"
+						/>
+					</svg>
+				</button>
 				<div class="date-container">
 					<p>{prettyDate(contributionByRepository.date)}</p>
 					<div class="line"></div>
@@ -41,28 +55,20 @@
 					{@render noContribution()}
 				{:else}
 					<div class="timeline">
-						{#if contributionByRepository.commitContributionsByRepository.length > 0}
-							<CommitContributions
-								repositories={contributionByRepository.commitContributionsByRepository}
-								{user}
-								date={contributionByRepository.date}
-							/>
-						{/if}
-						{#if contributionByRepository.issueContributionsByRepository.length > 0}
-							<IssueContributions
-								repositories={contributionByRepository.issueContributionsByRepository}
-							/>
-						{/if}
-						{#if contributionByRepository.pullRequestContributionsByRepository.length > 0}
-							<PullReqContributions
-								repositories={contributionByRepository.pullRequestContributionsByRepository}
-							/>
-						{/if}
-						{#if contributionByRepository.restrictedContributionsCount > 0}
-							<RestrictedContributions
-								count={contributionByRepository.restrictedContributionsCount}
-							/>
-						{/if}
+						<CommitContributions
+							repositories={contributionByRepository.commitContributionsByRepository}
+							{user}
+							date={contributionByRepository.date}
+						/>
+						<IssueContributions
+							repositories={contributionByRepository.issueContributionsByRepository}
+						/>
+						<PullReqContributions
+							repositories={contributionByRepository.pullRequestContributionsByRepository}
+						/>
+						<RestrictedContributions
+							count={contributionByRepository.restrictedContributionsCount}
+						/>
 					</div>
 				{/if}
 			</div>
@@ -104,6 +110,28 @@
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
+		position: relative;
+
+		.delete-button {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			top: 1.5rem;
+			right: 0;
+			background-color: var(--secondary-color);
+			border: none;
+			color: var(--sub-title-color);
+			cursor: pointer;
+			padding: 0.2rem;
+			z-index: 1;
+			border-radius: 50%;
+			box-shadow: var(--shadow);
+		}
+
+		.delete-button:hover {
+			background-color: var(--hover-color);
+		}
 	}
 
 	.timeline {
