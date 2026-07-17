@@ -104,8 +104,6 @@
 	</div>
 </ContributionContainer>
 
-foobar
-
 <style>
 	.pull-request-state {
 		display: flex;
