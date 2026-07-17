@@ -1,5 +1,5 @@
 import { error, json } from '@sveltejs/kit';
-import type { RequestHandler } from '../../../../.svelte-kit/types/src/routes/api/contributions-calendar/$types';
+import type { RequestHandler } from './$types';
 import { GITHUB_ACCESS_TOKEN } from '$env/static/private';
 import { CONTRIBUTION_QUERY, type IContributionByRepository } from '$lib/github';
 
@@ -10,21 +10,30 @@ interface IRawRepo<TRawNode> {
 		nameWithOwner: string;
 		url: string;
 		primaryLanguage: { name: string; color: string } | null;
-		languages: { totalCount: number; totalSize: number; nodes: { name: string; color: string }[] };
+		languages: {
+			totalCount: number;
+			totalSize: number;
+			edges: { size: number; node: { name: string; color: string } }[];
+		};
 	};
 	contributions: { nodes: TRawNode[] };
 }
 
-interface IRawIssue {
-	labels: { nodes: { name: string; color: string }[] };
+interface IRawCommitNode {
+	commitCount: number;
+	occurredAt: string;
 }
-
-interface IRawCommit {
-	nodes: { commitCount: number; occurredAt: string };
+interface IRawPullRequestNode {
+	pullRequest: { title: string; url: string; createdAt: string; state: string };
 }
-
-interface IRawPullRequest {
-	nodes: { pullRequest: { title: string; url: string; createdAt: string; state: string } };
+interface IRawIssueNode {
+	issue: {
+		title: string;
+		url: string;
+		createdAt: string;
+		closed: boolean;
+		labels: { nodes: { name: string; color: string }[] };
+	};
 }
 
 export const GET: RequestHandler = async ({ url, fetch }) => {
@@ -47,8 +56,6 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 
 	const from = fromDate.toISOString();
 	const to = toParam ? new Date(`${toParam}T00:00:00Z`).toISOString() : from;
-
-	console.log(from, to);
 
 	const res = await fetch('https://api.github.com/graphql', {
 		method: 'POST',
@@ -82,27 +89,37 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 		repos: IRawRepo<TRaw>[],
 		pick: (node: TRaw) => TItem,
 	): IContributionByRepository<TItem>[] =>
-		repos.map((repo) => ({
-			repository: {
-				...repo.repository,
-				languages: {
-					totalCount: repo.repository.languages.totalCount,
-					totalSize: repo.repository.languages.totalSize,
-					items: unwrapNodes(repo.repository.languages),
+		repos.map((repo) => {
+			const languages = repo.repository.languages;
+			return {
+				repository: {
+					...repo.repository,
+					languages: {
+						totalCount: languages.totalCount,
+						totalSize: languages.totalSize,
+						items: languages.edges.map((e) => ({
+							name: e.node.name,
+							color: e.node.color ?? '#ccc',
+							size: e.size,
+							percentage: languages.totalSize > 0 ? e.size / languages.totalSize : 0,
+						})),
+					},
 				},
-			},
-			contributions: repo.contributions.nodes.map(pick),
-		}));
+				contributions: repo.contributions.nodes.map(pick),
+			};
+		});
 
 	const data = {
-		commitContributionsByRepository: flatten(commitContributionsByRepository, (n: IRawCommit) => n),
-		issueContributionsByRepository: flatten(
-			issueContributionsByRepository,
-			(n: { issue: IRawIssue }) => ({ ...n.issue, labels: unwrapNodes(n.issue.labels) }),
+		commitContributionsByRepository: flatten(
+			commitContributionsByRepository,
+			(n: IRawCommitNode) => n,
 		),
+		issueContributionsByRepository: flatten(issueContributionsByRepository, (n: IRawIssueNode) => {
+			return { ...n.issue, labels: unwrapNodes(n.issue.labels) };
+		}),
 		pullRequestContributionsByRepository: flatten(
 			pullRequestContributionsByRepository,
-			(n: { pullRequest: IRawPullRequest }) => n.pullRequest,
+			(n: { pullRequest: IRawPullRequestNode }) => n.pullRequest,
 		),
 		totalCommitContributions,
 		totalPullRequestContributions,

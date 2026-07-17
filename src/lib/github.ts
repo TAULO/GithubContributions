@@ -22,19 +22,19 @@ export const CONTRIBUTION_QUERY = `
       	totalIssueContributions
       	restrictedContributionsCount
       	commitContributionsByRepository {
-        	repository { nameWithOwner url primaryLanguage { name color } languages(first: 10) { totalCount totalSize nodes { name color } } }
+        	repository { nameWithOwner url primaryLanguage { name color } languages(first: 10 orderBy: { field: SIZE, direction: DESC }) { totalCount totalSize edges { size node { name color} } } }
         	contributions(first: 10) {
           	nodes { commitCount occurredAt }
         	}
       	}
       	pullRequestContributionsByRepository(maxRepositories: 10) {
-        	repository { nameWithOwner url primaryLanguage { name color } languages(first: 10) { totalCount totalSize nodes { name color } } }
+        	repository { nameWithOwner url primaryLanguage { name color } languages(first: 10 orderBy: { field: SIZE, direction: DESC }) { totalCount totalSize edges { size node { name color} } } }
         	contributions(first: 10) {
           	nodes { pullRequest { title url createdAt state } }
         	}
       	}
 			issueContributionsByRepository(maxRepositories: 10) {
-				repository { nameWithOwner url primaryLanguage { name color } languages(first: 10) { totalCount totalSize nodes { name color } } }
+				repository { nameWithOwner url primaryLanguage { name color } languages(first: 10 orderBy: { field: SIZE, direction: DESC }) { totalCount totalSize edges { size node { name color} } } }
 				contributions(first: 10) {
 					nodes {
 						issue {
@@ -105,9 +105,16 @@ export interface IIssue {
 	labels: { name: string; color: string }[];
 }
 
+export interface ILanguageRef {
+	name: string;
+	color: string;
+}
+
 export interface ILanguage {
 	name: string;
 	color: string;
+	size: number;
+	percentage: number;
 }
 
 export interface ILanguageCollection {
@@ -119,7 +126,7 @@ export interface ILanguageCollection {
 export interface IRepository {
 	nameWithOwner: string;
 	url: string;
-	primaryLanguage: ILanguage | null;
+	primaryLanguage: ILanguageRef | null;
 	languages: ILanguageCollection;
 }
 
