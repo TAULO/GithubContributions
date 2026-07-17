@@ -10,7 +10,7 @@ interface IRawRepo<TRawNode> {
 		nameWithOwner: string;
 		url: string;
 		primaryLanguage: { name: string; color: string } | null;
-		languages: { totalCount: number, totalSize: number, nodes: { name: string, color: string }[] }
+		languages: { totalCount: number; totalSize: number; nodes: { name: string; color: string }[] };
 	};
 	contributions: { nodes: TRawNode[] };
 }
@@ -24,7 +24,7 @@ interface IRawCommit {
 }
 
 interface IRawPullRequest {
-	nodes: { pullRequest: { title: string; url: string; createdAt: string } };
+	nodes: { pullRequest: { title: string; url: string; createdAt: string; state: string } };
 }
 
 export const GET: RequestHandler = async ({ url, fetch }) => {
@@ -89,7 +89,7 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 					totalCount: repo.repository.languages.totalCount,
 					totalSize: repo.repository.languages.totalSize,
 					items: unwrapNodes(repo.repository.languages),
-				}
+				},
 			},
 			contributions: repo.contributions.nodes.map(pick),
 		}));

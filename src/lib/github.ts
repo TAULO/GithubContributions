@@ -30,7 +30,7 @@ export const CONTRIBUTION_QUERY = `
       	pullRequestContributionsByRepository(maxRepositories: 10) {
         	repository { nameWithOwner url primaryLanguage { name color } languages(first: 10) { totalCount totalSize nodes { name color } } }
         	contributions(first: 10) {
-          	nodes { pullRequest { title url createdAt } }
+          	nodes { pullRequest { title url createdAt state } }
         	}
       	}
 			issueContributionsByRepository(maxRepositories: 10) {
@@ -79,6 +79,12 @@ export interface IContributionCollection {
 	contributionYears: number[];
 }
 
+export enum PullRequestState {
+	OPEN = 'OPEN',
+	CLOSED = 'CLOSED',
+	MERGED = 'MERGED',
+}
+
 export interface ICommit {
 	commitCount: number;
 	occurredAt: string;
@@ -88,6 +94,7 @@ export interface IPullRequest {
 	title: string;
 	url: string;
 	createdAt: string;
+	state: PullRequestState;
 }
 
 export interface IIssue {
