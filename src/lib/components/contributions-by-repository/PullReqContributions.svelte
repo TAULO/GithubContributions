@@ -40,7 +40,7 @@
 			</svg>
 		</TitleWithBadge>
 		{#each repositories as repo}
-			<div>
+			<div class="container">
 				<RepoName repo={repo.repository}></RepoName>
 				<div>
 					{#each repo.contributions as pullRequest}
@@ -107,34 +107,42 @@
 </ContributionContainer>
 
 <style>
-	.pull-request-container {
+	.container {
 		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		justify-content: space-between;
+		flex-direction: column;
+		gap: 16px;
 
-		.pull-request-state {
+		.pull-request-container {
 			display: flex;
 			align-items: center;
-			gap: 0.25rem;
-			width: fit-content;
-			padding: 0.25rem 0.5rem;
-			border-radius: 1rem;
-			color: white;
-			box-shadow: var(--shadow);
-		}
+			gap: 0.5rem;
+			justify-content: space-between;
 
-		.pull-request-state.open {
-			background-color: #238636;
-		}
+			.pull-request-state {
+				display: flex;
+				align-items: center;
+				gap: 0.25rem;
+				width: fit-content;
+				padding: 0.25rem 0.5rem;
+				border-radius: 1rem;
+				color: white;
+				box-shadow: var(--shadow);
+				font-size: 0.875rem;
+				line-height: 1.25rem;
+				font-weight: 500;
+			}
 
-		.pull-request-state.closed {
-			background-color: #da3633;
-		}
+			.pull-request-state.open {
+				background-color: #238636;
+			}
 
-		.pull-request-state.merged {
-			background-color: #8957e5;
+			.pull-request-state.closed {
+				background-color: #da3633;
+			}
+
+			.pull-request-state.merged {
+				background-color: #8957e5;
+			}
 		}
 	}
-
 </style>
