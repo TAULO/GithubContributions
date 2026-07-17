@@ -98,7 +98,7 @@
 					border-radius: 8px;
 					font-size: 12px;
 					text-overflow: ellipsis;
-					font-weight: 500;
+					box-shadow: var(--shadow);
 				}
 			}
 
