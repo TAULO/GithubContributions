@@ -44,7 +44,28 @@
 				<div class="issues-container">
 					{#each repo.contributions as issue}
 						<div class="issues">
-							<div class={['issue-status', issue.closed ? 'issue-closed' : 'issue-open']}></div>
+							{#if issue.closed}
+								<div class="issue-status closed">
+									<svg aria-hidden="true" focusable="false" viewBox="0 0 16 16" fill="currentColor"
+										><path
+											d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm1.5 0a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Zm10.28-1.72-4.5 4.5a.75.75 0 0 1-1.06 0l-2-2a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l1.47 1.47 3.97-3.97a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"
+										></path></svg
+									>
+								</div>
+							{:else}
+								<div class="issue-status open">
+									<svg
+										focusable="false"
+										aria-label="Issue"
+										role="img"
+										viewBox="0 0 16 16"
+										fill="currentColor"
+										><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path><path
+											d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"
+										></path></svg
+									>
+								</div>
+							{/if}
 							<div class="issue">
 								<a href={issue.url} target="_blank">
 									{issue.title}
@@ -90,6 +111,30 @@
 				flex: 1;
 			}
 
+			.issue-status {
+				width: 22px;
+				height: 22px;
+				background-color: #8957e5;
+				border-radius: 50%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				svg {
+					width: 12px;
+					height: 12px;
+					color: white;
+				}
+			}
+
+			.issue-status.closed {
+				background-color: #8957e5;
+			}
+
+			.issue-status.open {
+				background-color: #238636;
+			}
+
 			.labels-container {
 				display: flex;
 				gap: 4px;
@@ -103,20 +148,6 @@
 					box-shadow: var(--shadow);
 					font-weight: 500;
 				}
-			}
-
-			.issue-status {
-				width: 8px;
-				height: 8px;
-				border-radius: 50%;
-			}
-
-			.issue-closed {
-				background-color: red;
-			}
-
-			.issue-open {
-				background-color: green;
 			}
 		}
 	}

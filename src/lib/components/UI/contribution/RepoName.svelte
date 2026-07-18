@@ -13,6 +13,8 @@
 	<a href={repo.url} target="_blank" rel="noopener noreferrer">
 		{repo.nameWithOwner}
 	</a>
+	{#if repo.languages.items.length > 0}
+
 	<div class="langauge-bar">
 		{#each repo.languages.items as language}
 			<div
@@ -24,15 +26,16 @@
 			></div>
 		{/each}
 	</div>
-	<div class="language-info-container">
-		{#each repo.languages.items.slice(0, 3) as language}
-			<div class="language-info-item">
-				<div class="language-dot" style:background-color={language.color}></div>
-				<p class="language-name">{language.name}</p>
-				<p class="language-percentage">{formatPercentage(language.percentage)}</p>
-			</div>
-		{/each}
-	</div>
+		<div class="language-info-container">
+			{#each repo.languages.items.slice(0, 3) as language}
+				<div class="language-info-item">
+					<div class="language-dot" style:background-color={language.color}></div>
+					<p class="language-name">{language.name}</p>
+					<p class="language-percentage">{formatPercentage(language.percentage)}</p>
+				</div>
+			{/each}
+		</div>
+	{/if}
 </div>
 
 <style>
