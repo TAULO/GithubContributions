@@ -51,7 +51,7 @@
 	}
 
 	.cell.dimmed {
-		opacity: 0.5;
+		opacity: 0.7;
 	}
 
 	.cell.highlighted {
