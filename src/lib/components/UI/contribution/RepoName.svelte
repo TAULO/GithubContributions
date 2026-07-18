@@ -43,7 +43,7 @@
 
 		a {
 			color: var(--sub-title-color);
-			font-weight: 500;
+			font-weight: 700;
 			width: fit-content;
 		}
 

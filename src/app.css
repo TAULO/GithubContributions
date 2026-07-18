@@ -49,7 +49,6 @@
 	a {
 		color: var(--sub-title-color);
 		text-decoration: none;
-		font-style: italic;
 	}
 
 	a:hover {

@@ -17,6 +17,9 @@
 	h3 {
 		justify-self: center;
 		align-self: center;
+		font-size: 1.2rem;
+		font-weight: 400;
+		color: var(--sub-title-color);
 	}
 
 	.container {

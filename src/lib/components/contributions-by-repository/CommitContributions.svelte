@@ -40,12 +40,11 @@
 				{@const commits = countCommits(repo.contributions)}
 				<div class="item-container">
 					<RepoName repo={repo.repository}></RepoName>
-					<p>
-						<a
-							href={`${repo.repository.url}/commits?author=${user}&since=${date}&until=${date}`}
-							target="_blank">{commits} {pluralize(commits, 'commit')}</a
-						>
-					</p>
+					<a
+						class={repo.repository.primaryLanguage ? 'flex-end' : 'flex-start'}
+						href={`${repo.repository.url}/commits?author=${user}&since=${date}&until=${date}`}
+						target="_blank">{commits} {pluralize(commits, 'commit')}</a
+					>
 				</div>
 			{/each}
 		</div>
@@ -53,11 +52,6 @@
 {/if}
 
 <style>
-	p {
-		margin: 0;
-		padding: 0;
-	}
-
 	.container {
 		display: flex;
 		flex-direction: column;
@@ -67,6 +61,17 @@
 	.item-container {
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
+	}
+
+	a {
+		font-style: italic;
+	}
+
+	a.flex-end {
+		align-self: flex-end;
+	}
+
+	a.flex-start {
+		align-self: flex-start;
 	}
 </style>

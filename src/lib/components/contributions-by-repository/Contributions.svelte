@@ -34,7 +34,10 @@
 		{@render noContribution()}
 	{:else}
 		{#each selectedContributionsByRepository as contributionByRepository}
-			<div class="contribution-container">
+			<div
+				role="region"
+				class="contribution-container"
+			>
 				<button
 					class="delete-button"
 					type="button"
