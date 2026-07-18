@@ -2,6 +2,11 @@
 	import type { IRepository } from '$lib/github';
 
 	let { repo }: { repo: IRepository } = $props();
+
+	const formatPercentage = (value: number) => {
+		const percentage = value * 100;
+		return repo.languages.items.length > 1 ? `${percentage.toFixed(1)}%` : `${percentage}%`;
+	};
 </script>
 
 <div class="container">
@@ -17,6 +22,15 @@
 				style:height="'100%'"
 				title={language.name}
 			></div>
+		{/each}
+	</div>
+	<div class="language-info-container">
+		{#each repo.languages.items.slice(0, 3) as language}
+			<div class="language-info-item">
+				<div class="language-dot" style:background-color={language.color}></div>
+				<p class="language-name">{language.name}</p>
+				<p class="language-percentage">{formatPercentage(language.percentage)}</p>
+			</div>
 		{/each}
 	</div>
 </div>
@@ -50,6 +64,40 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
+		}
+
+		.language-info-container {
+			display: flex;
+			gap: 16px;
+
+			.language-info-item {
+				display: flex;
+				align-items: center;
+				gap: 4px;
+			}
+
+			p {
+				margin: 0;
+				padding: 0;
+				font-size: 12px;
+			}
+
+			.language-dot {
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				margin-right: 4px;
+			}
+
+			.language-name {
+				color: var(--sub-title-color);
+				font-weight: 500;
+			}
+
+			.language-percentage {
+				color: var(--sub-title-color);
+				opacity: 0.7;
+			}
 		}
 	}
 </style>
