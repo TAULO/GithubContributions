@@ -77,6 +77,7 @@
 			<ContributionsYear
 				contributionYears={contributionCollection.contributionYears}
 				onClicked={changeYear}
+				selectedYear={currentYear}
 			/>
 		</div>
 		{#if hasSelectedContributionsByRepository}
