@@ -165,6 +165,10 @@
 		align-self: flex-end;
 	}
 
+	.block:last-child {
+		align-self: flex-start;
+	}
+
 	.date-container {
 		position: absolute;
 		top: -24px;
