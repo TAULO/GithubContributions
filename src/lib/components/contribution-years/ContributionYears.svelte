@@ -48,19 +48,21 @@
 				cursor: pointer;
 			}
 
-			.selected-year-dot.selected {
+			.selected-year-dot {
 				position: absolute;
 				top: 40px;
 				left: 50%;
 				transform: translateX(-50%);
-				background-color: var(--tertiary-color);
 				width: 8px;
 				height: 8px;
 				border-radius: 50%;
+				background-color: var(--tertiary-color);
+				opacity: 0;
+				transition: opacity 0.3s ease;
 			}
 
-			.selected-year-dot {
-				transition: background-color 0.5s ease;
+			.selected-year-dot.selected {
+				opacity: 1;
 				animation: pulse 2s infinite;
 			}
 		}
