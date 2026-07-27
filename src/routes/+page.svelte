@@ -129,6 +129,8 @@
 		border-radius: 8px 8px 0 0;
 
 		background-color: var(--primary-color);
+
+		max-width: 800px;
 	}
 
 	.contributions-container {
