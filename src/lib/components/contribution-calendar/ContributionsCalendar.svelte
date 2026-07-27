@@ -39,6 +39,11 @@
 	let contributions = $derived(contributionCollection.contributions);
 	let hoveredMonth = $state<number | null>(null);
 
+	const isEligibleInMonth = (day: ContributionDay, monthIndex: number) =>
+		new Date(day.date).getUTCMonth() === monthIndex &&
+		day.count > 0 &&
+		!isTodayUtcMonthLastYear(day.date);
+
 	function getWeekDateFromIndex(index: number): string | null {
 		if (index === 0) return null; // skip the first month
 
@@ -67,22 +72,26 @@
 	function labelEnter(monthIndex: number | null) {
 		hoveredMonth = monthIndex;
 	}
+
 	function labelLeave() {
 		hoveredMonth = null;
 	}
 
 	function labelClick(monthIndex: number) {
 		const datesInMonth = contributions
-			.flat() // weeks → all days
-			.filter(
-				(day) =>
-					new Date(day.date).getUTCMonth() === monthIndex &&
-					day.count > 0 &&
-					!isTodayUtcMonthLastYear(day.date),
-			)
+			.flat()
+			.filter((day) => isEligibleInMonth(day, monthIndex))
 			.map((day) => day.date);
 
-		for (const date of datesInMonth) toggleSelected(date);
+		const allSelected = datesInMonth.every((date) => selectedContributionsDate.has(date));
+
+		for (const date of datesInMonth) {
+			if (allSelected) {
+				selectedContributionsDate.delete(date);
+			} else {
+				selectedContributionsDate.add(date);
+			}
+		}
 	}
 
 	function isTodayUtcMonthLastYear(date: string) {
@@ -118,10 +127,7 @@
 				{@const isSelected = selectedContributionsDate.has(contributionDay.date)}
 				{@const hasContributions = contributionDay.count > 0}
 				{@const highlight =
-					hoveredMonth !== null &&
-					hoveredMonth === new Date(contributionDay.date).getUTCMonth() &&
-					hasContributions &&
-					!isTodayUtcMonthLastYear(contributionDay.date)}
+					hoveredMonth !== null && isEligibleInMonth(contributionDay, hoveredMonth)}
 				<ContributionDayCell
 					{contributionDay}
 					selected={isSelected}
