@@ -10,6 +10,8 @@
 	import ContributionsYear from '$lib/components/contribution-years/ContributionYears.svelte';
 	import Loading from '$lib/components/UI/contribution/Loading.svelte';
 	import { SvelteSet } from 'svelte/reactivity';
+	import { settings } from '$lib/services/settings.svelte';
+	import Settings from '$lib/components/settings/Settings.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -21,7 +23,6 @@
 
 	let loading = $state(false);
 	let errorMsg = $state<string | null>(null);
-
 	let contributionsLoading = $state(false);
 
 	let selectedContributionsByRepository = $state<IDayContributions[]>([]);
@@ -72,7 +73,12 @@
 	}
 </script>
 
-<div class="container">
+<div
+	class="container"
+	style={Object.entries(settings)
+		.map(([k, v]) => `${k}: ${v}`)
+		.join('; ')}
+>
 	<button onclick={reset}>Reset</button>
 	<div>
 		<div class="contributions-calendar">
@@ -115,6 +121,8 @@
 		<p class="error">{errorMsg}</p>
 	{/if}
 </div>
+
+<Settings/>
 
 <style>
 	.container {
