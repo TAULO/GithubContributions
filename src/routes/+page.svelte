@@ -125,12 +125,10 @@
 	}
 
 	.contributions-calendar {
-		padding: 1rem;
-		border-radius: 8px 8px 0 0;
-
 		background-color: var(--primary-color);
 
-		max-width: 800px;
+		width: 800px;
+		padding: 1rem;
 	}
 
 	.contributions-container {

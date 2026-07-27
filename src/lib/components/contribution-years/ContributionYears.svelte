@@ -10,10 +10,12 @@
 		onClicked: (year: number) => void;
 		selectedYear?: number | null;
 	} = $props();
+
+	let sortedYears = $derived([...contributionYears].sort((a, b) => a - b));
 </script>
 
 <div class="contribution-years-container">
-	{#each contributionYears as year}
+	{#each sortedYears as year}
 		<div class="year-button-container">
 			<button {disabled} onclick={() => onClicked(year)}>{year}</button>
 			<div class="selected-year-dot" class:selected={selectedYear === year}></div>
@@ -24,10 +26,8 @@
 <style>
 	.contribution-years-container {
 		display: flex;
-		gap: 1rem;
-		justify-content: center;
+		gap: 8px;
 		flex-wrap: wrap;
-		flex-direction: row-reverse;
 		margin-top: 1rem;
 
 		.year-button-container {
