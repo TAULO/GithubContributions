@@ -10,7 +10,7 @@
 	import ContributionsYear from '$lib/components/contribution-years/ContributionYears.svelte';
 	import Loading from '$lib/components/UI/contribution/Loading.svelte';
 	import { SvelteSet } from 'svelte/reactivity';
-	import { settings } from '$lib/services/settings.svelte';
+	import { settings } from '$lib/services/settings/settings.svelte.js';
 	import Settings from '$lib/components/settings/Settings.svelte';
 
 	let { data }: { data: PageData } = $props();

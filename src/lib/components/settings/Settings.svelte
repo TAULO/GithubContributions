@@ -5,7 +5,7 @@
 		resetSetting,
 		resetSettings,
 		SETTINGS_SCHEMA,
-	} from '$lib/services/settings.svelte';
+	} from '$lib/services/settings/settings.svelte.js';
 </script>
 
 <div class="settings">
