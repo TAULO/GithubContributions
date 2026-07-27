@@ -63,10 +63,14 @@
 		}
 
 		.language-bar-item:not(:last-child) {
-			border-right: 2px solid var(--primary-color);
+			border-right: 1px solid var(--primary-color);
 			display: flex;
 			align-items: center;
 			justify-content: center;
+		}
+
+		.language-bar-item {
+			min-width: 4px;
 		}
 
 		.language-info-container {
