@@ -5,7 +5,10 @@
 		resetSetting,
 		resetSettings,
 		SETTINGS_SCHEMA,
+		applyTheme,
 	} from '$lib/services/settings/settings.svelte.js';
+
+	import { THEMES } from '$lib/services/settings/themes.js';
 </script>
 
 <div class="settings">
@@ -38,6 +41,15 @@
 	</div>
 
 	<button onclick={resetSettings}>Reset to defaults</button>
+
+	<div>
+		<h1>Themes</h1>
+		{#each Object.entries(THEMES) as [name, theme]}
+			<div>
+				<button onclick={() => applyTheme(name)}>{theme.label}</button>
+			</div>
+		{/each}
+	</div>
 </div>
 
 <style>

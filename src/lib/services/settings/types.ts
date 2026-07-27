@@ -7,6 +7,11 @@ export interface ISetting {
 	defaultValue: string;
 }
 
+export interface ITheme {
+	label: string;
+	values: Record<SettingKey, string>;
+}
+
 export const SettingKey = {
 	// Colors
 	PRIMARY: '--primary-color',

@@ -1,4 +1,5 @@
 import type { ISetting, SettingKey } from '$lib/services/settings/types';
+import { THEMES } from '$lib/services/settings/themes';
 
 export const DEFAULT_SETTINGS: Record<SettingKey, string> = {
 	// Primary Colors
@@ -97,5 +98,12 @@ export function resetSetting(key: SettingKey) {
 export function resetSettings() {
 	for (const [key, value] of Object.entries(DEFAULT_SETTINGS)) {
 		settings[key] = value;
+	}
+}
+
+export function applyTheme(name: keyof typeof THEMES) {
+	const theme = THEMES[name];
+	for (const [key, value] of Object.entries(theme.values)) {
+		settings[key as SettingKey] = value;
 	}
 }
