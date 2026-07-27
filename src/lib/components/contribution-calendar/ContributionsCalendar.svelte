@@ -78,14 +78,14 @@
 				(day) =>
 					new Date(day.date).getUTCMonth() === monthIndex &&
 					day.count > 0 &&
-					!isTodaysUtcMonthLastYear(day.date),
+					!isTodayUtcMonthLastYear(day.date),
 			)
 			.map((day) => day.date);
 
 		for (const date of datesInMonth) toggleSelected(date);
 	}
 
-	function isTodaysUtcMonthLastYear(date: string) {
+	function isTodayUtcMonthLastYear(date: string) {
 		const today = new Date();
 
 		return (
@@ -121,7 +121,7 @@
 					hoveredMonth !== null &&
 					hoveredMonth === new Date(contributionDay.date).getUTCMonth() &&
 					hasContributions &&
-					!isTodaysUtcMonthLastYear(contributionDay.date)}
+					!isTodayUtcMonthLastYear(contributionDay.date)}
 				<ContributionDayCell
 					{contributionDay}
 					selected={isSelected}
