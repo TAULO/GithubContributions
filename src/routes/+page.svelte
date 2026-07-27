@@ -17,7 +17,7 @@
 
 	let contributionCollection = $derived(data.contribution);
 	let user = $derived(data.user);
-	let currentYear = $state<number>();
+	let currentYear = $state<number | null>(null);
 
 	let loading = $state(false);
 	let errorMsg = $state<string | null>(null);
@@ -64,9 +64,16 @@
 			(c) => c.date !== date,
 		);
 	}
+
+	function reset() {
+		selectedContributionsDate.clear();
+		currentYear = null;
+		handleFetch();
+	}
 </script>
 
 <div class="container">
+	<button onclick={reset}>Reset</button>
 	<div>
 		<div class="contributions-calendar">
 			<ContributionsCalendar
@@ -85,11 +92,7 @@
 				{#if contributionsLoading}
 					<Loading />
 				{:else}
-					<Contributions
-						{selectedContributionsByRepository}
-						{user}
-						onDeleteByDate={deleteByDate}
-					/>
+					<Contributions {selectedContributionsByRepository} {user} onDeleteByDate={deleteByDate} />
 				{/if}
 			</div>
 		{/if}

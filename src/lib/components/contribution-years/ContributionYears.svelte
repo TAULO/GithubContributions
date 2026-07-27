@@ -3,12 +3,12 @@
 		contributionYears,
 		disabled = false,
 		onClicked,
-		selectedYear,
+		selectedYear = null,
 	}: {
 		contributionYears: Array<number>;
 		disabled?: boolean;
 		onClicked: (year: number) => void;
-		selectedYear?: number;
+		selectedYear?: number | null;
 	} = $props();
 </script>
 
