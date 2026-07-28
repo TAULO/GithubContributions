@@ -9,7 +9,12 @@
 	} from '$lib/services/settings/settings.svelte.js';
 
 	import { THEMES } from '$lib/services/settings/themes.js';
-	import { type ITheme, THEME_NAMES, type ThemeName } from '$lib/services/settings/types';
+	import {
+		type ISetting,
+		type ITheme,
+		THEME_NAMES,
+		type ThemeName,
+	} from '$lib/services/settings/types';
 	import CalendarPreview from '$lib/components/settings/CalendarPreview.svelte';
 
 	const colors = ['black', 'red', 'green', 'blue', 'pink'];
@@ -27,41 +32,52 @@
 	}
 </script>
 
-{#snippet colorPicker()}
+{#snippet colorPicker(setting: ISetting)}
 	<div class="color-picker-container">
+		<h3>{setting.label}</h3>
 		<div class="colors-container">
 			{#each colors as color}
-				div.color
+				<button
+					class="color"
+					style:background-color={color}
+					onclick={() => setSetting(setting.key, color)}
+					aria-label={`Set ${setting.label} to ${color}`}
+				>
+				</button>
 			{/each}
 		</div>
 	</div>
 {/snippet}
 
 {#snippet theme(key: String, theme: ITheme)}
+	{@const selected = activeTheme === key}
 	<div
 		class="theme-container"
-		class:selected={activeTheme === key}
+		class:selected
 		style={Object.entries(theme.values)
 			.map(([k, v]) => `${k}: ${v}`)
 			.join('; ')}
 		role="radio"
-		aria-checked={activeTheme === key}
+		aria-checked={selected}
 		tabindex="0"
 		onclick={() => applyActiveTheme(key)}
 		onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && applyActiveTheme(key)}
 	>
 		<div class="preview"><CalendarPreview /></div>
 		<div class="name-container">
+			<div class="theme-checkbox" class:selected></div>
 			<h3>{theme.label}</h3>
 		</div>
 	</div>
 {/snippet}
 
-<div class="settings">
+<div class="settings-container">
 	<h1>Settings</h1>
-
-	<div class="settings-container"></div>
-	<button onclick={resetThemeSettings}>Reset to defaults</button>
+	{#each SETTINGS_SCHEMA as setting}
+		{#if setting.type === 'color'}
+			{@render colorPicker(setting)}
+		{/if}
+	{/each}
 
 	<div>
 		<h1>Themes</h1>
@@ -81,8 +97,26 @@
 	.settings-container {
 		display: flex;
 		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.color-picker-container {
+		display: flex;
 		justify-content: space-between;
 		gap: 1rem;
+
+		.colors-container {
+			display: flex;
+			gap: 8px;
+
+			.color {
+				width: 32px;
+				height: 32px;
+				border-radius: 50%;
+				box-shadow: var(--shadow);
+				border: none;
+			}
+		}
 	}
 
 	.theme-container:hover {
@@ -118,10 +152,26 @@
 			gap: 8px;
 
 			border-radius: 0 0 10px 10px;
+			align-items: center;
 
 			h3 {
 				color: var(--sub-title-color);
+			}
+
+			.theme-checkbox {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				width: 16px;
+				height: 16px;
+				border-radius: 50%;
+				border: 1px solid var(--tertiary-color);
 				margin-left: 1rem;
+			}
+
+			.theme-checkbox.selected {
+				background-color: var(--tertiary-color);
 			}
 		}
 	}

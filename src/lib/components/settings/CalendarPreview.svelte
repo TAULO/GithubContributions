@@ -11,20 +11,41 @@
 			level: LEVELS[Math.floor(Math.random() * LEVELS.length)],
 		}));
 	});
+
+	const levelColors = [
+		'--gh-level-0',
+		'--gh-level-1',
+		'--gh-level-2',
+		'--gh-level-3',
+		'--gh-level-4',
+	];
 </script>
 
-<div class="container">
-	{#each contributions as contribution, index}
-		<div class="block">
-			{#each contribution as contributionDay}
-				<div class={['cell', `level-${contributionDay.level}`]}></div>
-			{/each}
-		</div>
-	{/each}
+<div class="contributions-preview-container">
+	<div class="contributions-preview">
+		{#each contributions as contribution, index}
+			<div class="block">
+				{#each contribution as contributionDay}
+					<div class={['cell', `level-${contributionDay.level}`]}></div>
+				{/each}
+			</div>
+		{/each}
+	</div>
+<!--	<div class="levels">-->
+<!--		{#each levelColors as color}-->
+<!--			<div class="cell" style="background-color: {`var(${color})`}"></div>-->
+<!--		{/each}-->
+<!--	</div>-->
 </div>
 
 <style>
-	.container {
+	.contributions-preview-container {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.contributions-preview {
 		display: flex;
 		gap: 2px;
 	}
@@ -67,5 +88,13 @@
 	}
 	.cell.level-4 {
 		background-color: var(--gh-level-4, #216e39);
+	}
+
+	.levels {
+		display: flex;
+		gap: 2px;
+		align-items: center;
+
+		justify-content: flex-end;
 	}
 </style>

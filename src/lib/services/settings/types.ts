@@ -3,7 +3,7 @@ export type SettingKey = (typeof SettingKey)[keyof typeof SettingKey];
 export interface ISetting {
 	key: SettingKey;
 	label: string;
-	type: 'color' | 'size' | 'select';
+	type: 'color';
 	defaultValue: string;
 }
 
@@ -30,6 +30,10 @@ export const SettingKey = {
 export const THEME_NAMES = {
 	Default: 'default',
 	Halloween: 'halloween',
+	Dracula: 'dracula',
+	Ocean: 'ocean',
+	Monochrome: 'monochrome',
+	Matrix: 'matrix',
 } as const;
 
 export type ThemeName = (typeof THEME_NAMES)[keyof typeof THEME_NAMES];
