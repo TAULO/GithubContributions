@@ -102,7 +102,7 @@
 		p {
 			font-size: 14px;
 			font-weight: 500;
-			color: var(--sub-title-color);
+			color: var(--text-primary);
 		}
 	}
 
@@ -121,9 +121,9 @@
 			right: 0;
 			background-color: var(--secondary-color);
 			border: none;
-			color: var(--sub-title-color);
+			color: var(--text-on-accent);
 			cursor: pointer;
-			padding: 0.2rem;
+			padding: .2rem;
 			z-index: 1;
 			border-radius: 50%;
 			box-shadow: var(--shadow);

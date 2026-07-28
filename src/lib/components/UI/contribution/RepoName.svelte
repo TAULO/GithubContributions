@@ -14,18 +14,17 @@
 		{repo.nameWithOwner}
 	</a>
 	{#if repo.languages.items.length > 0}
-
-	<div class="langauge-bar">
-		{#each repo.languages.items as language}
-			<div
-				class="language-bar-item"
-				style:background-color={language.color}
-				style:width={`${language.percentage * 100}%`}
-				style:height="'100%'"
-				title={language.name}
-			></div>
-		{/each}
-	</div>
+		<div class="langauge-bar">
+			{#each repo.languages.items as language}
+				<div
+					class="language-bar-item"
+					style:background-color={language.color}
+					style:width={`${language.percentage * 100}%`}
+					style:height="'100%'"
+					title={language.name}
+				></div>
+			{/each}
+		</div>
 		<div class="language-info-container">
 			{#each repo.languages.items.slice(0, 3) as language}
 				<div class="language-info-item">
@@ -45,7 +44,7 @@
 		flex-direction: column;
 
 		a {
-			color: var(--sub-title-color);
+			color: var(--text-primary);
 			font-weight: 700;
 			width: fit-content;
 		}
@@ -87,6 +86,7 @@
 				margin: 0;
 				padding: 0;
 				font-size: 12px;
+				color: var(--text-primary);
 			}
 
 			.language-dot {
@@ -97,12 +97,12 @@
 			}
 
 			.language-name {
-				color: var(--sub-title-color);
+				color: var(--text-secondary);
 				font-weight: 500;
 			}
 
 			.language-percentage {
-				color: var(--sub-title-color);
+				color: var(--text-secondary);
 				opacity: 0.7;
 			}
 		}

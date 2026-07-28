@@ -65,6 +65,11 @@
 
 	a {
 		font-style: italic;
+		color: var(--text-secondary);
+	}
+
+	a:hover {
+		color: var(--hover-color);
 	}
 
 	a.flex-end {

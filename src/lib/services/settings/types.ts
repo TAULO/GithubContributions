@@ -17,7 +17,6 @@ export const SettingKey = {
 	PRIMARY: '--primary-color',
 	SECONDARY: '--secondary-color',
 	TERTIARY: '--tertiary-color',
-	SUB_TITLE: '--sub-title-color',
 	HOVER: '--hover-color',
 	// Contribution Levels
 	GH_LEVEL_0: '--gh-level-0',

@@ -155,7 +155,7 @@
 			align-items: center;
 
 			h3 {
-				color: var(--sub-title-color);
+				color: var(--text-primary);
 			}
 
 			.theme-checkbox {

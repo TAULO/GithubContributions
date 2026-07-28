@@ -109,6 +109,15 @@
 				align-items: center;
 				gap: 8px;
 				flex: 1;
+
+
+				a {
+					color: var(--text-primary);
+				}
+
+				a:hover {
+					color: var(--hover-color);
+				}
 			}
 
 			.issue-status {
@@ -140,7 +149,7 @@
 				gap: 4px;
 
 				.label {
-					color: var(--primary-color);
+					color: black;
 					padding: 2px 4px;
 					border-radius: 8px;
 					font-size: 12px;

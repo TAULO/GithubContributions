@@ -114,6 +114,14 @@
 		flex-direction: column;
 		gap: 16px;
 
+		a {
+			color: var(--text-primary);
+		}
+
+		a:hover {
+			color: var(--hover-color);
+		}
+
 		.pull-request-container {
 			display: flex;
 			align-items: center;
@@ -127,7 +135,7 @@
 				width: fit-content;
 				padding: 0.25rem 0.5rem;
 				border-radius: 1rem;
-				color: white;
+				color: var(--text-on-accent);
 				box-shadow: var(--shadow);
 				font-size: 0.875rem;
 				line-height: 1.25rem;

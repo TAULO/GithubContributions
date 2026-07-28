@@ -22,12 +22,6 @@ const COLORS: ISetting[] = [
 		defaultValue: DEFAULT_SETTINGS['--tertiary-color'],
 	},
 	{
-		key: '--sub-title-color',
-		label: 'Sub Title Color',
-		type: 'color',
-		defaultValue: DEFAULT_SETTINGS['--sub-title-color'],
-	},
-	{
 		key: '--hover-color',
 		label: 'Hover Color',
 		type: 'color',

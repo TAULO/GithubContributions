@@ -5,7 +5,6 @@ export const DEFAULT_SETTINGS: Record<SettingKey, string> = {
 	'--primary-color': '#172a3a',
 	'--secondary-color': '#004346',
 	'--tertiary-color': '#09bc8a',
-	'--sub-title-color': '#508991',
 	'--hover-color': '#74b3ce',
 
 	// Contribution Day Levels Colors

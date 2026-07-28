@@ -36,6 +36,7 @@
 			button {
 				position: relative;
 				background-color: var(--tertiary-color);
+				color: var(--text-on-accent);
 				border: none;
 				border-radius: 0.2rem;
 				box-shadow: var(--shadow);
