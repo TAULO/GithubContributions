@@ -122,7 +122,7 @@
 	{/if}
 </div>
 
-<Settings/>
+<Settings />
 
 <style>
 	.container {
@@ -133,16 +133,18 @@
 	}
 
 	.contributions-calendar {
+		width: 800px;
+
 		background-color: var(--primary-color);
 
-		width: 800px;
-		padding: 1rem;
+		border-radius: var(--radius-lg);
+
+		padding: var(--space-4);
 	}
 
 	.contributions-container {
-		border-top: none;
-		padding: 1rem;
-		border-radius: 0 0 8px 8px;
+		padding: var(--space-4);
+		border-radius: var(--radius-lg);
 
 		background-color: var(--primary-color);
 	}

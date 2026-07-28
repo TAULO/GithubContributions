@@ -81,7 +81,7 @@
 
 	<div>
 		<h1>Themes</h1>
-		<div style="display: flex; gap: 16px; flex-wrap: wrap">
+		<div class="theme-container">
 			{#each Object.entries(THEMES) as [name, themeItem]}
 				{@render theme(name, themeItem)}
 			{/each}
@@ -110,66 +110,70 @@
 			.color {
 				width: 32px;
 				height: 32px;
-				border-radius: 50%;
+				border-radius: var(--radius-full);
 				box-shadow: var(--shadow);
 				border: none;
 			}
 		}
 	}
 
-	.theme-container:hover {
-		cursor: pointer;
-		outline: 1px solid var(--hover-color);
-	}
-
-	.theme-container.selected {
-		outline: 1px solid var(--tertiary-color);
-	}
-
 	.theme-container {
 		display: flex;
-		flex-direction: column;
+		gap: var(--space-4);
+		flex-wrap: wrap;
 
-		width: fit-content;
-
-		border-radius: 10px;
-		box-shadow: var(--shadow);
-		background-color: var(--primary-color);
-
-		.preview {
-			height: 100%;
-			border-radius: 10px;
-			margin: 1rem;
-
-			justify-self: center;
-			align-self: center;
+		.theme-container:hover {
+			cursor: pointer;
+			outline: 1px solid var(--hover-color);
 		}
 
-		.name-container {
+		.theme-container.selected {
+			outline: 1px solid var(--tertiary-color);
+		}
+
+		.theme-container {
 			display: flex;
-			gap: var(--space-2);
+			flex-direction: column;
 
-			border-radius: 0 0 10px 10px;
-			align-items: center;
+			width: fit-content;
 
-			h3 {
-				color: var(--text-primary);
+			border-radius: var(--radius-lg);
+			box-shadow: var(--shadow);
+			background-color: var(--primary-color);
+
+			.preview {
+				border-radius: var(--radius-lg);
+				margin: var(--space-4);
+
+				justify-self: center;
+				align-self: center;
 			}
 
-			.theme-checkbox {
+			.name-container {
 				display: flex;
-				justify-content: center;
+				gap: var(--space-2);
+
 				align-items: center;
 
-				width: 16px;
-				height: 16px;
-				border-radius: 50%;
-				border: 1px solid var(--tertiary-color);
-				margin-left: 1rem;
-			}
+				h3 {
+					color: var(--text-primary);
+				}
 
-			.theme-checkbox.selected {
-				background-color: var(--tertiary-color);
+				.theme-checkbox {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+
+					width: 16px;
+					height: 16px;
+					border-radius: var(--radius-full);
+					border: 1px solid var(--tertiary-color);
+					margin-left: var(--space-4);
+				}
+
+				.theme-checkbox.selected {
+					background-color: var(--tertiary-color);
+				}
 			}
 		}
 	}
