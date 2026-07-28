@@ -26,3 +26,10 @@ export const SettingKey = {
 	GH_LEVEL_3: '--gh-level-3',
 	GH_LEVEL_4: '--gh-level-4',
 } as const;
+
+export const THEME_NAMES = {
+	Default: 'default',
+	Halloween: 'halloween',
+} as const;
+
+export type ThemeName = (typeof THEME_NAMES)[keyof typeof THEME_NAMES];
