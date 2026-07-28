@@ -1,12 +1,16 @@
 <script>
 	const WEEKS = 20;
+	const DAYS = 7;
+	const EDGE_DAYS = 4;
 	const LEVELS = [0, 0, 0, 0, 0, 1, 2, 3, 4];
 
-	const contributions = Array.from({ length: WEEKS }, () =>
-		Array.from({ length: 7 }, () => ({
+	const contributions = Array.from({ length: WEEKS }, (_, i) => {
+		const len = i === 0 || i === WEEKS - 1 ? EDGE_DAYS : DAYS;
+
+		return Array.from({ length: len }, () => ({
 			level: LEVELS[Math.floor(Math.random() * LEVELS.length)],
-		})),
-	);
+		}));
+	});
 </script>
 
 <div class="container">

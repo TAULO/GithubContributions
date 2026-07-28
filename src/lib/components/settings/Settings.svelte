@@ -12,6 +12,8 @@
 	import { type ITheme, THEME_NAMES, type ThemeName } from '$lib/services/settings/types';
 	import CalendarPreview from '$lib/components/settings/CalendarPreview.svelte';
 
+	const colors = ['black', 'red', 'green', 'blue', 'pink'];
+
 	let activeTheme = $state<String>(THEME_NAMES.Default);
 
 	function applyActiveTheme(key: String) {
@@ -19,7 +21,7 @@
 		applyTheme(key as ThemeName);
 	}
 
-	function resetAllSettings() {
+	function resetThemeSettings() {
 		activeTheme = THEME_NAMES.Default;
 		resetSettings();
 	}
@@ -27,9 +29,13 @@
 
 {#snippet colorPicker()}
 	<div class="color-picker-container">
-
+		<div class="colors-container">
+			{#each colors as color}
+				div.color
+			{/each}
+		</div>
 	</div>
-{/snippet}/}
+{/snippet}
 
 {#snippet theme(key: String, theme: ITheme)}
 	<div
@@ -55,7 +61,7 @@
 	<h1>Settings</h1>
 
 	<div class="settings-container"></div>
-	<button onclick={resetAllSettings}>Reset to defaults</button>
+	<button onclick={resetThemeSettings}>Reset to defaults</button>
 
 	<div>
 		<h1>Themes</h1>
