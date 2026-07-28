@@ -16,9 +16,14 @@
 
 <div class="contribution-years-container">
 	{#each sortedYears as year}
+		{@const selected = selectedYear === year}
 		<div class="year-button-container">
-			<button {disabled} onclick={() => onClicked(year)}>{year}</button>
-			<div class="selected-year-dot" class:selected={selectedYear === year}></div>
+			<button
+				class:selected
+				class:not-selected={!selected && !disabled && selectedYear !== null}
+				{disabled}
+				onclick={() => onClicked(year)}>{year}</button
+			>
 		</div>
 	{/each}
 </div>
@@ -26,22 +31,23 @@
 <style>
 	.contribution-years-container {
 		display: flex;
-		gap: 8px;
 		flex-wrap: wrap;
-		margin-top: 1rem;
+		gap: var(--space-2);
+
+		margin-top: var(--space-4);
 
 		.year-button-container {
-			position: relative;
-
 			button {
 				position: relative;
 				background-color: var(--tertiary-color);
 				color: var(--text-on-accent);
 				border: none;
-				border-radius: 0.2rem;
+				border-radius: var(--radius-md);
 				box-shadow: var(--shadow);
 				padding: 0.5rem 1rem;
 				z-index: 1;
+				opacity: 1;
+				transition: opacity 0.2s ease-in-out;
 			}
 
 			button:hover {
@@ -49,22 +55,12 @@
 				cursor: pointer;
 			}
 
-			.selected-year-dot {
-				position: absolute;
-				top: 40px;
-				left: 50%;
-				transform: translateX(-50%);
-				width: 8px;
-				height: 8px;
-				border-radius: 50%;
-				background-color: var(--tertiary-color);
-				opacity: 0;
-				transition: opacity 0.3s ease;
+			button.selected {
+				opacity: 1;
 			}
 
-			.selected-year-dot.selected {
-				opacity: 1;
-				animation: pulse 2s infinite;
+			button.not-selected {
+				opacity: 0.5;
 			}
 		}
 	}

@@ -90,26 +90,25 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
+		gap: var(--space-4);
 
 		.issues-container {
 			display: flex;
 			flex-direction: column;
-			gap: 8px;
+			gap: var(--space-2);
 		}
 
 		.issues {
 			display: flex;
 			align-items: center;
-			gap: 4px;
+			gap: var(--space-1);
 
 			.issue {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				gap: 8px;
+				gap: var(--space-2);
 				flex: 1;
-
 
 				a {
 					color: var(--text-primary);
@@ -121,13 +120,14 @@
 			}
 
 			.issue-status {
-				width: 22px;
-				height: 22px;
-				background-color: #8957e5;
-				border-radius: 50%;
 				display: flex;
 				justify-content: center;
 				align-items: center;
+
+				width: 18px;
+				height: 18px;
+				background-color: #8957e5;
+				border-radius: var(--radius-full);
 
 				svg {
 					width: 12px;
@@ -146,12 +146,12 @@
 
 			.labels-container {
 				display: flex;
-				gap: 4px;
+				gap: var(--space-1);
 
 				.label {
 					color: black;
 					padding: 2px 4px;
-					border-radius: 8px;
+					border-radius: var(--radius-md);
 					font-size: 12px;
 					text-overflow: ellipsis;
 					box-shadow: var(--shadow);

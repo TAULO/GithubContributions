@@ -16,7 +16,7 @@
 		height: calc(48 * var(--size));
 		border: calc(5 * var(--size)) solid var(--color-1);
 		border-bottom-color: transparent;
-		border-radius: 50%;
+		border-radius: var(--radius-full);
 		display: inline-block;
 		box-sizing: border-box;
 		animation: rotation 1s linear infinite;

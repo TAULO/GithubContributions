@@ -85,13 +85,13 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
+		gap: var(--space-4);
 	}
 
 	.date-container {
 		display: flex;
 		align-items: center;
-		gap: 16px;
+		gap: var(--space-4);
 
 		.line {
 			flex: 1;
@@ -109,7 +109,7 @@
 	.contribution-container {
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
+		gap: var(--space-2);
 		position: relative;
 
 		.delete-button {
@@ -117,13 +117,14 @@
 			align-items: center;
 			justify-content: center;
 			position: absolute;
+			height: 1.5rem;
+			width: 1.5rem;
 			top: 1.5rem;
 			right: 0;
 			background-color: var(--secondary-color);
 			border: none;
 			color: var(--text-on-accent);
 			cursor: pointer;
-			padding: .2rem;
 			z-index: 1;
 			border-radius: 50%;
 			box-shadow: var(--shadow);
@@ -140,10 +141,10 @@
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: var(--space-4);
 
-		padding: 1rem 0;
-		margin-left: 1rem;
+		padding: var(--space-4) 0;
+		margin-left: var(--space-4);
 	}
 
 	.timeline:before {

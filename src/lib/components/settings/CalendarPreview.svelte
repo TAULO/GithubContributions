@@ -31,18 +31,18 @@
 			</div>
 		{/each}
 	</div>
-<!--	<div class="levels">-->
-<!--		{#each levelColors as color}-->
-<!--			<div class="cell" style="background-color: {`var(${color})`}"></div>-->
-<!--		{/each}-->
-<!--	</div>-->
+	<!--		<div class="levels">-->
+	<!--			{#each levelColors as color}-->
+	<!--				<div class="cell" style="background-color: {`var(${color})`}"></div>-->
+	<!--			{/each}-->
+	<!--		</div>-->
 </div>
 
 <style>
 	.contributions-preview-container {
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
+		gap: var(--space-2);
 	}
 
 	.contributions-preview {
@@ -51,8 +51,6 @@
 	}
 
 	.block {
-		position: relative;
-
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
@@ -71,7 +69,7 @@
 		height: 8px;
 		padding: 0;
 		border: none;
-		border-radius: 2px;
+		border-radius: var(--radius-sm);
 	}
 
 	.cell.level-0 {

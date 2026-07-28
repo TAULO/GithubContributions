@@ -125,13 +125,13 @@
 		.pull-request-container {
 			display: flex;
 			align-items: center;
-			gap: 0.5rem;
+			gap: var(--space-2);
 			justify-content: space-between;
 
 			.pull-request-state {
 				display: flex;
 				align-items: center;
-				gap: 0.25rem;
+				gap: var(--space-1);
 				width: fit-content;
 				padding: 0.25rem 0.5rem;
 				border-radius: 1rem;

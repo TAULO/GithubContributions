@@ -3,14 +3,14 @@
 </script>
 
 <div class="contribution-container">
-		{@render children()}
+	{@render children()}
 </div>
 
 <style>
 	.contribution-container {
 		display: flex;
 		flex-direction: column;
-		margin-left: 2rem;
+		margin-left: var(--space-8);
 		flex: 1;
 	}
 </style>

@@ -40,7 +40,7 @@
 <style>
 	.container {
 		display: flex;
-		gap: 8px;
+		gap: var(--space-2);
 		flex-direction: column;
 
 		a {
@@ -58,7 +58,7 @@
 			width: 150px;
 			height: 8px;
 			overflow: hidden;
-			border-radius: 4px;
+			border-radius: var(--radius-md);
 		}
 
 		.language-bar-item:not(:last-child) {
@@ -74,12 +74,12 @@
 
 		.language-info-container {
 			display: flex;
-			gap: 16px;
+			gap: var(--space-4);
 
 			.language-info-item {
 				display: flex;
 				align-items: center;
-				gap: 4px;
+				gap: var(--space-1);
 			}
 
 			p {
@@ -92,8 +92,8 @@
 			.language-dot {
 				width: 8px;
 				height: 8px;
-				border-radius: 50%;
-				margin-right: 4px;
+				border-radius: var(--radius-full);
+				margin-right: var(--space-1);
 			}
 
 			.language-name {

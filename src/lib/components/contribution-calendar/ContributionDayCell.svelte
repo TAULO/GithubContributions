@@ -42,7 +42,7 @@
 		height: 12px;
 		padding: 0;
 		border: none;
-		border-radius: 2px;
+		border-radius: var(--radius-sm);
 		background: transparent;
 	}
 

@@ -97,17 +97,15 @@
 	.settings-container {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
 	}
 
 	.color-picker-container {
 		display: flex;
 		justify-content: space-between;
-		gap: 1rem;
 
 		.colors-container {
 			display: flex;
-			gap: 8px;
+			gap: var(--space-2);
 
 			.color {
 				width: 32px;
@@ -149,7 +147,7 @@
 
 		.name-container {
 			display: flex;
-			gap: 8px;
+			gap: var(--space-2);
 
 			border-radius: 0 0 10px 10px;
 			align-items: center;
