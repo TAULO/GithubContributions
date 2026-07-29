@@ -56,7 +56,8 @@
 
 	function changeYear(year: number) {
 		if (currentYear && currentYear === year) {
-			reset();
+			currentYear = null;
+			handleFetch();
 		} else {
 			currentYear = year;
 			handleFetch();
