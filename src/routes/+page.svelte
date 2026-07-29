@@ -55,8 +55,12 @@
 	}
 
 	function changeYear(year: number) {
-		currentYear = year;
-		handleFetch();
+		if (currentYear && currentYear === year) {
+			reset();
+		} else {
+			currentYear = year;
+			handleFetch();
+		}
 	}
 
 	function deleteByDate(date: string) {
