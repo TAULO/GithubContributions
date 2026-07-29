@@ -53,23 +53,21 @@
 }
 
 /* Default */
-button {
-	color: white;
-}
-
-p {
-	color: white;
-}
-
 body {
 	background-color: var(--primary-color);
 }
 
 a {
+	color: var(--text-primary);
 	text-decoration: none;
+	cursor: pointer;
+	text-underline-offset: 0.2em;
+	transition:
+		color 150ms ease,
+		text-decoration-color 150ms ease;
 }
-
 a:hover {
 	color: var(--hover-color);
-	cursor: pointer;
+	text-decoration: underline;
+	text-decoration-color: currentColor;
 }

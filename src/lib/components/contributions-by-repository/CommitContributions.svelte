@@ -40,11 +40,24 @@
 				{@const commits = countCommits(repo.contributions)}
 				<div class="item-container">
 					<RepoName repo={repo.repository}></RepoName>
-					<a
-						class={repo.repository.primaryLanguage ? 'flex-end' : 'flex-start'}
-						href={`${repo.repository.url}/commits?author=${user}&since=${date}&until=${date}`}
-						target="_blank">{commits} {pluralize(commits, 'commit')}</a
-					>
+					<div class="link">
+						<a
+							class={repo.repository.primaryLanguage ? 'flex-end' : 'flex-start'}
+							href={`${repo.repository.url}/commits?author=${user}&since=${date}&until=${date}`}
+							target="_blank">{commits} {pluralize(commits, 'commit')}</a
+						>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="currentColor"
+							id="Layer_1"
+							viewBox="0 0 512 512"
+							xml:space="preserve"
+						>
+							<polygon
+								points="247.5,0 34.2,213.3 34.2,341.3 204.8,170.7 204.8,512 290.2,512 290.2,170.7 460.8,341.3 460.8,213.3 "
+							/>
+						</svg>
+					</div>
 				</div>
 			{/each}
 		</div>
@@ -63,21 +76,25 @@
 		justify-content: space-between;
 	}
 
-	a {
-		color: var(--text-primary);
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-normal);
-	}
-
-	a:hover {
-		color: var(--hover-color);
-	}
-
 	a.flex-end {
 		align-self: flex-end;
 	}
 
 	a.flex-start {
 		align-self: flex-start;
+	}
+
+	.link {
+		color: var(--text-primary);
+
+		svg {
+			display: none;
+			height: 0.5rem;
+			rotate: 30deg;
+			position: relative;
+			top: -0.3rem;
+			right: 0.1rem;
+			color: var(--tertiary-color);
+		}
 	}
 </style>

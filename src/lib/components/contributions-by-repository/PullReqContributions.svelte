@@ -114,16 +114,6 @@
 		flex-direction: column;
 		gap: var(--space-4);
 
-		a {
-			color: var(--text-primary);
-			font-size: var(--font-size-sm);
-			font-weight: var(--font-weight-normal);
-		}
-
-		a:hover {
-			color: var(--hover-color);
-		}
-
 		.pull-request-container {
 			display: flex;
 			align-items: center;

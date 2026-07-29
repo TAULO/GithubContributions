@@ -109,16 +109,6 @@
 				align-items: center;
 				gap: var(--space-2);
 				flex: 1;
-
-				a {
-					color: var(--text-primary);
-					font-size: var(--font-size-sm);
-					font-weight: var(--font-weight-normal);
-				}
-
-				a:hover {
-					color: var(--hover-color);
-				}
 			}
 
 			.issue-status {
