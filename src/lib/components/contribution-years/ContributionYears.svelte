@@ -1,12 +1,10 @@
 <script lang="ts">
 	let {
 		contributionYears,
-		disabled = false,
 		onClicked,
 		selectedYear = null,
 	}: {
 		contributionYears: Array<number>;
-		disabled?: boolean;
 		onClicked: (year: number) => void;
 		selectedYear?: number | null;
 	} = $props();
@@ -20,8 +18,7 @@
 		<div class="year-button-container">
 			<button
 				class:selected
-				class:not-selected={!selected && !disabled && selectedYear !== null}
-				{disabled}
+				class:not-selected={!selected && selectedYear !== null}
 				onclick={() => onClicked(year)}>{year}</button
 			>
 		</div>
@@ -33,8 +30,6 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--space-2);
-
-		margin-top: var(--space-4);
 
 		.year-button-container {
 			button {

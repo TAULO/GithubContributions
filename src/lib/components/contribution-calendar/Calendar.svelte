@@ -1,16 +1,14 @@
 <script lang="ts">
-	import { type ContributionDay, type IContributionCollection } from '$lib/github';
+	import type { ContributionDay, IContributionCollection } from '$lib/github';
 	import { SvelteSet } from 'svelte/reactivity';
-	import ContributionDayCell from '$lib/components/contribution-calendar/ContributionDayCell.svelte';
+	import Cell from '$lib/components/contribution-calendar/Cell.svelte';
 
 	let {
 		contributionCollection,
 		selectedContributionsDate,
-		onSelectionChange,
 	}: {
 		contributionCollection: IContributionCollection;
 		selectedContributionsDate: SvelteSet<string>;
-		onSelectionChange?: (dates: string[]) => void;
 	} = $props();
 
 	const months = [
@@ -26,14 +24,6 @@
 		'Oct',
 		'Nov',
 		'Dec',
-	];
-
-	const levelColors = [
-		'--gh-level-0',
-		'--gh-level-1',
-		'--gh-level-2',
-		'--gh-level-3',
-		'--gh-level-4',
 	];
 
 	let contributions = $derived(contributionCollection.contributions);
@@ -102,13 +92,9 @@
 			new Date(date).getUTCMonth() === today.getUTCMonth()
 		);
 	}
-
-	$effect(() => {
-		onSelectionChange?.(Array.from(selectedContributionsDate));
-	});
 </script>
 
-<div class="container">
+<div class="contributions-calendar">
 	{#each contributions as contribution, index}
 		{@const label = getWeekDateFromIndex(index)}
 		<div class="block">
@@ -128,7 +114,7 @@
 				{@const hasContributions = contributionDay.count > 0}
 				{@const highlight =
 					hoveredMonth !== null && isEligibleInMonth(contributionDay, hoveredMonth)}
-				<ContributionDayCell
+				<Cell
 					{contributionDay}
 					selected={isSelected}
 					onToggleSelected={() => toggleSelected(contributionDay.date)}
@@ -141,14 +127,9 @@
 		</div>
 	{/each}
 </div>
-<div class="display-cell-container">
-	{#each levelColors as color}
-		<div class="display-cell" style="background-color: {`var(${color})`}"></div>
-	{/each}
-</div>
 
 <style>
-	.container {
+	.contributions-calendar {
 		display: flex;
 		gap: 2px;
 
@@ -191,21 +172,6 @@
 		button:hover {
 			cursor: pointer;
 			color: var(--hover-color);
-		}
-	}
-
-	.display-cell-container {
-		display: flex;
-		gap: 2px;
-		margin-top: 16px;
-		justify-content: end;
-
-		.display-cell {
-			width: 12px;
-			height: 12px;
-			padding: 0;
-			border: none;
-			border-radius: 2px;
 		}
 	}
 </style>

@@ -29,7 +29,7 @@ export const THEMES: Record<ThemeName, ITheme> = {
 			'--secondary-color': '#21222c',
 			'--tertiary-color': '#bd93f9',
 			'--hover-color': '#ff79c6',
-			'--gh-level-0': '#282a36',
+			'--gh-level-0': '#333545',
 			'--gh-level-1': '#44475a',
 			'--gh-level-2': '#6272a4',
 			'--gh-level-3': '#8be9fd',

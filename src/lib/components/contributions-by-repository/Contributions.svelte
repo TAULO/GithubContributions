@@ -5,15 +5,18 @@
 	import { prettyDate } from '$lib/util/string';
 	import CommitContributions from '$lib/components/contributions-by-repository/CommitContributions.svelte';
 	import RestrictedContributions from '$lib/components/contributions-by-repository/RestrictedContributions.svelte';
+	import Loading from '$lib/components/UI/contribution/Loading.svelte';
 
 	let {
 		selectedContributionsByRepository,
 		user,
 		onDeleteByDate = (date: string) => {},
+		isLoading,
 	}: {
 		selectedContributionsByRepository: IDayContributions[];
 		user: string;
 		onDeleteByDate?: (date: string) => void;
+		isLoading: boolean;
 	} = $props();
 
 	const dayHasActivity = (day: IDayContributions) =>
@@ -23,75 +26,84 @@
 		day.restrictedContributionsCount > 0;
 
 	const hasContributions = $derived(selectedContributionsByRepository.some(dayHasActivity));
+	let hasSelectedContributionsByRepository = $derived(selectedContributionsByRepository.length > 0);
 </script>
 
 {#snippet noContribution()}
 	<p class="no-activity">{user} had no contributions during this period.</p>
 {/snippet}
 
-<div class="container">
-	{#if !hasContributions}
-		{@render noContribution()}
+{#if hasSelectedContributionsByRepository}
+	{#if isLoading}
+		<Loading />
 	{:else}
-		{#each selectedContributionsByRepository as contributionByRepository}
-			<div role="region" class="contribution-container">
-				<button
-					class="delete-button"
-					type="button"
-					onclick={() => onDeleteByDate?.(contributionByRepository.date)}
-					aria-label="Delete"
-				>
-					<svg fill="currentColor" aria-hidden="true" height="16" width="16" viewBox="0 0 16 16">
-						<path
-							d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"
-						/>
-					</svg>
-				</button>
-				<div class="date-container">
-					<p>{prettyDate(contributionByRepository.date)}</p>
-					<div class="line"></div>
-				</div>
-				{#if !dayHasActivity(contributionByRepository)}
-					{@render noContribution()}
-				{:else}
-					<div class="timeline">
-						<CommitContributions
-							repositories={contributionByRepository.commitContributionsByRepository}
-							{user}
-							date={contributionByRepository.date}
-						/>
-						<IssueContributions
-							repositories={contributionByRepository.issueContributionsByRepository}
-						/>
-						<PullReqContributions
-							repositories={contributionByRepository.pullRequestContributionsByRepository}
-						/>
-						<RestrictedContributions
-							count={contributionByRepository.restrictedContributionsCount}
-						/>
+		<div class="contributions-container">
+			{#if !hasContributions}
+				{@render noContribution()}
+			{:else}
+				{#each selectedContributionsByRepository as contributionByRepository}
+					<div role="region" class="contribution-container">
+						<button
+							class="delete-button"
+							type="button"
+							onclick={() => onDeleteByDate?.(contributionByRepository.date)}
+							aria-label="Delete"
+						>
+							<svg
+								fill="currentColor"
+								aria-hidden="true"
+								height="16"
+								width="16"
+								viewBox="0 0 16 16"
+							>
+								<path
+									d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"
+								/>
+							</svg>
+						</button>
+						<div class="date-container">
+							<p>{prettyDate(contributionByRepository.date)}</p>
+							<div class="line"></div>
+						</div>
+						{#if !dayHasActivity(contributionByRepository)}
+							{@render noContribution()}
+						{:else}
+							<div class="timeline">
+								<CommitContributions
+									repositories={contributionByRepository.commitContributionsByRepository}
+									{user}
+									date={contributionByRepository.date}
+								/>
+								<IssueContributions
+									repositories={contributionByRepository.issueContributionsByRepository}
+								/>
+								<PullReqContributions
+									repositories={contributionByRepository.pullRequestContributionsByRepository}
+								/>
+								<RestrictedContributions
+									count={contributionByRepository.restrictedContributionsCount}
+								/>
+							</div>
+						{/if}
 					</div>
-				{/if}
-			</div>
-		{/each}
+				{/each}
+			{/if}
+		</div>
 	{/if}
-</div>
+{/if}
 
 <style>
-	p {
-		margin: 0;
-		padding: 0;
-	}
-
-	.container {
+	.contributions-container {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-4);
+		margin-top: var(--space-4);
 	}
 
 	.date-container {
 		display: flex;
 		align-items: center;
-		gap: var(--space-4);
+		gap: var(--space-2);
 
 		.line {
 			flex: 1;
@@ -101,6 +113,9 @@
 		}
 
 		p {
+			margin: 0;
+			padding: 0;
+
 			font-size: var(--font-size-sm);
 			font-weight: var(font-weight-normal);
 			color: var(--text-primary);
