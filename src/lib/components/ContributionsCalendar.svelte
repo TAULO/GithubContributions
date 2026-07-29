@@ -107,6 +107,6 @@
 		flex-direction: column;
 		gap: var(--space-4);
 
-		max-width: 800px;
+		width: 800px;
 	}
 </style>
