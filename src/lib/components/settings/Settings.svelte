@@ -72,22 +72,21 @@
 {/snippet}
 
 <div class="settings-container">
-	<h1>Settings</h1>
-	{#each SETTINGS_SCHEMA as setting}
-		{#if setting.type === 'color'}
-			{@render colorPicker(setting)}
-		{/if}
-	{/each}
-
-	<div>
-		<h1>Themes</h1>
-		<div class="theme-container">
-			{#each Object.entries(THEMES) as [name, themeItem]}
-				{@render theme(name, themeItem)}
-			{/each}
-		</div>
+	<h1>Themes</h1>
+	<div class="theme-container">
+		{#each Object.entries(THEMES) as [name, themeItem]}
+			{@render theme(name, themeItem)}
+		{/each}
 	</div>
 </div>
+
+<h1>Settings</h1>
+{#each SETTINGS_SCHEMA as setting}
+	{#if setting.type === 'color'}
+		{@render colorPicker(setting)}
+	{/if}
+{/each}
+<div></div>
 
 <style>
 	h1 {

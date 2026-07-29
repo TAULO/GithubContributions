@@ -85,6 +85,18 @@
 		.join('; ')}
 >
 	<button onclick={reset}>Reset</button>
+	<form
+		class="controls"
+		onsubmit={(e) => {
+			e.preventDefault();
+			handleFetch();
+		}}
+	>
+		<input type="text" bind:value={user} placeholder="User" />
+		<button type="submit" disabled={loading || !user.trim()}>
+			{loading ? 'Loading…' : 'Fetch'}
+		</button>
+	</form>
 	<div>
 		<div class="contributions-calendar">
 			<ContributionsCalendar
@@ -108,20 +120,6 @@
 			</div>
 		{/if}
 	</div>
-
-	<form
-		class="controls"
-		onsubmit={(e) => {
-			e.preventDefault();
-			handleFetch();
-		}}
-	>
-		<input type="text" bind:value={user} placeholder="User" />
-		<button type="submit" disabled={loading || !user.trim()}>
-			{loading ? 'Loading…' : 'Fetch'}
-		</button>
-	</form>
-
 	{#if errorMsg}
 		<p class="error">{errorMsg}</p>
 	{/if}
@@ -134,7 +132,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 4rem;
+		gap: var(--space-2);
 	}
 
 	.contributions-calendar {

@@ -1,4 +1,4 @@
-import type { ISetting, SettingKey } from '$lib/services/settings/types';
+import type { SettingKey } from '$lib/services/settings/types';
 
 export const DEFAULT_SETTINGS: Record<SettingKey, string> = {
 	// Primary Colors
