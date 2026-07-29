@@ -1,33 +1,45 @@
-<div class="loading-container">
-	<span class="loader"></span>
+<script lang="ts">
+	const levelColors = [
+		'--gh-level-0',
+		'--gh-level-1',
+		'--gh-level-2',
+		'--gh-level-3',
+		'--gh-level-4',
+	];
+</script>
+
+<div class="display-cell-container">
+	{#each levelColors as color, i}
+		<div
+			class="display-cell"
+			style="background-color: {`var(${color})`}; animation-delay: {i * 100}ms"
+		></div>
+	{/each}
 </div>
 
 <style>
-	.loading-container {
+	.display-cell-container {
 		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
+		gap: var(--space-2);
+		align-self: center;
 
-	.loader {
-		--color-1: var(--tertiary-color);
-		--size: .5px;
-		width: calc(48 * var(--size));
-		height: calc(48 * var(--size));
-		border: calc(5 * var(--size)) solid var(--color-1);
-		border-bottom-color: transparent;
-		border-radius: var(--radius-full);
-		display: inline-block;
-		box-sizing: border-box;
-		animation: rotation 1s linear infinite;
-	}
-
-	@keyframes rotation {
-		0% {
-			transform: rotate(0deg);
+		.display-cell {
+			width: 12px;
+			height: 12px;
+			padding: 0;
+			border: none;
+			border-radius: 2px;
+			animation: cell-pulse 1s ease-in-out infinite;
 		}
+	}
+
+	@keyframes cell-pulse {
+		0%,
 		100% {
-			transform: rotate(360deg);
+			transform: scale(1);
+		}
+		30% {
+			transform: scale(1.4);
 		}
 	}
 </style>
