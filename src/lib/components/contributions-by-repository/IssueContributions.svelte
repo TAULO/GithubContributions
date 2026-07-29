@@ -139,6 +139,7 @@
 			.labels-container {
 				display: flex;
 				gap: var(--space-1);
+				flex-wrap: wrap;
 
 				.label {
 					color: black;
