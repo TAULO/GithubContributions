@@ -45,7 +45,7 @@
 
 		a {
 			color: var(--text-primary);
-			font-weight: 700;
+			font-weight: var(--font-weight-bold);
 			width: fit-content;
 		}
 
@@ -62,7 +62,7 @@
 		}
 
 		.language-bar-item:not(:last-child) {
-			border-right: 1px solid var(--primary-color);
+			border-right: 1px solid var(--border-muted);
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -85,7 +85,7 @@
 			p {
 				margin: 0;
 				padding: 0;
-				font-size: 12px;
+				font-size: var(--font-size-xs);
 				color: var(--text-primary);
 			}
 
@@ -98,7 +98,7 @@
 
 			.language-name {
 				color: var(--text-secondary);
-				font-weight: 500;
+				font-weight: var(--font-weight-bold);
 			}
 
 			.language-percentage {

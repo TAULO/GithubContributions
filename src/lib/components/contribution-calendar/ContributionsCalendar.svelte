@@ -184,7 +184,7 @@
 			padding: 0;
 			background: none;
 			border: none;
-			font-weight: 400;
+			font-weight: var(--font-weight-normal);
 			color: var(--text-secondary);
 		}
 

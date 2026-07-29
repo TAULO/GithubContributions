@@ -112,6 +112,8 @@
 
 				a {
 					color: var(--text-primary);
+					font-size: var(--font-size-sm);
+					font-weight: var(--font-weight-normal);
 				}
 
 				a:hover {
@@ -152,10 +154,10 @@
 					color: black;
 					padding: 2px 4px;
 					border-radius: var(--radius-md);
-					font-size: 12px;
+					font-size: var(--font-size-xs);
 					text-overflow: ellipsis;
 					box-shadow: var(--shadow);
-					font-weight: 500;
+					font-weight: var(--font-weight-normal);
 				}
 			}
 		}

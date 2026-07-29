@@ -112,10 +112,12 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
+		gap: var(--space-4);
 
 		a {
 			color: var(--text-primary);
+			font-size: var(--font-size-sm);
+			font-weight: var(--font-weight-normal);
 		}
 
 		a:hover {
@@ -133,13 +135,12 @@
 				align-items: center;
 				gap: var(--space-1);
 				width: fit-content;
-				padding: 0.25rem 0.5rem;
+				padding: 0.4rem 0.5rem;
 				border-radius: 1rem;
 				color: var(--text-on-accent);
 				box-shadow: var(--shadow);
-				font-size: 0.875rem;
-				line-height: 1.25rem;
-				font-weight: 500;
+				font-size: var(--font-size-sm);
+				font-weight: var(--font-weight-normal);
 			}
 
 			.pull-request-state.open {

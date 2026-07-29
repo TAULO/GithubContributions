@@ -138,6 +138,7 @@
 			width: fit-content;
 
 			border-radius: var(--radius-lg);
+			border: 1px solid var(--border);
 			box-shadow: var(--shadow);
 			background-color: var(--primary-color);
 

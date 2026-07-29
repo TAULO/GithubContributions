@@ -64,8 +64,9 @@
 	}
 
 	a {
-		font-style: italic;
-		color: var(--text-secondary);
+		color: var(--text-primary);
+		font-size: var(--font-size-sm);
+		font-weight: var(--font-weight-normal);
 	}
 
 	a:hover {

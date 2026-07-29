@@ -95,13 +95,14 @@
 
 		.line {
 			flex: 1;
-			background-color: var(--secondary-color);
+			background-color: var(--tertiary-color);
+			opacity: 0.4;
 			height: 2px;
 		}
 
 		p {
-			font-size: 14px;
-			font-weight: 500;
+			font-size: var(--font-size-sm);
+			font-weight: var(font-weight-normal);
 			color: var(--text-primary);
 		}
 	}
@@ -117,16 +118,16 @@
 			align-items: center;
 			justify-content: center;
 			position: absolute;
-			height: 1.5rem;
-			width: 1.5rem;
+			height: 20px;
+			width: 20px;
 			top: 1.5rem;
 			right: 0;
-			background-color: var(--secondary-color);
+			background-color: var(--tertiary-color);
 			border: none;
 			color: var(--text-on-accent);
 			cursor: pointer;
 			z-index: 1;
-			border-radius: 50%;
+			border-radius: var(--radius-full);
 			box-shadow: var(--shadow);
 			opacity: 0;
 			transition: opacity 150ms ease;
@@ -150,12 +151,13 @@
 	.timeline:before {
 		width: 2px;
 		content: '';
-		background-color: var(--secondary-color);
+		background-color: var(--tertiary-color);
 		display: block;
 		position: absolute;
 		top: 0;
 		bottom: 0;
 		left: 0;
+		opacity: 0.4;
 	}
 
 	.no-activity {
