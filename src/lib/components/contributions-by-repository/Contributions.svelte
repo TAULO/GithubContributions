@@ -30,7 +30,9 @@
 </script>
 
 {#snippet noContribution()}
-	<p class="no-activity">{user} had no contributions during this period.</p>
+	<div class="timeline">
+		<p class="no-activity">{user} had no contributions during this period.</p>
+	</div>
 {/snippet}
 
 {#if hasSelectedContributionsByRepository}
@@ -93,6 +95,11 @@
 {/if}
 
 <style>
+	p {
+		margin: 0;
+		padding: 0;
+	}
+
 	.contributions-container {
 		display: flex;
 		flex-direction: column;
@@ -113,9 +120,6 @@
 		}
 
 		p {
-			margin: 0;
-			padding: 0;
-
 			font-size: var(--font-size-sm);
 			font-weight: var(font-weight-normal);
 			color: var(--text-primary);
@@ -178,6 +182,8 @@
 	.no-activity {
 		align-self: center;
 		justify-self: center;
+		color: var(--text-primary);
+		font-weight: var(--font-weight-bold);
 	}
 
 	.contribution-container:hover .delete-button {
