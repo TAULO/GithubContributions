@@ -44,7 +44,7 @@
 				{@render noContribution()}
 			{:else}
 				{#each selectedContributionsByRepository as contributionByRepository}
-					<div role="region" class="contribution-container">
+					<div role="region" class="contribution">
 						<button
 							class="delete-button"
 							type="button"
@@ -127,7 +127,7 @@
 		}
 	}
 
-	.contribution-container {
+	.contribution {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-2);
@@ -187,7 +187,7 @@
 		font-weight: var(--font-weight-bold);
 	}
 
-	.contribution-container:hover .delete-button {
+	.contribution:hover .delete-button {
 		opacity: 1;
 	}
 </style>
