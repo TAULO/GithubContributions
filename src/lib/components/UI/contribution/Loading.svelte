@@ -22,6 +22,8 @@
 		display: flex;
 		gap: var(--space-2);
 		align-self: center;
+		position: relative;
+		top: var(--space-8);
 
 		.display-cell {
 			width: 12px;
