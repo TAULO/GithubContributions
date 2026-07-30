@@ -44,25 +44,22 @@
 		border: none;
 		border-radius: var(--radius-sm);
 		background: transparent;
-	}
-
-	.cell.selected {
-		border: 1px solid var(--hover-color);
+		cursor: pointer;
 	}
 
 	.cell.dimmed {
 		opacity: 0.7;
 	}
 
+	.cell.selected {
+		border: 1px solid var(--hover-color);
+	}
+
 	.cell.highlighted {
 		border: 1px solid var(--hover-color);
-		cursor: pointer;
 		opacity: 1;
 	}
 
-	.cell.interactive {
-		cursor: pointer;
-	}
 	.cell.interactive:hover {
 		border: 1px solid var(--hover-color);
 	}
