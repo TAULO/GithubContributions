@@ -26,11 +26,15 @@
 		'Dec',
 	];
 
-	let contributions = $derived(contributionCollection.contributions);
 	let hoveredMonth = $state<number | null>(null);
+	let shiftHeld = $state(false);
+	let isHoveringCalendar = $state(false);
 
-	const isEligibleInMonth = (day: ContributionDay, monthIndex: number) =>
-		new Date(day.date).getUTCMonth() === monthIndex &&
+	let contributions = $derived(contributionCollection.contributions);
+	let previewingAll = $derived(shiftHeld && isHoveringCalendar);
+
+	const isEligibleInMonth = (day: ContributionDay) =>
+		new Date(day.date).getUTCMonth() === hoveredMonth &&
 		day.count > 0 &&
 		!isTodayUtcMonthLastYear(day.date);
 
@@ -67,10 +71,10 @@
 		hoveredMonth = null;
 	}
 
-	function labelClick(monthIndex: number) {
+	function labelClick() {
 		const datesInMonth = contributions
 			.flat()
-			.filter((day) => isEligibleInMonth(day, monthIndex))
+			.filter((day) => isEligibleInMonth(day))
 			.map((day) => day.date);
 
 		const allSelected = datesInMonth.every((date) => selectedContributionsDate.has(date));
@@ -92,9 +96,38 @@
 			new Date(date).getUTCMonth() === today.getUTCMonth()
 		);
 	}
+
+	function selectAllContributions() {
+		const allContributions = contributions
+			.flat()
+			.filter((day) => day.count > 0)
+			.map((day) => day.date);
+
+		const allSelected = allContributions.every((date) => selectedContributionsDate.has(date));
+
+		for (const date of allContributions) {
+			if (allSelected) {
+				selectedContributionsDate.delete(date);
+			} else {
+				selectedContributionsDate.add(date);
+			}
+		}
+	}
+
+	function onKeyDown(e: KeyboardEvent) {
+		if (e.key === 'Shift') shiftHeld = true;
+	}
+	function onKeyUp(e: KeyboardEvent) {
+		if (e.key === 'Shift') shiftHeld = false;
+	}
 </script>
 
-<div class="contributions-calendar">
+<div
+	class="contributions-calendar"
+	onmouseenter={() => (isHoveringCalendar = true)}
+	onmouseleave={() => (isHoveringCalendar = false)}
+	role="table"
+>
 	{#each contributions as contribution, index}
 		{@const label = getWeekDateFromIndex(index)}
 		<div class="block">
@@ -103,7 +136,7 @@
 					<button
 						onmouseenter={() => labelEnter(months.indexOf(label))}
 						onmouseleave={labelLeave}
-						onclick={() => labelClick(months.indexOf(label))}
+						onclick={labelClick}
 					>
 						{label}
 					</button>
@@ -112,14 +145,16 @@
 			{#each contribution as contributionDay}
 				{@const isSelected = selectedContributionsDate.has(contributionDay.date)}
 				{@const hasContributions = contributionDay.count > 0}
-				{@const highlight =
-					hoveredMonth !== null && isEligibleInMonth(contributionDay, hoveredMonth)}
+				{@const highlightMonth = hoveredMonth !== null && isEligibleInMonth(contributionDay)}
+				{@const highlightAll = hasContributions && previewingAll}
 				<Cell
 					{contributionDay}
 					selected={isSelected}
-					onToggleSelected={() => toggleSelected(contributionDay.date)}
+					onToggleSelected={() => {
+						if (!previewingAll) toggleSelected(contributionDay.date);
+					}}
 					dimmed={selectedContributionsDate.size > 0 && !isSelected}
-					highlighted={highlight}
+					highlighted={highlightMonth || highlightAll}
 					interactive={hasContributions}
 					disabled={!hasContributions}
 				/>
@@ -127,6 +162,8 @@
 		</div>
 	{/each}
 </div>
+
+<svelte:window onkeydown={onKeyDown} onkeyup={onKeyUp} />
 
 <style>
 	.contributions-calendar {
