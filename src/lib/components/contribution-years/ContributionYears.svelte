@@ -21,10 +21,11 @@
 			<button
 				class:selected
 				class:not-selected={!selected && selectedYear !== null}
+				class:has-selected-contributions={selectedContributionForYear[year]?.length > 0}
 				onclick={() => onClicked(year)}>{year}</button
 			>
 			{#if selectedContributionForYear[year]}
-				<p>{selectedContributionForYear[year].length}</p>
+				<!--				<p>{selectedContributionForYear[year].length}</p>-->
 			{/if}
 		</div>
 	{/each}
@@ -54,6 +55,7 @@
 
 			button:hover {
 				background-color: var(--hover-color);
+				opacity: 1!important;
 				cursor: pointer;
 			}
 
@@ -65,6 +67,10 @@
 				opacity: 0.5;
 			}
 
+			button.has-selected-contributions {
+				background-color: var(--hover-color);
+			}
+
 			p {
 				position: absolute;
 				top: -18px;
@@ -74,7 +80,7 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				background-color: var(--hover-color);
+				background-color: var(--tertiary-color);
 				color: var(--text-on-accent);
 				border-radius: var(--radius-full);
 				font-size: var(--font-size-xs);
@@ -82,6 +88,11 @@
 				line-height: 1;
 				box-shadow: 0 0 0 2px var(--primary-color); /* ring separates badge from button */
 				z-index: 2;
+			}
+
+			p:hover {
+				cursor: pointer;
+				background-color: var(--hover-color);
 			}
 		}
 	}

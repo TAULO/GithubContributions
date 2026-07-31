@@ -47,12 +47,15 @@
 		);
 	});
 
-	async function handleSelectionChange(dates: string[]) {
+	async function handleSelectionChange() {
 		const timer = setTimeout(() => {
 			loading = true;
 		}, 200);
 		try {
-			const sorted = [...dates].sort((a, b) => a.localeCompare(b)).reverse();
+			const sorted = Array.from(selectedContributionsDate)
+				.sort((a, b) => a.localeCompare(b))
+				.reverse();
+
 			selectedContributionsByRepository = await getDayContributions(user.trim(), sorted);
 		} catch (e) {
 			console.error(e);
@@ -91,9 +94,7 @@
 	}
 
 	$effect(() => {
-		handleSelectionChange(Array.from(selectedContributionsDate));
-
-		console.log(selectedContributionForYear);
+		handleSelectionChange();
 	});
 </script>
 
@@ -109,7 +110,7 @@
 		contributionYears={contributionCollection.contributionYears}
 		onClicked={changeYear}
 		selectedYear={currentYear}
-		selectedContributionForYear={selectedContributionForYear}
+		{selectedContributionForYear}
 	/>
 	<Contributions
 		{selectedContributionsByRepository}
