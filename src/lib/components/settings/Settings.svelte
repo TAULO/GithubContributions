@@ -52,7 +52,7 @@
 {#snippet theme(key: String, theme: ITheme)}
 	{@const selected = activeTheme === key}
 	<div
-		class="theme-container"
+		class="theme"
 		class:selected
 		style={Object.entries(theme.values)
 			.map(([k, v]) => `${k}: ${v}`)
@@ -121,16 +121,16 @@
 		gap: var(--space-4);
 		flex-wrap: wrap;
 
-		.theme-container:hover {
+		.theme:hover {
 			cursor: pointer;
 			outline: 1px solid var(--hover-color);
 		}
 
-		.theme-container.selected {
+		.theme.selected {
 			outline: 1px solid var(--tertiary-color);
 		}
 
-		.theme-container {
+		.theme {
 			display: flex;
 			flex-direction: column;
 
@@ -140,6 +140,8 @@
 			border: 1px solid var(--border);
 			box-shadow: var(--shadow);
 			background-color: var(--primary-color);
+
+			transition: outline 150ms ease;
 
 			.preview {
 				border-radius: var(--radius-lg);
@@ -173,6 +175,7 @@
 
 				.theme-checkbox.selected {
 					background-color: var(--tertiary-color);
+					transition: background-color 150ms ease;
 				}
 			}
 		}
