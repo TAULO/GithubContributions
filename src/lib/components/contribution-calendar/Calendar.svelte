@@ -115,10 +115,18 @@
 	}
 
 	function onKeyDown(e: KeyboardEvent) {
-		if (e.key === 'Shift') shiftHeld = true;
+		if (e.key === 'Shift') {
+			shiftHeld = true;
+		}
+
+		if (e.shiftKey && e.key.toLowerCase() === 'a' && isHoveringCalendar) {
+			selectAllContributions();
+		}
 	}
 	function onKeyUp(e: KeyboardEvent) {
-		if (e.key === 'Shift') shiftHeld = false;
+		if (e.key === 'Shift') {
+			shiftHeld = false;
+		}
 	}
 </script>
 
