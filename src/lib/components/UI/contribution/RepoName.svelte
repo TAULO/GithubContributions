@@ -76,6 +76,11 @@
 			display: flex;
 			gap: var(--space-4);
 
+			@media (max-width: 768px) {
+				flex-direction: column;
+				gap: var(--space-2);
+			}
+
 			.language-info-item {
 				display: flex;
 				align-items: center;

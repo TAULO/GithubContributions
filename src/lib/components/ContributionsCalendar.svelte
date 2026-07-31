@@ -130,5 +130,9 @@
 		gap: var(--space-4);
 
 		width: 800px;
+
+		@media (max-width: 768px) {
+			max-width: 90%;
+		}
 	}
 </style>

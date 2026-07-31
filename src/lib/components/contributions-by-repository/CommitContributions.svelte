@@ -87,6 +87,7 @@
 	.link {
 		color: var(--text-primary);
 		align-self: flex-end;
+		white-space: nowrap;
 
 		svg {
 			display: none;
