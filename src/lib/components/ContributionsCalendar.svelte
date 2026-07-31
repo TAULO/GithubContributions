@@ -29,6 +29,24 @@
 
 	let selectedContributionsByRepository = $state<IDayContributions[]>([]);
 
+	let selectedContributionForYear = $derived.by(() => {
+		const contributions = Array.from(selectedContributionsDate);
+		return contributions.reduce(
+			(acc, date) => {
+				const year = new Date(date).getFullYear().toString();
+
+				if (!acc[year]) {
+					acc[year] = [];
+				}
+
+				acc[year].push(date);
+
+				return acc;
+			},
+			{} as Record<string, string[]>,
+		);
+	});
+
 	async function handleSelectionChange(dates: string[]) {
 		const timer = setTimeout(() => {
 			loading = true;
@@ -74,6 +92,8 @@
 
 	$effect(() => {
 		handleSelectionChange(Array.from(selectedContributionsDate));
+
+		console.log(selectedContributionForYear);
 	});
 </script>
 
@@ -89,6 +109,7 @@
 		contributionYears={contributionCollection.contributionYears}
 		onClicked={changeYear}
 		selectedYear={currentYear}
+		selectedContributionForYear={selectedContributionForYear}
 	/>
 	<Contributions
 		{selectedContributionsByRepository}
