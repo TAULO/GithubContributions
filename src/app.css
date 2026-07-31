@@ -58,22 +58,14 @@ body {
 }
 
 a {
-	display: inline-block;
-	max-width: 600px;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-
 	color: var(--text-primary);
 	text-decoration: none;
 	cursor: pointer;
-	text-underline-offset: 0.2em;
 	transition:
 		color 150ms ease,
 		text-decoration-color 150ms ease;
 }
 a:hover {
 	color: var(--hover-color);
-	text-decoration: underline;
 	text-decoration-color: currentColor;
 }

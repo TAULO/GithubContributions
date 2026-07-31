@@ -115,10 +115,9 @@
 		gap: var(--space-4);
 
 		.pull-request-container {
-			display: flex;
+			display: grid;
+			grid-template-columns: 1fr auto;
 			align-items: center;
-			gap: var(--space-2);
-			justify-content: space-between;
 
 			.pull-request-state {
 				display: flex;
