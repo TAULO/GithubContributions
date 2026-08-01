@@ -6,9 +6,11 @@
 	let {
 		contributionCollection,
 		selectedContributionsDate,
+		selectedYear,
 	}: {
 		contributionCollection: IContributionCollection;
 		selectedContributionsDate: SvelteSet<string>;
+		selectedYear: number | null;
 	} = $props();
 
 	const months = [
@@ -89,12 +91,9 @@
 	}
 
 	function isTodayUtcMonthLastYear(date: string) {
-		const today = new Date();
+		const currentYear = selectedYear ? new Date(selectedYear) : new Date();
 
-		return (
-			new Date(date).getUTCFullYear() === today.getUTCFullYear() - 1 &&
-			new Date(date).getUTCMonth() === today.getUTCMonth()
-		);
+		return new Date(date).getUTCFullYear() === currentYear.getUTCFullYear() - 1;
 	}
 
 	function selectAllContributions() {

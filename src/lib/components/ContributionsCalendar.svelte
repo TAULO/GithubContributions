@@ -22,7 +22,7 @@
 
 	const selectedContributionsDate = new SvelteSet<string>();
 
-	let currentYear = $state<number | null>(null);
+	let selectedYear = $state<number | null>(null);
 
 	let loading = $state(false);
 	let errorMsg = $state<string | null>(null);
@@ -68,7 +68,7 @@
 	async function handleFetch() {
 		errorMsg = null;
 		try {
-			const result = await getContributionsCalendar(user.trim(), currentYear);
+			const result = await getContributionsCalendar(user.trim(), selectedYear);
 			contributionCollection = result.contribution;
 			user = result.user;
 		} catch (e) {
@@ -77,11 +77,11 @@
 	}
 
 	function changeYear(year: number) {
-		if (currentYear && currentYear === year) {
-			currentYear = null;
+		if (selectedYear && selectedYear === year) {
+			selectedYear = null;
 			handleFetch();
 		} else {
-			currentYear = year;
+			selectedYear = year;
 			handleFetch();
 		}
 	}
@@ -104,12 +104,12 @@
 		.map(([k, v]) => `${k}: ${v}`)
 		.join('; ')}
 >
-	<Calendar {contributionCollection} {selectedContributionsDate} />
+	<Calendar {contributionCollection} {selectedContributionsDate} {selectedYear} />
 	<Levels />
 	<ContributionsYear
 		contributionYears={contributionCollection.contributionYears}
 		onClicked={changeYear}
-		selectedYear={currentYear}
+		selectedYear={selectedYear}
 		{selectedContributionForYear}
 	/>
 	<Contributions
