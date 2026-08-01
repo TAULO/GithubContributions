@@ -115,12 +115,20 @@
 	}
 
 	function onKeyDown(e: KeyboardEvent) {
-		if (e.key === 'Shift') {
+		if (e.key.toLowerCase() === 'shift') {
 			shiftHeld = true;
 		}
 
-		if (e.shiftKey && e.key.toLowerCase() === 'a' && isHoveringCalendar) {
-			selectAllContributions();
+		if (shiftHeld && isHoveringCalendar) {
+			console.log(e.key.toLowerCase());
+			switch (e.key.toLowerCase()) {
+				case 'a':
+					selectAllContributions();
+					break;
+				case 'backspace':
+					selectedContributionsDate.clear();
+					break;
+			}
 		}
 	}
 	function onKeyUp(e: KeyboardEvent) {
