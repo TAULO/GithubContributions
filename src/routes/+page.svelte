@@ -1,10 +1,9 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import {
-		getContributionsCalendar,
-	} from '$lib/github';
+	import { getContributionsCalendar } from '$lib/github';
 	import ContributionsCalendar from '$lib/components/ContributionsCalendar.svelte';
 	import Settings from '$lib/components/settings/Settings.svelte';
+	import Shortcut from '$lib/components/Shortcut.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -37,6 +36,8 @@
 		<button type="submit" disabled={!user.trim()}> Fetch </button>
 	</form>
 	<ContributionsCalendar {contributionCollection} {user} />
+	<Shortcut description="Select all contributions" key="Shift + A" />
+	<Shortcut description="Deselect all contributions" key="Shift + Backspace" />
 	<Settings />
 </div>
 
