@@ -50,12 +50,14 @@
 				padding: 0.5rem 1rem;
 				z-index: 1;
 				opacity: 1;
-				transition: opacity 0.2s ease-in-out;
+				transition:
+					opacity 0.2s ease-in-out,
+					background-color 150ms ease;
 			}
 
 			button:hover {
 				background-color: var(--hover-color);
-				opacity: 1!important;
+				opacity: 1 !important;
 				cursor: pointer;
 			}
 

@@ -98,18 +98,13 @@
 	});
 </script>
 
-<div
-	class="contributions-calendar-container"
-	style={Object.entries(settings)
-		.map(([k, v]) => `${k}: ${v}`)
-		.join('; ')}
->
+<div class="contributions-calendar-container">
 	<Calendar {contributionCollection} {selectedContributionsDate} {selectedYear} />
 	<Levels />
 	<ContributionsYear
 		contributionYears={contributionCollection.contributionYears}
 		onClicked={changeYear}
-		selectedYear={selectedYear}
+		{selectedYear}
 		{selectedContributionForYear}
 	/>
 	<Contributions

@@ -50,11 +50,14 @@
 		Helvetica,
 		Arial,
 		sans-serif;
+
+	--theme-transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
 }
 
 /* Default */
 body {
-	background-color: var(--primary-color);
+	margin: 0;
+	padding: 0;
 }
 
 a {

@@ -108,6 +108,8 @@
 			background-color: var(--tertiary-color);
 			opacity: 0.4;
 			height: 2px;
+
+			transition: var(--theme-transition);
 		}
 
 		p {

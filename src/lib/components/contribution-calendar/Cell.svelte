@@ -45,6 +45,8 @@
 		border-radius: var(--radius-sm);
 		background: transparent;
 		cursor: pointer;
+
+		transition: var(--theme-transition);
 	}
 
 	.cell.dimmed {

@@ -4,6 +4,7 @@
 	import ContributionsCalendar from '$lib/components/ContributionsCalendar.svelte';
 	import Settings from '$lib/components/settings/Settings.svelte';
 	import Shortcut from '$lib/components/Shortcut.svelte';
+	import { settings } from '$lib/services/settings/settings.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -24,7 +25,12 @@
 	}
 </script>
 
-<div class="container">
+<div
+	class="container"
+	style={Object.entries(settings)
+		.map(([k, v]) => `${k}: ${v}`)
+		.join('; ')}
+>
 	<form
 		class="controls"
 		onsubmit={(e) => {
@@ -47,5 +53,14 @@
 		flex-direction: column;
 		align-items: center;
 		gap: var(--space-2);
+
+		width: 100%;
+		height: 100%;
+
+		background-color: var(--primary-color);
+
+		padding: var(--space-8);
+
+		transition: var(--theme-transition);
 	}
 </style>
