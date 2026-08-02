@@ -65,15 +65,15 @@
 		}
 	}
 
-	function labelEnter(monthIndex: number | null) {
+	function monthLabelEnter(monthIndex: number | null) {
 		hoveredMonth = monthIndex;
 	}
 
-	function labelLeave() {
+	function monthLabelLeaver() {
 		hoveredMonth = null;
 	}
 
-	function labelClick() {
+	function monthLabelClick() {
 		const datesInMonth = contributions
 			.flat()
 			.filter((day) => isEligibleInMonth(day))
@@ -91,9 +91,9 @@
 	}
 
 	function isTodayUtcMonthLastYear(date: string) {
-		const currentYear = selectedYear ? new Date(selectedYear) : new Date();
-
-		return new Date(date).getUTCFullYear() === currentYear.getUTCFullYear() - 1;
+		const ref = selectedYear ? new Date(selectedYear, 0, 1) : new Date();
+		const d = new Date(date);
+		return d.getUTCFullYear() === ref.getUTCFullYear() - 1 && d.getUTCMonth() === ref.getUTCMonth();
 	}
 
 	function selectAllContributions() {
@@ -149,9 +149,9 @@
 			{#if label}
 				<div class="date-container">
 					<button
-						onmouseenter={() => labelEnter(months.indexOf(label))}
-						onmouseleave={labelLeave}
-						onclick={labelClick}
+						onmouseenter={() => monthLabelEnter(months.indexOf(label))}
+						onmouseleave={monthLabelLeaver}
+						onclick={monthLabelClick}
 					>
 						{label}
 					</button>
