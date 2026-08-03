@@ -42,8 +42,9 @@
 		<button type="submit" disabled={!user.trim()}> Fetch </button>
 	</form>
 	<ContributionsCalendar {contributionCollection} {user} />
-	<Shortcut description="Select all contributions" key="Shift + A" />
-	<Shortcut description="Deselect all contributions" key="Shift + Backspace" />
+	<Shortcut description="Select all contributions" keys={['Shift', 'A']} />
+	<Shortcut description="Deselect all contributions" keys={['Shift', 'D']} />
+	<Shortcut description="Clear all contributions" keys={['Shift', 'Backspace']} />
 	<Settings />
 </div>
 

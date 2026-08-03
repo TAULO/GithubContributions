@@ -182,9 +182,11 @@
 
 <style>
 	.contributions-calendar {
+		position: relative;
 		display: flex;
 		gap: 2px;
 
+		/* leave space for the date labels */
 		padding-top: 24px;
 		overflow-x: auto;
 
@@ -193,8 +195,6 @@
 	}
 
 	.block {
-		position: relative;
-
 		display: flex;
 		flex-direction: column;
 		gap: 2px;
@@ -210,7 +210,7 @@
 
 	.date-container {
 		position: absolute;
-		top: -24px;
+		top: 0;
 
 		button {
 			margin: 0;
